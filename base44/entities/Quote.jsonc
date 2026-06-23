@@ -1,0 +1,78 @@
+{
+  "name": "Quote",
+  "type": "object",
+  "properties": {
+    "codigo": {
+      "type": "string"
+    },
+    "token": {
+      "type": "string"
+    },
+    "producto": {
+      "type": "string"
+    },
+    "entrada": {
+      "type": "string"
+    },
+    "medidas": {
+      "type": "string"
+    },
+    "descripcion": {
+      "type": "string"
+    },
+    "ambiente": {
+      "type": "string"
+    },
+    "medida_aprox": {
+      "type": "string"
+    },
+    "archivos": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "format": "uri"
+      }
+    },
+    "nombre": {
+      "type": "string"
+    },
+    "whatsapp": {
+      "type": "string"
+    },
+    "email": {
+      "type": "string",
+      "format": "email"
+    },
+    "localidad": {
+      "type": "string"
+    },
+    "obra": {
+      "type": "string"
+    },
+    "urgencia": {
+      "type": "string"
+    },
+    "comentarios": {
+      "type": "string"
+    },
+    "extra_fields": {
+      "type": "object",
+      "additionalProperties": true
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "enviado",
+        "en_proceso",
+        "cotizado",
+        "cerrado"
+      ],
+      "default": "enviado"
+    }
+  },
+  "required": [
+    "producto",
+    "nombre",
+    "whatsapp"
+  ]
+}
