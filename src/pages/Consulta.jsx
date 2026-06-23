@@ -5,7 +5,7 @@ import JSZip from "jszip";
 import { FileText, Loader2, Download, ChevronLeft, ChevronRight, X, ImageIcon } from "lucide-react";
 
 const supabase = createClient(
-  "https://jeeqyynfurdeitnisupi.supabase.co",
+  "https://jeeqynfurdeitnisupi.supabase.co",
   "sb_publishable_F2CXviXhqqaN3zz63sp4mw_sqHnC-wE"
 );
 
@@ -81,12 +81,29 @@ export default function Consulta() {
   const pdfs = archivos.filter((url) => url.match(/\.pdf$/i));
   const otherFiles = archivos.filter((url) => !url.match(/\.(jpg|jpeg|png|webp|gif|bmp|pdf)$/i));
 
+  // Extrae el nombre limpio del archivo o ruta del Storage
   const fileName = (url) => {
     try {
       const parts = new URL(url).pathname.split("/");
       return decodeURIComponent(parts[parts.length - 1]) || "archivo";
     } catch {
       return url.split("/").pop() || "archivo";
+    }
+  };
+
+  // Obtiene el path interno relativo al bucket para usar con la API de Storage
+  const getStoragePath = (url) => {
+    try {
+      const pathname = new URL(url).pathname;
+      // Las URLs de Supabase contienen '/storage/v1/object/public/archivos/'
+      const searchStr = "/object/public/archivos/";
+      const index = pathname.indexOf(searchStr);
+      if (index !== -1) {
+        return decodeURIComponent(pathname.substring(index + searchStr.length));
+      }
+      return decodeURIComponent(pathname.split("/").pop());
+    } catch {
+      return decodeURIComponent(url.split("/").pop());
     }
   };
 
@@ -127,31 +144,40 @@ export default function Consulta() {
     setDownloading(true);
     try {
       const zip = new JSZip();
+      
       const fetches = await Promise.allSettled(
         archivos.map(async (url, i) => {
-          const res = await fetch(url);
-          if (!res.ok) throw new Error("fetch failed");
-          const blob = await res.blob();
+          const path = getStoragePath(url);
+          // Descarga directa desde Supabase Storage para evitar bloqueos CORS
+          const { data, error: downloadError } = await supabase.storage
+            .from("archivos")
+            .download(path);
+
+          if (downloadError || !data) throw new Error("Supabase download failed");
+
           const ext = url.match(/\.([a-zA-Z0-9]+)(\?|$)/)?.[1] || "bin";
           const name = fileName(url) || `archivo_${i + 1}.${ext}`;
-          return { name, blob };
+          return { name, blob: data };
         })
       );
+
       fetches.forEach((r) => {
         if (r.status === "fulfilled") zip.file(r.value.name, r.value.blob);
       });
+
       const blob = await zip.generateAsync({ type: "blob" });
-      const url = URL.createObjectURL(blob);
+      const zipUrl = URL.createObjectURL(blob);
       const a = document.createElement("a");
-      a.href = url;
+      a.href = zipUrl;
       const clientName = (quote.nombre || "cliente").replace(/\s+/g, "_");
       const dateStr = new Date(quote.created_at || Date.now()).toISOString().slice(0, 10);
       a.download = `${clientName}_${dateStr}.zip`;
       document.body.appendChild(a);
       a.click();
       document.body.removeChild(a);
-      URL.revokeObjectURL(url);
+      URL.revokeObjectURL(zipUrl);
     } catch (e) {
+      console.error("Error al descargar los archivos:", e);
     } finally {
       setDownloading(false);
     }
