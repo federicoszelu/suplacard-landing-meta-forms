@@ -300,7 +300,7 @@ export default function Home() {
       <HeroSection heroImage={HERO_IMG} onStart={() => { scrollToCotizador(); }} />
 
       <section
-        ref__={cotizadorRef}
+        ref={cotizadorRef}
         className="scroll-mt-20 max-w-[1440px] mx-auto px-5 sm:px-8 lg:px-14 py-10 lg:py-16"
       >
         <div className="grid grid-cols-1 lg:grid-cols-[1fr_360px] gap-6 items-start">
