@@ -170,7 +170,7 @@ export default function Home() {
       lines.push("━━━━━━━━━━━━━━");
       lines.push(`🔖 *ID:* ${codigo}`);
       lines.push(`🔗 Ver detalle completo con fotos, planos y referencias:`);
-      lines.push(`https://landing-meta-forms.suplacard.com/consulta/${codigo}`);
+      lines.push(`https://forms.suplacard.com/consulta/${codigo}`);
       lines.push(`✅ Los archivos pueden descargarse desde el enlace`);
     }
 
