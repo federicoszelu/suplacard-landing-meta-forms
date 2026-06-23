@@ -247,6 +247,11 @@ export default function Home() {
           window.location.href = url;
         }
 
+        // Disparar Evento de Conversión (Lead) en Meta
+        if (typeof window.trackMetaFormLead === 'function') {
+          window.trackMetaFormLead();
+        }
+
         setSent(true);
       } catch (e) {
         const codigo = generateCodigo();
@@ -257,6 +262,12 @@ export default function Home() {
         } else {
           window.location.href = url;
         }
+
+        // Disparar Evento de Conversión (Lead) en Meta en el flujo de respaldo
+        if (typeof window.trackMetaFormLead === 'function') {
+          window.trackMetaFormLead();
+        }
+
         setSent(true);
       } finally {
         setSending(false);
