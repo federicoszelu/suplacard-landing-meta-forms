@@ -170,7 +170,7 @@ export default function Home() {
       lines.push("━━━━━━━━━━━━━━");
       lines.push(`🔖 *ID:* ${codigo}`);
       lines.push(`🔗 Ver detalle completo con fotos, planos y referencias:`);
-      lines.push(`https://presupuestos.suplacard.com/consulta/${codigo}`);
+      lines.push(`https://landing-meta-forms.suplacard.com/consulta/${codigo}`);
       lines.push(`✅ Los archivos pueden descargarse desde el enlace`);
     }
 
@@ -231,4 +231,124 @@ export default function Home() {
           archivos: fileUrls,
           nombre: state.nombre,
           whatsapp: state.whatsapp,
-          email
+          email: state.email || "",
+          localidad: state.localidad || "",
+          obra: state.obra || "",
+          urgencia: state.urgencia || "",
+          comentarios: state.comentarios || "",
+          extra_fields: { configs },
+        });
+
+        const msg = buildMensaje(codigo, token);
+        const url = `https://wa.me/5491151359303?text=${encodeURIComponent(msg)}`;
+        if (popup) {
+          popup.location.href = url;
+        } else {
+          window.location.href = url;
+        }
+
+        setSent(true);
+      } catch (e) {
+        const codigo = generateCodigo();
+        const msg = buildMensaje(codigo, null);
+        const url = `https://wa.me/5491151359303?text=${encodeURIComponent(msg)}`;
+        if (popup) {
+          popup.location.href = url;
+        } else {
+          window.location.href = url;
+        }
+        setSent(true);
+      } finally {
+        setSending(false);
+      }
+      return;
+    }
+
+    if (step < RESUMEN_STEP) goTo(step + 1);
+  };
+
+  const handlePrev = () => {
+    if (step > 1) goTo(step - 1);
+  };
+
+  const handleReset = () => {
+    setState({ productos: [], configs: {} });
+    setFiles({});
+    setErrors({});
+    setSent(false);
+    setStep(1);
+    setTimeout(() => {
+      cotizadorRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+    }, 50);
+  };
+
+  const isResumenStep = step === RESUMEN_STEP;
+
+  const renderStep = () => {
+    if (sent) return <SuccessScreen producto={(state.productos || []).join(", ")} onReset={handleReset} />;
+    if (step === 1) return <StepProducto state={state} setState={setState} images={PRODUCT_IMAGES} errors={errors} />;
+    if (step === 2) return <StepEntrada state={state} setState={setState} files={files} setFiles={setFiles} errors={errors} />;
+    if (step === CONTACTO_STEP) return <StepContacto state={state} setState={setState} errors={errors} />;
+    if (isResumenStep) return <StepResumen state={state} files={files} />;
+    return null;
+  };
+
+  return (
+    <div className="min-h-screen bg-[#F9F8F6]">
+      <Navbar onCotizar={scrollToCotizador} />
+
+      <HeroSection heroImage={HERO_IMG} onStart={() => { scrollToCotizador(); }} />
+
+      <section
+        ref={cotizadorRef}
+        className="scroll-mt-20 max-w-[1440px] mx-auto px-5 sm:px-8 lg:px-14 py-10 lg:py-16"
+      >
+        <div className="grid grid-cols-1 lg:grid-cols-[1fr_360px] gap-6 items-start">
+          <div className="border border-black/8 bg-white rounded-sm overflow-hidden">
+            {!sent && <StepHeader currentStep={step} totalSteps={TOTAL_STEPS} />}
+
+            <div className="px-6 sm:px-8 py-7">
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={sent ? "success" : step}
+                  initial={{ opacity: 0, y: 12 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -12 }}
+                  transition={{ duration: 0.25 }}
+                >
+                  {renderStep()}
+                </motion.div>
+              </AnimatePresence>
+            </div>
+
+            {!sent && (
+              <div className="grid grid-cols-2 gap-3 px-6 sm:px-8 py-5 border-t border-black/5">
+                <button
+                  onClick={handlePrev}
+                  disabled={step === 1}
+                  className="flex items-center justify-start gap-2 h-11 px-5 rounded-full border border-black/10 text-[13px] font-medium text-[#151515] hover:border-[#151515] transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
+                >
+                  <ChevronLeft size={15} /> Anterior
+                </button>
+                <button
+                  onClick={handleNext}
+                  disabled={sending}
+                  className="flex items-center justify-center gap-2 h-11 px-5 rounded-full bg-[#151515] text-white text-[13px] font-medium hover:bg-[#B38B67] transition-colors disabled:opacity-60 disabled:cursor-wait"
+                >
+                  {sending ? "Enviando..." : isResumenStep ? "Enviar consulta" : "Siguiente"} {!sending && <ChevronRight size={15} />}
+                </button>
+              </div>
+            )}
+          </div>
+
+          <div className="hidden lg:block lg:sticky lg:top-20">
+            <Sidebar state={state} currentStep={step} totalSteps={TOTAL_STEPS} />
+          </div>
+        </div>
+      </section>
+
+      <FAQ />
+      <Footer />
+    </div>
+  );
+}
