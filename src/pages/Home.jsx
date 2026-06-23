@@ -17,7 +17,7 @@ import StepContacto from "@/components/cotizador/steps/StepContacto";
 import StepResumen from "@/components/cotizador/steps/StepResumen";
 
 const supabase = createClient(
-  "https://jeeqyynfurdeitnisupi.supabase.co",
+  "https://jeeqynfurdeitnisupi.supabase.co",
   "sb_publishable_F2CXviXhqqaN3zz63sp4mw_sqHnC-wE"
 );
 
@@ -153,7 +153,7 @@ export default function Home() {
     lines.push("━━━━━━━━━━━━━━");
     lines.push(`🔖 *ID:* ${codigo}`);
     lines.push(`🔗 Ver detalle completo con fotos, planos y referencias:`);
-    lines.push(`https://landing-meta-forms.suplacard.com/consulta/${codigo}`);
+    lines.push(`https://forms.suplacard.com/consulta/${codigo}`);
     lines.push(`✅ Los archivos pueden descargarse desde el enlace`);
 
     return lines.join("\n");
