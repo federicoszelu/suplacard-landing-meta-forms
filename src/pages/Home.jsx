@@ -17,7 +17,7 @@ import StepContacto from "@/components/cotizador/steps/StepContacto";
 import StepResumen from "@/components/cotizador/steps/StepResumen";
 
 const supabase = createClient(
-  "https://jeeqynfurdeitnisupi.supabase.co",
+  "https://jeeqyynfurdeitnisupi.supabase.co",
   "sb_publishable_F2CXviXhqqaN3zz63sp4mw_sqHnC-wE"
 );
 
