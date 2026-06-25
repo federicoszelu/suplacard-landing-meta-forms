@@ -5,7 +5,7 @@ import JSZip from "jszip";
 import { FileText, Loader2, Download, ChevronLeft, ChevronRight, X, ImageIcon } from "lucide-react";
 
 const supabase = createClient(
-  "https://jeeqynfurdeitnisupi.supabase.co",
+  "https://jeeqyynfurdeitnisupi.supabase.co",
   "sb_publishable_F2CXviXhqqaN3zz63sp4mw_sqHnC-wE"
 );
 
