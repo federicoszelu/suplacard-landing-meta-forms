@@ -59,7 +59,7 @@ export default function StepEntrada({ state, setState, files, setFiles, errors }
     <div>
       <StepKicker
         kicker="Paso 2 · Detalles del proyecto"
-        title={<>¿Qué tenés para <em className="italic text-[#7A7A7A]">arrancar?</em></>}
+        title={<>¿Qué tenés para <b style={{ fontWeight: 700 }}>arrancar?</b></>}
         hint="El punto de partida define qué tan preciso es el precio que te damos."
       />
 

@@ -13,7 +13,7 @@ export default function StepHeader({ currentStep, totalSteps }) {
           </p>
           <h2 className="font-display text-[clamp(1.8rem,3.5vw,2.8rem)] font-light leading-[1.05] tracking-[-0.03em] text-[#151515]">
             Armemos tu{" "}
-            <em className="italic text-[#7A7A7A]">presupuesto.</em>
+            <b style={{ fontWeight: 700 }}>presupuesto.</b>
           </h2>
           <p className="text-[14px] text-[#151515]/50 mt-3 max-w-[45ch]">
             Más de 30 años fabricando muebles a medida en Buenos Aires. Contanos tu proyecto y un asesor real te brindará un presupuesto concreto.

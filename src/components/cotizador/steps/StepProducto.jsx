@@ -39,7 +39,7 @@ export default function StepProducto({ state, setState, images, errors }) {
     <div>
       <StepKicker
         kicker="Paso 1 · Producto"
-        title={<>¿Qué querés <em className="italic text-[#7A7A7A]">presupuestar?</em></>}
+        title={<>¿Qué querés <b style={{ fontWeight: 700 }}>presupuestar?</b></>}
         hint="Elegí un producto o marcá 'Más de un producto' para cotizar varias cosas en una sola consulta."
       />
 

@@ -8,7 +8,7 @@ export default function Footer() {
       <div className="max-w-[1440px] mx-auto px-5 sm:px-8 lg:px-14 py-10 flex flex-col items-center text-center gap-4">
         <div className="flex items-center gap-2.5">
           <img src={LOGO_ISO} alt="Suplacard" className="h-8 w-auto" />
-          <span className="font-['Montserrat'] font-black text-[17px] tracking-[0.05em] uppercase text-[#151515]">
+          <span className="font-['Montserrat'] text-[17px] uppercase text-[#111111]" style={{ fontWeight: 400, letterSpacing: 0 }}>
             SUPLACARD
           </span>
         </div>

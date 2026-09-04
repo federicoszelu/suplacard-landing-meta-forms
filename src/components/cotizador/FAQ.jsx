@@ -33,7 +33,7 @@ export default function FAQ() {
             </p>
             <h2 className="font-display text-[clamp(2.2rem,4vw,3.5rem)] font-light leading-[0.95] tracking-[-0.03em] text-[#151515]">
               Todo lo que{" "}
-              <em className="italic text-[#7A7A7A]">necesitás saber.</em>
+              <b style={{ fontWeight: 700 }}>necesitás saber.</b>
             </h2>
           </div>
 

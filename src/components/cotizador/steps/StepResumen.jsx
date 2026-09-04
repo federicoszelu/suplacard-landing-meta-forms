@@ -28,7 +28,7 @@ export default function StepResumen({ state, files }) {
     <div>
       <StepKicker
         kicker="Paso 4 · Resumen"
-        title={<>Revisá y <em className="italic text-[#7A7A7A]">enviá.</em></>}
+        title={<>Revisá y <b style={{ fontWeight: 700 }}>enviá.</b></>}
         hint="Verificá que todo esté bien. Al enviar, guardamos tu consulta y abrimos WhatsApp con el mensaje listo para mandar."
       />
 

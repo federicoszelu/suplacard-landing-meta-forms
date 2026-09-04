@@ -19,7 +19,7 @@ export default function ConsultaGate({ onSubmit }) {
           <Lock size={22} className="text-white" />
         </div>
         <h1 className="font-display text-[clamp(1.6rem,3vw,2.2rem)] font-light tracking-[-0.025em] text-[#151515] mb-3">
-          Acceso <em className="italic text-[#7A7A7A]">restringido.</em>
+          Acceso <b style={{ fontWeight: 700 }}>restringido.</b>
         </h1>
         <p className="text-[14px] text-[#151515]/50 leading-relaxed mb-8 max-w-[36ch] mx-auto">
           Esta consulta está protegida. Ingresá el código de acceso que aparece en el mensaje de WhatsApp para ver el detalle y descargar los archivos.
