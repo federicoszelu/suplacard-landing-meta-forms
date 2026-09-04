@@ -4,9 +4,11 @@ import { createClient } from "@supabase/supabase-js";
 import JSZip from "jszip";
 import { FileText, Loader2, Download, ChevronLeft, ChevronRight, X, ImageIcon } from "lucide-react";
 
+const SUPABASE_ANON = "sb_publishable_F2CXviXhqqaN3zz63sp4mw_sqHnC-wE";
+
 const supabase = createClient(
   "https://jeeqyynfurdeitnisupi.supabase.co",
-  "sb_publishable_F2CXviXhqqaN3zz63sp4mw_sqHnC-wE"
+  SUPABASE_ANON
 );
 
 export default function Consulta() {
@@ -22,17 +24,20 @@ export default function Consulta() {
     const fetchQuote = async () => {
       setLoading(true);
       try {
-        // Se pide por funcion, no leyendo la tabla.
-        // El filtro corre en la base: sin el codigo exacto no
-        // devuelve nada, y no hay forma de pedir la tabla entera.
-        // La funcion ya resuelve el fallback por id.
-        const { data, error: err } = await supabase
-          .rpc("get_quote", { p_id: id });
+        // Se pide a la Edge Function, que corre con la clave de
+        // servicio. Devuelve la consulta y firma cada archivo con
+        // un enlace que vence en 1 hora. Asi el bucket puede ser
+        // privado y nadie llega a los planos sin pasar por aca.
+        const resp = await fetch(
+          `https://jeeqyynfurdeitnisupi.supabase.co/functions/v1/consulta?id=${encodeURIComponent(id)}`,
+          { headers: { apikey: SUPABASE_ANON } }
+        );
 
-        if (err) throw new Error("No se pudo cargar la consulta");
-        if (!data || data.length === 0) throw new Error("Consulta no encontrada");
+        if (!resp.ok) throw new Error("Consulta no encontrada");
+        const data = await resp.json();
+        if (!data || data.error) throw new Error("Consulta no encontrada");
 
-        setQuote(data[0]);
+        setQuote(data);
       } catch (e) {
         setError(e.message || "No se pudo cargar la consulta");
       } finally {
@@ -69,9 +74,11 @@ export default function Consulta() {
   const archivos = quote.archivos || [];
   const configs = quote.extra_fields?.configs || {};
   const productos = (quote.producto || "").split(", ").filter(Boolean);
-  const images = archivos.filter((url) => url.match(/\.(jpg|jpeg|png|webp|gif|bmp)$/i));
-  const pdfs = archivos.filter((url) => url.match(/\.pdf$/i));
-  const otherFiles = archivos.filter((url) => !url.match(/\.(jpg|jpeg|png|webp|gif|bmp|pdf)$/i));
+  // Ojo: las URLs firmadas terminan en "?token=...", asi que la
+  // extension NO queda al final de la cadena. Por eso el (\?|$).
+  const images = archivos.filter((url) => url.match(/\.(jpg|jpeg|png|webp|gif|bmp)(\?|$)/i));
+  const pdfs = archivos.filter((url) => url.match(/\.pdf(\?|$)/i));
+  const otherFiles = archivos.filter((url) => !url.match(/\.(jpg|jpeg|png|webp|gif|bmp|pdf)(\?|$)/i));
 
   // Extrae el nombre limpio del archivo o ruta del Storage
   const fileName = (url) => {
@@ -139,13 +146,12 @@ export default function Consulta() {
       
       const fetches = await Promise.allSettled(
         archivos.map(async (url, i) => {
-          const path = getStoragePath(url);
-          // Descarga directa desde Supabase Storage para evitar bloqueos CORS
-          const { data, error: downloadError } = await supabase.storage
-            .from("archivos")
-            .download(path);
-
-          if (downloadError || !data) throw new Error("Supabase download failed");
+          // La URL ya viene firmada por la Edge Function, asi que
+          // se baja directo. El SDK no sirve mas: el rol anonimo
+          // ya no tiene permiso de lectura sobre el bucket.
+          const resp = await fetch(url);
+          if (!resp.ok) throw new Error("No se pudo descargar el archivo");
+          const data = await resp.blob();
 
           const ext = url.match(/\.([a-zA-Z0-9]+)(\?|$)/)?.[1] || "bin";
           const name = fileName(url) || `archivo_${i + 1}.${ext}`;
