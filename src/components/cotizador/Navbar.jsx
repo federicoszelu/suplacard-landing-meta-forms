@@ -26,14 +26,14 @@ export default function Navbar({ onCotizar }) {
             className="flex items-center gap-2.5"
           >
             <img src={LOGO_ISO} alt="Suplacard" className="h-8 w-auto" />
-            <span className="font-['Montserrat'] font-black text-[17px] tracking-[0.05em] uppercase text-[#151515]">
+            <span className="font-['Montserrat'] text-[17px] uppercase text-[#111111]" style={{ fontWeight: 400, letterSpacing: 0 }}>
               SUPLACARD
             </span>
           </a>
 
           <button
             onClick={onCotizar}
-            className="inline-flex items-center justify-center h-10 px-5 rounded-full bg-[#151515] text-white text-[13px] font-medium tracking-wide hover:bg-[#333333] transition-colors"
+            className="inline-flex items-center justify-center px-7 py-3 bg-[#111111] text-white hover:bg-[#333333] transition-colors" style={{ borderRadius: 1, fontSize: "0.68rem", letterSpacing: "0.2em", textTransform: "uppercase", fontWeight: 500 }}
           >
             Cotizar ahora
           </button>
