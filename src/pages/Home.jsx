@@ -73,11 +73,14 @@ const leerAtribucion = () => {
 // Se ejecuta apenas carga el modulo, antes de que la persona navegue.
 if (typeof window !== "undefined") capturarAtribucion();
 
-const HERO_IMG = "https://media.base44.com/images/public/6a3a783a8f060b08a350b7f4/47abdf024_generated_2021eae0.png";
+const HERO_IMG = `${IMG}/hero.jpg`;
+// Las mismas fotos de los carruseles de suplacard.com.
+// Placards tiene 7 en el sitio; cocinas y vestidores, 8.
+const IMG = "https://www.suplacard.com/img";
 const PRODUCT_IMAGES = {
-  Placard: "https://media.base44.com/images/public/6a3a783a8f060b08a350b7f4/b20397ae8_generated_97d04c80.png",
-  Vestidor: "https://media.base44.com/images/public/6a3a783a8f060b08a350b7f4/efbb631d6_generated_94d19222.png",
-  Cocina: "https://media.base44.com/images/public/6a3a783a8f060b08a350b7f4/958d3b006_generated_ce679a74.png",
+  Placard:  Array.from({ length: 7 }, (_, i) => `${IMG}/placard-0${i + 1}.jpg`),
+  Vestidor: Array.from({ length: 8 }, (_, i) => `${IMG}/vestidor-0${i + 1}.jpg`),
+  Cocina:   Array.from({ length: 8 }, (_, i) => `${IMG}/cocina-0${i + 1}.jpg`),
 };
 
 const generateCodigo = () => {
