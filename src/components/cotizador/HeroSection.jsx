@@ -2,110 +2,147 @@ import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { ArrowDown } from "lucide-react";
 
+/* Hero con la misma arquitectura que suplacard.com:
+   foto a sangre completa, degradado oscuro encima y el texto sobre
+   la imagen. Nada de columna partida.
+
+   Las tres fotos son las de las paginas de producto del sitio, asi
+   no se duplican archivos y siempre coinciden con la web. */
 const SLIDES = [
-  "https://media.base44.com/images/public/6a3a783a8f060b08a350b7f4/649394cf3_generated_image.png",
-  "https://media.base44.com/images/public/6a3a783a8f060b08a350b7f4/835324a0b_generated_image.png",
-  "https://media.base44.com/images/public/6a3a783a8f060b08a350b7f4/4405c8783_generated_image.png",
-  "https://media.base44.com/images/public/6a3a783a8f060b08a350b7f4/ea75aced0_generated_image.png",
-  "https://media.base44.com/images/public/6a3a783a8f060b08a350b7f4/eb7b092f1_generated_image.png",
-  "https://media.base44.com/images/public/6a3a783a8f060b08a350b7f4/c0245c757_generated_image.png",
-  "https://media.base44.com/images/public/6a3a783a8f060b08a350b7f4/4cf084668_generated_image.png",
-  "https://media.base44.com/images/public/6a3a783a8f060b08a350b7f4/82e796756_generated_image.png",
+  { src: "https://www.suplacard.com/img/hero-placards.jpg",   alt: "Placard a medida fabricado por Suplacard" },
+  { src: "https://www.suplacard.com/img/hero-cocinas.jpg",    alt: "Cocina a medida fabricada por Suplacard" },
+  { src: "https://www.suplacard.com/img/hero-vestidores.jpg", alt: "Vestidor a medida fabricado por Suplacard" },
 ];
 
-const SLIDE_DURATION = 3000;
+const DURACION = 5000;
+
+const DATOS = [
+  { n: "30+",      l: "Años de trayectoria" },
+  { n: "5",        l: "Showrooms en CABA y GBA" },
+  { n: "10.000+",  l: "Proyectos entregados" },
+  { n: "Propia",   l: "Fábrica en Buenos Aires" },
+];
 
 export default function HeroSection({ heroImage, onStart }) {
-  const [index, setIndex] = useState(0);
+  const [i, setI] = useState(0);
+  const [pausado, setPausado] = useState(false);
 
   useEffect(() => {
-    const timer = setInterval(() => {
-      setIndex((i) => (i + 1) % SLIDES.length);
-    }, SLIDE_DURATION);
-    return () => clearInterval(timer);
-  }, []);
+    if (pausado) return;
+    const t = setInterval(() => setI((v) => (v + 1) % SLIDES.length), DURACION);
+    return () => clearInterval(t);
+  }, [pausado]);
 
   return (
-    <section className="relative min-h-screen flex flex-col lg:grid lg:grid-cols-2">
-      {/* Image slideshow side */}
-      <div className="relative h-[50vh] lg:h-auto overflow-hidden bg-[#E8E5DE]">
-        {SLIDES.map((slide, i) => (
-          <div
-            key={slide}
-            className="absolute inset-0 transition-opacity duration-[1200ms] ease-in-out"
-            style={{ opacity: i === index ? 1 : 0 }}
-          >
-            <img
-              src={slide}
-              alt={slide.replace("hero-", "").replace(".jpg", "")}
-              className="absolute inset-0 w-full h-full object-cover"
-            />
-          </div>
+    <>
+      <section className="relative min-h-[100svh] flex items-end overflow-hidden bg-[#111111]">
+        {/* Fotos de fondo, con fundido entre una y otra */}
+        {SLIDES.map((s, idx) => (
+          <img
+            key={s.src}
+            src={s.src}
+            alt={s.alt}
+            loading={idx === 0 ? "eager" : "lazy"}
+            className="absolute inset-0 w-full h-full object-cover transition-opacity duration-[1400ms] ease-in-out"
+            style={{ opacity: idx === i ? 1 : 0 }}
+          />
         ))}
-        <div className="absolute inset-0 bg-gradient-to-t from-[#F9F8F6] via-transparent to-transparent lg:bg-gradient-to-r lg:from-transparent lg:via-transparent lg:to-[#F9F8F6]" />
-      </div>
 
-      {/* Content side */}
-      <div className="relative flex flex-col justify-center px-6 sm:px-10 lg:px-16 xl:px-24 py-12 lg:py-20 bg-[#F9F8F6]">
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, ease: "easeOut" }}
-        >
-          <p className="font-mono text-[11px] tracking-[0.16em] uppercase text-[#7A7A7A] mb-5">
-            Cotizador guiado · Suplacard
-          </p>
+        {/* Mismo degradado que .page-hero-bg::after del sitio */}
+        <div
+          className="absolute inset-0"
+          style={{
+            background:
+              "linear-gradient(to top, rgba(12,12,12,0.78), rgba(12,12,12,0.28) 60%, rgba(12,12,12,0.12))",
+          }}
+        />
 
-          <h1 className="font-display text-[clamp(2.8rem,7vw,6.5rem)] font-light leading-[0.92] tracking-[-0.04em] text-[#151515] mb-6">
-            Cotizá tu{" "}
-            <br className="hidden sm:block" />
-            mueble a{" "}
-            <em className="italic text-[#7A7A7A]">medida.</em>
-          </h1>
-
-          <p className="text-lg text-[#151515]/70 max-w-[48ch] leading-relaxed mb-8">
-            Placard, vestidor o cocina. El formulario se adapta a lo que tenés:
-            plano, medidas, foto o nada. Un asesor real te responde con un precio
-            concreto.
-          </p>
-
-          <div className="flex flex-wrap gap-2.5 mb-10">
-            {["Sin compromiso", "Respuesta en el día", "Fábrica propia", "+30 años"].map((t) => (
-              <span
-                key={t}
-                className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full border border-black/8 bg-white/60 text-[12px] text-[#151515]/60"
-              >
-                <span className="text-[#7A7A7A] font-bold text-[10px]">✓</span>
-                {t}
-              </span>
-            ))}
-          </div>
-
-          <button
-            onClick={onStart}
-            className="group inline-flex items-center gap-3 h-14 px-8 rounded-full bg-[#151515] text-white text-[15px] font-medium tracking-wide hover:bg-[#333333] transition-all duration-300"
+        <div className="relative z-10 w-full max-w-[1440px] mx-auto px-6 sm:px-10 lg:px-14 pb-16 lg:pb-24">
+          <motion.div
+            initial={{ opacity: 0, y: 24 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
           >
-            Empezar cotización
-            <ArrowDown size={16} className="group-hover:translate-y-0.5 transition-transform" />
-          </button>
+            <p className="eyebrow mb-6" style={{ color: "rgba(255,255,255,0.8)" }}>
+              Cotizador guiado
+            </p>
 
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-6 mt-14 pt-8 border-t border-black/8">
-            {[
-              { num: "30+", label: "Años de trayectoria" },
-              { num: "5", label: "Showrooms en CABA y GBA" },
-              { num: "10.000+", label: "Proyectos entregados" },
-              { num: "Fábrica propia", label: "Villa Madero, Buenos Aires" },
-            ].map((s) => (
-              <div key={s.label}>
-                <div className="font-display text-[28px] sm:text-[32px] font-light text-[#151515] leading-tight">
-                  {s.num}
+            <h1 className="h-display text-white mb-7" style={{ maxWidth: "15ch" }}>
+              Cotizá tu mueble <b>a medida.</b>
+            </h1>
+
+            <p
+              className="mb-9"
+              style={{
+                fontSize: "1.02rem",
+                fontWeight: 300,
+                maxWidth: "44ch",
+                lineHeight: 1.75,
+                color: "rgba(255,255,255,0.85)",
+              }}
+            >
+              Placard, vestidor o cocina. El formulario se adapta a lo que tenés:
+              plano, medidas, foto o nada. Un asesor real te responde con un
+              precio concreto.
+            </p>
+
+            <button onClick={onStart} className="btn-sup inline-flex items-center gap-3 group">
+              Empezar cotización
+              <ArrowDown size={14} className="group-hover:translate-y-0.5 transition-transform" />
+            </button>
+
+            {/* Puntos: dejan ver cuantas fotos hay y frenan el pase al tocarlos */}
+            <div className="flex gap-2 mt-12">
+              {SLIDES.map((s, idx) => (
+                <button
+                  key={s.src}
+                  aria-label={`Ver foto ${idx + 1} de ${SLIDES.length}`}
+                  onClick={() => { setI(idx); setPausado(true); }}
+                  className="h-[2px] transition-all duration-500"
+                  style={{
+                    width: idx === i ? 34 : 16,
+                    background: idx === i ? "#FFFFFF" : "rgba(255,255,255,0.4)",
+                  }}
+                />
+              ))}
+            </div>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Franja de cifras, separada del hero como en el sitio */}
+      <section className="border-b" style={{ borderColor: "#E4E0DB", background: "#FFFFFF" }}>
+        <div className="max-w-[1440px] mx-auto px-6 sm:px-10 lg:px-14 py-14 lg:py-20">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-10">
+            {DATOS.map((d) => (
+              <div key={d.l}>
+                <div
+                  style={{
+                    fontSize: "clamp(2.1rem, 4vw, 3.2rem)",
+                    fontWeight: 200,
+                    lineHeight: 1,
+                    letterSpacing: "-0.03em",
+                    color: "#111111",
+                  }}
+                >
+                  {d.n}
                 </div>
-                <div className="text-[12px] text-[#151515]/40 mt-1">{s.label}</div>
+                <div
+                  style={{
+                    fontSize: "0.64rem",
+                    letterSpacing: "0.24em",
+                    textTransform: "uppercase",
+                    color: "#A8A8A8",
+                    marginTop: "1rem",
+                  }}
+                >
+                  {d.l}
+                </div>
               </div>
             ))}
           </div>
-        </motion.div>
-      </div>
-    </section>
+        </div>
+      </section>
+    </>
   );
 }
