@@ -22,25 +22,17 @@ export default function Consulta() {
     const fetchQuote = async () => {
       setLoading(true);
       try {
-        // Buscar por codigo (SUP-2026-XXXX)
-        let { data, error: err } = await supabase
-          .from("quotes")
-          .select("*")
-          .eq("codigo", id)
-          .single();
+        // Se pide por funcion, no leyendo la tabla.
+        // El filtro corre en la base: sin el codigo exacto no
+        // devuelve nada, y no hay forma de pedir la tabla entera.
+        // La funcion ya resuelve el fallback por id.
+        const { data, error: err } = await supabase
+          .rpc("get_quote", { p_id: id });
 
-        // Fallback por ID
-        if (err || !data) {
-          const { data: data2, error: err2 } = await supabase
-            .from("quotes")
-            .select("*")
-            .eq("id", id)
-            .single();
-          if (err2 || !data2) throw new Error("Consulta no encontrada");
-          data = data2;
-        }
+        if (err) throw new Error("No se pudo cargar la consulta");
+        if (!data || data.length === 0) throw new Error("Consulta no encontrada");
 
-        setQuote(data);
+        setQuote(data[0]);
       } catch (e) {
         setError(e.message || "No se pudo cargar la consulta");
       } finally {
