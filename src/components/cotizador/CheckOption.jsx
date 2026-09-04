@@ -6,7 +6,7 @@ export default function CheckOption({ label, checked, onChange }) {
       className={`flex items-center gap-3 border rounded-sm px-4 py-3 cursor-pointer text-[13px] transition-all duration-150 ${
         checked
           ? "border-[#151515] bg-white/80"
-          : "border-black/6 hover:border-[#B38B67]/40 hover:bg-white/50"
+          : "border-black/6 hover:border-[#111111]/40 hover:bg-white/50"
       }`}
     >
       <input

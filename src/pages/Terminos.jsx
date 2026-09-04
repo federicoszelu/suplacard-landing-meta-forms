@@ -78,7 +78,7 @@ export default function Terminos() {
   return (
     <div className="min-h-screen bg-white">
       <div className="max-w-[800px] mx-auto px-6 sm:px-10 py-16 sm:py-24">
-        <p className="font-mono text-[11px] tracking-[0.16em] uppercase text-[#B38B67] mb-4">
+        <p className="font-mono text-[11px] tracking-[0.16em] uppercase text-[#7A7A7A] mb-4">
           Documento legal
         </p>
 

@@ -43,7 +43,7 @@ export default function StepTecnica({ state, setState, files, setFiles }) {
 
       {path === "planos" && (
         <>
-          <div className="border-l-[3px] border-[#B38B67] bg-[#B38B67]/5 px-4 py-3 text-[13px] text-[#151515]/60 mb-5 rounded-r-sm">
+          <div className="border-l-[3px] border-[#111111] bg-[#111111]/[0.04] px-4 py-3 text-[13px] text-[#151515]/60 mb-5 rounded-r-sm">
             Si el plano viene de arquitecto, solo confirmamos que tenga lo necesario para cotizar.
           </div>
           <FileUpload
@@ -112,7 +112,7 @@ export default function StepTecnica({ state, setState, files, setFiles }) {
 
       {path === "nada" && (
         <>
-          <div className="border-l-[3px] border-[#B38B67] bg-[#B38B67]/5 px-4 py-3 text-[13px] text-[#151515]/60 mb-5 rounded-r-sm">
+          <div className="border-l-[3px] border-[#111111] bg-[#111111]/[0.04] px-4 py-3 text-[13px] text-[#151515]/60 mb-5 rounded-r-sm">
             No bloqueamos al cliente. Pedimos lo mínimo para que el asesor pueda orientar.
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-4">

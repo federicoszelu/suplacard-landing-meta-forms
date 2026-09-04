@@ -11,7 +11,7 @@ export default function OptionCard({ label, description, eyebrow, image, selecte
       className={`relative text-left border-[1.5px] transition-all duration-200 rounded-sm overflow-hidden flex flex-col ${
         selected
           ? "border-[#151515] bg-white shadow-sm"
-          : "border-black/8 bg-[#FAFAF8] hover:border-[#B38B67]/50 hover:bg-white"
+          : "border-black/8 bg-[#FAFAF8] hover:border-[#111111]/50 hover:bg-white"
       } ${className}`}
       style={{ minHeight: image ? 200 : undefined }}
     >
@@ -28,7 +28,7 @@ export default function OptionCard({ label, description, eyebrow, image, selecte
 
       <div className="p-4 flex flex-col gap-1 flex-1">
         {eyebrow && (
-          <span className="font-mono text-[10px] tracking-[0.12em] uppercase text-[#B38B67]">
+          <span className="font-mono text-[10px] tracking-[0.12em] uppercase text-[#7A7A7A]">
             {eyebrow}
           </span>
         )}
@@ -43,7 +43,7 @@ export default function OptionCard({ label, description, eyebrow, image, selecte
       </div>
 
       {selected && (
-        <div className="absolute top-3 right-3 w-6 h-6 rounded-full bg-[#B38B67] text-white flex items-center justify-center">
+        <div className="absolute top-3 right-3 w-6 h-6 rounded-full bg-[#111111] text-white flex items-center justify-center">
           <Check size={13} strokeWidth={2.5} />
         </div>
       )}

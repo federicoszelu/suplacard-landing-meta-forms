@@ -52,7 +52,7 @@ export default function HeroSection({ heroImage, onStart }) {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, ease: "easeOut" }}
         >
-          <p className="font-mono text-[11px] tracking-[0.16em] uppercase text-[#B38B67] mb-5">
+          <p className="font-mono text-[11px] tracking-[0.16em] uppercase text-[#7A7A7A] mb-5">
             Cotizador guiado · Suplacard
           </p>
 
@@ -60,7 +60,7 @@ export default function HeroSection({ heroImage, onStart }) {
             Cotizá tu{" "}
             <br className="hidden sm:block" />
             mueble a{" "}
-            <em className="italic text-[#B38B67]">medida.</em>
+            <em className="italic text-[#7A7A7A]">medida.</em>
           </h1>
 
           <p className="text-lg text-[#151515]/70 max-w-[48ch] leading-relaxed mb-8">
@@ -75,7 +75,7 @@ export default function HeroSection({ heroImage, onStart }) {
                 key={t}
                 className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full border border-black/8 bg-white/60 text-[12px] text-[#151515]/60"
               >
-                <span className="text-[#B38B67] font-bold text-[10px]">✓</span>
+                <span className="text-[#7A7A7A] font-bold text-[10px]">✓</span>
                 {t}
               </span>
             ))}
@@ -83,7 +83,7 @@ export default function HeroSection({ heroImage, onStart }) {
 
           <button
             onClick={onStart}
-            className="group inline-flex items-center gap-3 h-14 px-8 rounded-full bg-[#151515] text-white text-[15px] font-medium tracking-wide hover:bg-[#B38B67] transition-all duration-300"
+            className="group inline-flex items-center gap-3 h-14 px-8 rounded-full bg-[#151515] text-white text-[15px] font-medium tracking-wide hover:bg-[#333333] transition-all duration-300"
           >
             Empezar cotización
             <ArrowDown size={16} className="group-hover:translate-y-0.5 transition-transform" />

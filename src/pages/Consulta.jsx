@@ -50,7 +50,7 @@ export default function Consulta() {
   if (loading) {
     return (
       <div className="min-h-screen bg-[#F9F8F6] flex items-center justify-center">
-        <Loader2 className="w-8 h-8 animate-spin text-[#B38B67]" />
+        <Loader2 className="w-8 h-8 animate-spin text-[#7A7A7A]" />
       </div>
     );
   }
@@ -64,7 +64,7 @@ export default function Consulta() {
         <p className="text-[14px] text-[#151515]/50 mb-6 max-w-[40ch]">
           {error || "El link no es válido o la consulta fue eliminada."}
         </p>
-        <a href="/" className="h-12 px-6 inline-flex items-center rounded-full bg-[#151515] text-white text-[14px] font-medium hover:bg-[#B38B67] transition-colors">
+        <a href="/" className="h-12 px-6 inline-flex items-center rounded-full bg-[#151515] text-white text-[14px] font-medium hover:bg-[#333333] transition-colors">
           Volver al inicio
         </a>
       </div>
@@ -200,7 +200,7 @@ export default function Consulta() {
               <ChevronLeft size={16} className="text-[#151515]" />
             </a>
             <div className="min-w-0">
-              <p className="font-mono text-[10px] tracking-[0.12em] uppercase text-[#B38B67]">
+              <p className="font-mono text-[10px] tracking-[0.12em] uppercase text-[#7A7A7A]">
                 ID: {quote.codigo || String(id).slice(-8).toUpperCase()}
               </p>
               <p className="text-[13px] font-medium text-[#151515] truncate">
@@ -232,7 +232,7 @@ export default function Consulta() {
       <div className="max-w-[1200px] mx-auto px-5 sm:px-8 lg:px-14 pt-8 pb-16">
         <div className="mb-8">
           <h1 className="font-display text-[clamp(1.8rem,3.5vw,2.6rem)] font-light leading-[1.05] tracking-[-0.03em] text-[#151515] mb-2">
-            Detalle de la <em className="italic text-[#B38B67]">cotización.</em>
+            Detalle de la <em className="italic text-[#7A7A7A]">cotización.</em>
           </h1>
           <p className="text-[13px] text-[#151515]/50">
             {quote.created_at
@@ -336,7 +336,7 @@ export default function Consulta() {
                   {pdfs.map((url, i) => (
                     <div key={i} className="flex items-center justify-between gap-3 p-3 rounded-sm border border-black/5 bg-[#F9F8F6]">
                       <div className="flex items-center gap-3 min-w-0">
-                        <FileText size={20} className="text-[#B38B67] shrink-0" />
+                        <FileText size={20} className="text-[#7A7A7A] shrink-0" />
                         <span className="text-[13px] text-[#151515] truncate">{fileName(url)}</span>
                       </div>
                       <div className="flex items-center gap-2 shrink-0">
@@ -359,8 +359,8 @@ export default function Consulta() {
                 <h2 className="font-mono text-[11px] tracking-[0.16em] uppercase text-[#151515]/40 mb-5">Otros archivos ({otherFiles.length})</h2>
                 <div className="space-y-2">
                   {otherFiles.map((url, i) => (
-                    <a key={i} href={url} target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 p-3 rounded-sm border border-black/5 bg-[#F9F8F6] hover:border-[#B38B67] transition-colors">
-                      <FileText size={20} className="text-[#B38B67] shrink-0" />
+                    <a key={i} href={url} target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 p-3 rounded-sm border border-black/5 bg-[#F9F8F6] hover:border-[#111111] transition-colors">
+                      <FileText size={20} className="text-[#7A7A7A] shrink-0" />
                       <span className="text-[13px] text-[#151515] truncate">{fileName(url)}</span>
                     </a>
                   ))}

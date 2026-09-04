@@ -8,12 +8,12 @@ export default function StepHeader({ currentStep, totalSteps }) {
     <div>
       <div className="flex items-start justify-between gap-4 px-6 sm:px-8 pt-7 pb-5">
         <div>
-          <p className="font-mono text-[11px] tracking-[0.14em] uppercase text-[#B38B67] mb-2">
+          <p className="font-mono text-[11px] tracking-[0.14em] uppercase text-[#7A7A7A] mb-2">
             Cotizador guiado
           </p>
           <h2 className="font-display text-[clamp(1.8rem,3.5vw,2.8rem)] font-light leading-[1.05] tracking-[-0.03em] text-[#151515]">
             Armemos tu{" "}
-            <em className="italic text-[#B38B67]">presupuesto.</em>
+            <em className="italic text-[#7A7A7A]">presupuesto.</em>
           </h2>
           <p className="text-[14px] text-[#151515]/50 mt-3 max-w-[45ch]">
             Más de 30 años fabricando muebles a medida en Buenos Aires. Contanos tu proyecto y un asesor real te brindará un presupuesto concreto.

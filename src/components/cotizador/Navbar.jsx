@@ -33,7 +33,7 @@ export default function Navbar({ onCotizar }) {
 
           <button
             onClick={onCotizar}
-            className="inline-flex items-center justify-center h-10 px-5 rounded-full bg-[#151515] text-white text-[13px] font-medium tracking-wide hover:bg-[#B38B67] transition-colors"
+            className="inline-flex items-center justify-center h-10 px-5 rounded-full bg-[#151515] text-white text-[13px] font-medium tracking-wide hover:bg-[#333333] transition-colors"
           >
             Cotizar ahora
           </button>

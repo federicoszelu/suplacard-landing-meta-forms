@@ -39,7 +39,7 @@ export default function StepProducto({ state, setState, images, errors }) {
     <div>
       <StepKicker
         kicker="Paso 1 · Producto"
-        title={<>¿Qué querés <em className="italic text-[#B38B67]">presupuestar?</em></>}
+        title={<>¿Qué querés <em className="italic text-[#7A7A7A]">presupuestar?</em></>}
         hint="Elegí un producto o marcá 'Más de un producto' para cotizar varias cosas en una sola consulta."
       />
 
@@ -64,13 +64,13 @@ export default function StepProducto({ state, setState, images, errors }) {
         className={`w-full text-left border-[1.5px] rounded-sm p-4 transition-all duration-200 ${
           multiMode
             ? "border-[#151515] bg-white shadow-sm"
-            : "border-black/8 bg-[#FAFAF8] hover:border-[#B38B67]/50"
+            : "border-black/8 bg-[#FAFAF8] hover:border-[#111111]/50"
         }`}
       >
         <div className="flex items-center gap-3">
           <div className="flex items-center justify-center w-6 h-6 shrink-0">
             {multiMode ? (
-              <div className="w-6 h-6 rounded-full bg-[#B38B67] text-white flex items-center justify-center">
+              <div className="w-6 h-6 rounded-full bg-[#111111] text-white flex items-center justify-center">
                 <Check size={13} strokeWidth={2.5} />
               </div>
             ) : (
@@ -86,7 +86,7 @@ export default function StepProducto({ state, setState, images, errors }) {
 
       {multiMode && (
         <div className="mt-4 p-4 bg-[#FAFAF8] border border-black/8 rounded-sm">
-          <p className="font-mono text-[10px] tracking-[0.12em] uppercase text-[#B38B67] mb-3">
+          <p className="font-mono text-[10px] tracking-[0.12em] uppercase text-[#7A7A7A] mb-3">
             Seleccioná los productos
           </p>
           <div className="grid grid-cols-2 gap-2">

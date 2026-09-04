@@ -41,7 +41,7 @@ export default function Sidebar({ state, currentStep, totalSteps }) {
         </h4>
         <div className="h-[6px] bg-white/10 rounded-full mb-3 overflow-hidden">
           <div
-            className="h-full bg-[#B38B67] rounded-full transition-all duration-500 ease-out"
+            className="h-full bg-[#111111] rounded-full transition-all duration-500 ease-out"
             style={{ width: `${meterVal}%`, minWidth: meterVal > 0 ? 4 : 0 }}
           />
         </div>
@@ -63,7 +63,7 @@ export default function Sidebar({ state, currentStep, totalSteps }) {
 
       {/* How it works */}
       <div className="border border-black/8 rounded-sm p-6 bg-white">
-        <p className="font-mono text-[10px] tracking-[0.12em] uppercase text-[#B38B67] mb-1.5">
+        <p className="font-mono text-[10px] tracking-[0.12em] uppercase text-[#7A7A7A] mb-1.5">
           Cómo funciona
         </p>
         <h4 className="font-display text-[22px] font-light mb-4">3 caminos de entrada</h4>
@@ -85,7 +85,7 @@ export default function Sidebar({ state, currentStep, totalSteps }) {
 
       {/* Direct contact */}
       <div className="bg-[#FAFAF8] border border-black/6 rounded-sm p-6">
-        <p className="font-mono text-[10px] tracking-[0.12em] uppercase text-[#B38B67] mb-1.5">
+        <p className="font-mono text-[10px] tracking-[0.12em] uppercase text-[#7A7A7A] mb-1.5">
           ¿Preferís hablar directo?
         </p>
         <h4 className="font-display text-[20px] font-light mb-2">Contacto directo</h4>
@@ -96,7 +96,7 @@ export default function Sidebar({ state, currentStep, totalSteps }) {
           href="https://wa.me/5491151359303?text=Hola%20Suplacard%2C%20quiero%20consultar%20sobre%20un%20mueble%20a%20medida."
           target="_blank"
           rel="noopener noreferrer"
-          className="flex items-center justify-center gap-2 w-full h-11 rounded-full bg-[#151515] text-white text-[13px] font-medium hover:bg-[#B38B67] transition-colors mb-2"
+          className="flex items-center justify-center gap-2 w-full h-11 rounded-full bg-[#151515] text-white text-[13px] font-medium hover:bg-[#333333] transition-colors mb-2"
         >
           <MessageCircle size={15} /> WhatsApp
         </a>

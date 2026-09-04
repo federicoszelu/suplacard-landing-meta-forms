@@ -20,7 +20,7 @@ export default function FileUpload({ label, hint, accept, files, onChange, onRem
         className={`w-full border-[1.5px] border-dashed rounded-sm p-5 text-left transition-all duration-200 ${
           hasFiles
             ? "border-[#5f7a55]/50 bg-[#5f7a55]/3"
-            : "border-black/10 hover:border-[#B38B67] hover:bg-[#B38B67]/3"
+            : "border-black/10 hover:border-[#111111] hover:bg-[#111111]/[0.03]"
         }`}
       >
         <input
@@ -32,7 +32,7 @@ export default function FileUpload({ label, hint, accept, files, onChange, onRem
           className="hidden"
         />
         <div className="flex items-start gap-3">
-          <Upload size={18} className="text-[#B38B67] mt-0.5 shrink-0" />
+          <Upload size={18} className="text-[#7A7A7A] mt-0.5 shrink-0" />
           <div>
             <p className="text-[14px] font-medium text-[#151515]">{label}</p>
             <p className="text-[12px] text-[#151515]/45 mt-1">{hint}</p>

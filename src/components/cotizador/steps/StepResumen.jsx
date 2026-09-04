@@ -28,7 +28,7 @@ export default function StepResumen({ state, files }) {
     <div>
       <StepKicker
         kicker="Paso 4 · Resumen"
-        title={<>Revisá y <em className="italic text-[#B38B67]">enviá.</em></>}
+        title={<>Revisá y <em className="italic text-[#7A7A7A]">enviá.</em></>}
         hint="Verificá que todo esté bien. Al enviar, guardamos tu consulta y abrimos WhatsApp con el mensaje listo para mandar."
       />
 
@@ -39,7 +39,7 @@ export default function StepResumen({ state, files }) {
             <div key={p} className="bg-[#FAFAF8] border border-black/8 rounded-sm p-5">
               <div className="flex items-center gap-2 mb-3">
                 <h4 className="font-display text-[18px] text-[#151515]">{p}</h4>
-                <span className="font-mono text-[9px] tracking-[0.12em] uppercase text-[#B38B67] border border-[#B38B67]/30 rounded-full px-2 py-0.5">
+                <span className="font-mono text-[9px] tracking-[0.12em] uppercase text-[#7A7A7A] border border-[#E4E0DB] rounded-full px-2 py-0.5">
                   {idx + 1} de {productos.length}
                 </span>
               </div>

@@ -365,7 +365,7 @@ export default function Home() {
                 <button onClick={handlePrev} disabled={step === 1} className="flex items-center justify-start gap-2 h-11 px-5 rounded-full border border-black/10 text-[13px] font-medium text-[#151515] hover:border-[#151515] transition-colors disabled:opacity-30 disabled:cursor-not-allowed">
                   <ChevronLeft size={15} /> Anterior
                 </button>
-                <button onClick={handleNext} disabled={sending} className="flex items-center justify-center gap-2 h-11 px-5 rounded-full bg-[#151515] text-white text-[13px] font-medium hover:bg-[#B38B67] transition-colors disabled:opacity-60 disabled:cursor-wait">
+                <button onClick={handleNext} disabled={sending} className="flex items-center justify-center gap-2 h-11 px-5 rounded-full bg-[#151515] text-white text-[13px] font-medium hover:bg-[#333333] transition-colors disabled:opacity-60 disabled:cursor-wait">
                   {sending ? "Enviando..." : isResumenStep ? "Enviar consulta" : "Siguiente"} {!sending && <ChevronRight size={15} />}
                 </button>
               </div>

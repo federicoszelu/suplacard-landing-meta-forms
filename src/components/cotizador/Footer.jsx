@@ -24,7 +24,7 @@ export default function Footer() {
             href="/terminos"
             target="_blank"
             rel="noopener noreferrer"
-            className="underline hover:text-[#B38B67] transition-colors"
+            className="underline hover:text-[#111111] transition-colors"
           >
             Términos y Condiciones
           </a>

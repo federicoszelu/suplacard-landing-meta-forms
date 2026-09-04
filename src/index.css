@@ -4,35 +4,35 @@
 
 @layer base {
   :root {
-    --background: 40 20% 97%;
-    --foreground: 0 0% 8%;
-    --card: 40 20% 97%;
-    --card-foreground: 0 0% 8%;
+    --background: 0 0% 100%;
+    --foreground: 0 0% 11%;
+    --card: 0 0% 100%;
+    --card-foreground: 0 0% 11%;
     --popover: 0 0% 100%;
-    --popover-foreground: 0 0% 8%;
-    --primary: 0 0% 8%;
-    --primary-foreground: 40 20% 97%;
-    --secondary: 40 12% 93%;
-    --secondary-foreground: 0 0% 8%;
-    --muted: 40 12% 93%;
-    --muted-foreground: 30 6% 40%;
-    --accent: 30 38% 55%;
+    --popover-foreground: 0 0% 11%;
+    --primary: 0 0% 7%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 33 19% 94%;
+    --secondary-foreground: 0 0% 11%;
+    --muted: 33 19% 94%;
+    --muted-foreground: 0 0% 48%;
+    --accent: 0 0% 7%;
     --accent-foreground: 0 0% 100%;
     --destructive: 4 60% 44%;
     --destructive-foreground: 0 0% 98%;
-    --border: 35 12% 87%;
-    --input: 35 12% 87%;
-    --ring: 30 38% 55%;
+    --border: 33 15% 87%;
+    --input: 33 15% 87%;
+    --ring: 0 0% 7%;
     --chart-1: 12 76% 61%;
     --chart-2: 173 58% 39%;
     --chart-3: 197 37% 24%;
     --chart-4: 43 74% 66%;
     --chart-5: 27 87% 67%;
-    --radius: 0.5rem;
-    --font-heading: 'Cormorant Garamond', Georgia, serif;
-    --font-body: 'Inter', system-ui, sans-serif;
-    --font-display: 'Cormorant Garamond', Georgia, serif;
-    --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, monospace;
+    --radius: 1px;
+    --font-heading: 'Montserrat', system-ui, sans-serif;
+    --font-body: 'Montserrat', system-ui, sans-serif;
+    --font-display: 'Montserrat', system-ui, sans-serif;
+    --font-mono: 'Montserrat', system-ui, sans-serif;
     --sidebar-background: 0 0% 98%;
     --sidebar-foreground: 240 5.3% 26.1%;
     --sidebar-primary: 240 5.9% 10%;
@@ -89,4 +89,74 @@
   body {
     @apply bg-background text-foreground font-body;
   }
+}
+/* ───────────────────────────────────────────────────────────
+   Sistema tipografico de suplacard.com
+   Mismos pesos, mismas escalas y mismo tracking que el sitio.
+   Los titulos van en peso 200, no en serif.
+   ─────────────────────────────────────────────────────────── */
+body {
+  font-family: 'Montserrat', system-ui, sans-serif;
+  font-weight: 300;
+  line-height: 1.7;
+  letter-spacing: 0.005em;
+  -webkit-font-smoothing: antialiased;
+}
+
+.h-display {
+  font-weight: 200;
+  font-size: clamp(2.4rem, 6vw, 4.6rem);
+  line-height: 1.06;
+  letter-spacing: -0.025em;
+}
+.h-display b { font-weight: 700; }
+
+.h-section {
+  font-weight: 200;
+  font-size: clamp(1.9rem, 4vw, 3.2rem);
+  line-height: 1.14;
+  letter-spacing: -0.02em;
+}
+.h-section b { font-weight: 700; }
+
+/* El "eyebrow" del sitio lleva una linea corta antes del texto. */
+.eyebrow {
+  font-size: 0.66rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: #A8A8A8;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+}
+.eyebrow::before {
+  content: '';
+  width: 26px; height: 1px;
+  background: currentColor;
+  flex: none;
+}
+
+.lead {
+  font-size: clamp(1.1rem, 2vw, 1.4rem);
+  font-weight: 200;
+  line-height: 1.65;
+  letter-spacing: -0.01em;
+}
+
+/* Boton del sitio: recto, mayusculas, mucho tracking. */
+.btn-sup {
+  display: inline-block; background: #111111; color: #FFFFFF;
+  text-decoration: none; padding: 1.15rem 3rem;
+  font-size: 0.72rem; letter-spacing: 0.2em; text-transform: uppercase;
+  font-weight: 500; border-radius: 1px;
+  transition: background 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.btn-sup:hover { background: #333333; }
+
+/* El isologo nunca lleva tracking ni negrita. */
+.wordmark {
+  font-family: 'Montserrat', system-ui, sans-serif;
+  font-weight: 400;
+  letter-spacing: 0;
 }

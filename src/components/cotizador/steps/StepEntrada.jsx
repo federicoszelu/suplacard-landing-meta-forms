@@ -59,7 +59,7 @@ export default function StepEntrada({ state, setState, files, setFiles, errors }
     <div>
       <StepKicker
         kicker="Paso 2 · Detalles del proyecto"
-        title={<>¿Qué tenés para <em className="italic text-[#B38B67]">arrancar?</em></>}
+        title={<>¿Qué tenés para <em className="italic text-[#7A7A7A]">arrancar?</em></>}
         hint="El punto de partida define qué tan preciso es el precio que te damos."
       />
 
@@ -75,7 +75,7 @@ export default function StepEntrada({ state, setState, files, setFiles, errors }
 
               <div className="flex items-center gap-3 mb-4">
                 <h3 className="font-display text-[22px] font-light text-[#151515]">{product}</h3>
-                <span className="font-mono text-[10px] tracking-[0.12em] uppercase text-[#B38B67] border border-[#B38B67]/30 rounded-full px-2.5 py-1">
+                <span className="font-mono text-[10px] tracking-[0.12em] uppercase text-[#7A7A7A] border border-[#E4E0DB] rounded-full px-2.5 py-1">
                   Producto {idx + 1} de {productos.length}
                 </span>
               </div>
@@ -195,7 +195,7 @@ export default function StepEntrada({ state, setState, files, setFiles, errors }
       {visibleCount < productos.length && (
         <button
           onClick={() => setVisibleCount(visibleCount + 1)}
-          className="mt-6 w-full flex items-center justify-center gap-2 h-12 border border-dashed border-black/15 rounded-sm text-[13px] font-medium text-[#151515]/60 hover:border-[#B38B67] hover:text-[#B38B67] transition-colors"
+          className="mt-6 w-full flex items-center justify-center gap-2 h-12 border border-dashed border-black/15 rounded-sm text-[13px] font-medium text-[#151515]/60 hover:border-[#111111] hover:text-[#111111] transition-colors"
         >
           <Plus size={16} /> Agregar {productos[visibleCount]}
         </button>

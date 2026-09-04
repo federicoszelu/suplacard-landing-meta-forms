@@ -37,7 +37,7 @@ export default function SuccessScreen({ producto, onReset }) {
       </p>
       <button
         onClick={onReset}
-        className="inline-flex items-center justify-center h-11 px-8 rounded-full bg-[#151515] text-white text-[13px] font-medium hover:bg-[#B38B67] transition-colors"
+        className="inline-flex items-center justify-center h-11 px-8 rounded-full bg-[#151515] text-white text-[13px] font-medium hover:bg-[#333333] transition-colors"
       >
         Nueva consulta
       </button>

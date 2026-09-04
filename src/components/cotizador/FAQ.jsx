@@ -28,12 +28,12 @@ export default function FAQ() {
       <div className="max-w-[1440px] mx-auto px-5 sm:px-8 lg:px-14 py-16 lg:py-24">
         <div className="grid grid-cols-1 lg:grid-cols-[1fr_2fr] gap-10 lg:gap-16">
           <div>
-            <p className="font-mono text-[11px] tracking-[0.16em] uppercase text-[#B38B67] mb-4">
+            <p className="font-mono text-[11px] tracking-[0.16em] uppercase text-[#7A7A7A] mb-4">
               Preguntas frecuentes
             </p>
             <h2 className="font-display text-[clamp(2.2rem,4vw,3.5rem)] font-light leading-[0.95] tracking-[-0.03em] text-[#151515]">
               Todo lo que{" "}
-              <em className="italic text-[#B38B67]">necesitás saber.</em>
+              <em className="italic text-[#7A7A7A]">necesitás saber.</em>
             </h2>
           </div>
 
@@ -46,7 +46,7 @@ export default function FAQ() {
                     onClick={() => setOpen(isOpen ? -1 : idx)}
                     className="flex items-center justify-between gap-4 w-full text-left group"
                   >
-                    <span className="font-body text-[16px] sm:text-[17px] font-medium text-[#151515] group-hover:text-[#B38B67] transition-colors">
+                    <span className="font-body text-[16px] sm:text-[17px] font-medium text-[#151515] group-hover:text-[#111111] transition-colors">
                       {item.q}
                     </span>
                     <span className="flex-shrink-0 w-8 h-8 rounded-full border border-black/10 flex items-center justify-center text-[#151515]">
