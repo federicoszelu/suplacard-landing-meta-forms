@@ -44,13 +44,14 @@ export default function StepProducto({ state, setState, images, errors }) {
       />
 
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-4">
-        {PRODUCTOS.map((p) => (
+        {PRODUCTOS.map((p, idx) => (
           <OptionCard
             key={p.id}
             label={p.id}
             eyebrow={p.eyebrow}
             description={p.description}
             image={images?.[p.id]}
+            intervalo={3200 + idx * 500}
             selected={!multiMode && productos.includes(p.id)}
             onClick={() => selectSingle(p.id)}
           />
