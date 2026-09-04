@@ -73,10 +73,12 @@ const leerAtribucion = () => {
 // Se ejecuta apenas carga el modulo, antes de que la persona navegue.
 if (typeof window !== "undefined") capturarAtribucion();
 
-const HERO_IMG = `${IMG}/hero.jpg`;
 // Las mismas fotos de los carruseles de suplacard.com.
 // Placards tiene 7 en el sitio; cocinas y vestidores, 8.
+// IMG tiene que declararse ANTES de usarse: en JavaScript un const
+// no existe hasta su linea, y usarlo antes tumba la app entera.
 const IMG = "https://www.suplacard.com/img";
+const HERO_IMG = `${IMG}/hero.jpg`;
 const PRODUCT_IMAGES = {
   Placard:  Array.from({ length: 7 }, (_, i) => `${IMG}/placard-0${i + 1}.jpg`),
   Vestidor: Array.from({ length: 8 }, (_, i) => `${IMG}/vestidor-0${i + 1}.jpg`),
