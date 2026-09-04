@@ -4,11 +4,16 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/png" href="https://www.suplacard.com/isotipo.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="manifest" href="/manifest.json" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@200;300;400;500;600;700&display=swap" rel="stylesheet">
     
+    <!-- Esta pagina es destino de anuncios, no contenido para buscar.
+         Sin noindex compite en Google contra suplacard.com por las
+         mismas busquedas, y con contenido casi identico. -->
+    <meta name="robots" content="noindex, nofollow">
+    <link rel="canonical" href="https://www.suplacard.com/">
+
     <title>Cotizador Online | Suplacard — Placards, Vestidores y Cocinas a Medida</title>
     <meta name="description" content="Cotizá tu placard, vestidor o cocina a medida en Buenos Aires. Formulario guiado paso a paso. Recibí un presupuesto real de Suplacard.">
     
@@ -17,6 +22,30 @@
     <meta property="og:description" content="Placard, vestidor o cocina a medida en Buenos Aires. Completá el formulario guiado y recibí tu presupuesto.">
     <meta property="og:locale" content="es_AR">
     <meta property="og:site_name" content="Suplacard">
+    <meta property="og:url" content="https://forms.suplacard.com/">
+    <meta property="og:image" content="https://www.suplacard.com/img/og-vestidores.jpg">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="Suplacard, muebles a medida en Buenos Aires">
+    <meta name="twitter:card" content="summary_large_image">
+
+    <!-- Consentimiento. Igual que en suplacard.com: arranca todo en
+         "denied". El pixel y GA4 se cargan pero no guardan cookies de
+         publicidad hasta que la persona acepte. Si este bloque fuera
+         despues, las cookies ya estarian puestas. -->
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('consent', 'default', {
+        ad_storage: 'denied',
+        ad_user_data: 'denied',
+        ad_personalization: 'denied',
+        analytics_storage: 'denied',
+        functionality_storage: 'granted',
+        security_storage: 'granted',
+        wait_for_update: 500
+      });
+    </script>
 
     <script>
       !function(f,b,e,v,n,t,s)
@@ -27,8 +56,22 @@
       t.src=v;s=b.getElementsByTagName(e)[0];
       s.parentNode.insertBefore(t,s)}(window, document,'script',
       'https://connect.facebook.net/en_US/fbevents.js');
+      // Sin consentimiento el pixel no usa cookies propias ni de
+      // terceros. Cuando la persona acepta, cookies.js llama a
+      // window.suplacardConsentimientoAceptado() y se revierte.
+      fbq('consent', 'revoke');
       fbq('init', '25867828236244012');
       fbq('track', 'PageView');
+
+      window.suplacardConsentimientoAceptado = function () {
+        if (typeof fbq === 'function') fbq('consent', 'grant');
+        gtag('consent', 'update', {
+          ad_storage: 'granted',
+          ad_user_data: 'granted',
+          ad_personalization: 'granted',
+          analytics_storage: 'granted'
+        });
+      };
 
       // Función global para disparar la conversión del Formulario (Lead)
       window.trackMetaFormLead = function() {
@@ -40,8 +83,6 @@
     </script>
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-DC778D6EQN"></script>
     <script>
-      window.dataLayer=window.dataLayer||[];
-      function gtag(){dataLayer.push(arguments);}
       gtag('js',new Date());
       gtag('config','G-DC778D6EQN');
     </script>
