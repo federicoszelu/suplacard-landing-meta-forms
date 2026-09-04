@@ -21,6 +21,58 @@ const supabase = createClient(
   "sb_publishable_F2CXviXhqqaN3zz63sp4mw_sqHnC-wE"
 );
 
+// ---------------------------------------------------------------
+// Atribucion publicitaria.
+//
+// Meta agrega fbclid y las UTM a la URL de destino. Se leen UNA vez
+// al cargar y se guardan en sessionStorage, porque la persona puede
+// navegar o recargar antes de enviar y ahi la URL ya perdio los
+// parametros.
+//
+// Nada de esto va al mensaje de WhatsApp: ese texto lo ve y lo envia
+// el cliente, y un ID de anuncio ahi parece spam. Queda en la tabla,
+// que es donde se necesita.
+// ---------------------------------------------------------------
+const CLAVE_ATRIB = "suplacard_atribucion";
+
+const capturarAtribucion = () => {
+  try {
+    const p = new URLSearchParams(window.location.search);
+    const campos = ["fbclid", "utm_source", "utm_medium", "utm_campaign", "utm_content", "utm_term"];
+    const nuevo = {};
+    campos.forEach((c) => { const v = p.get(c); if (v) nuevo[c] = v; });
+
+    // Solo pisa lo guardado si esta visita trae parametros nuevos.
+    if (Object.keys(nuevo).length > 0) {
+      nuevo.landing_url = window.location.href.slice(0, 2000);
+      nuevo.referrer = document.referrer ? document.referrer.slice(0, 500) : null;
+      sessionStorage.setItem(CLAVE_ATRIB, JSON.stringify(nuevo));
+      return nuevo;
+    }
+    const guardado = sessionStorage.getItem(CLAVE_ATRIB);
+    return guardado ? JSON.parse(guardado) : {};
+  } catch {
+    return {};
+  }
+};
+
+const leerAtribucion = () => {
+  const a = capturarAtribucion();
+  return {
+    fbclid: a.fbclid || null,
+    utm_source: a.utm_source || null,
+    utm_medium: a.utm_medium || null,
+    utm_campaign: a.utm_campaign || null,
+    utm_content: a.utm_content || null,
+    utm_term: a.utm_term || null,
+    landing_url: a.landing_url || null,
+    referrer: a.referrer || null,
+  };
+};
+
+// Se ejecuta apenas carga el modulo, antes de que la persona navegue.
+if (typeof window !== "undefined") capturarAtribucion();
+
 const HERO_IMG = "https://media.base44.com/images/public/6a3a783a8f060b08a350b7f4/47abdf024_generated_2021eae0.png";
 const PRODUCT_IMAGES = {
   Placard: "https://media.base44.com/images/public/6a3a783a8f060b08a350b7f4/b20397ae8_generated_97d04c80.png",
@@ -199,7 +251,7 @@ export default function Home() {
         }).filter(Boolean);
 
         // Guardar en Supabase
-        await supabase.from("quotes").insert({
+        const { error: errInsert } = await supabase.from("quotes").insert({
           codigo,
           producto: productos.join(", "),
           entrada: productos.map((p) => configs[p]?.entrada).filter(Boolean).join(", "),
@@ -215,7 +267,10 @@ export default function Home() {
           comentarios: state.comentarios || "",
           extra_fields: { configs },
           status: "enviado",
+          ...leerAtribucion(),
         });
+
+        if (errInsert) throw errInsert;
 
         const msg = buildMensaje(codigo);
         const url = `https://wa.me/5491151359303?text=${encodeURIComponent(msg)}`;
@@ -229,8 +284,31 @@ export default function Home() {
 
         setSent(true);
       } catch (e) {
-        // Fallback sin guardar en Supabase
+        // El guardado fallo. Se abre WhatsApp igual, porque perder
+        // al cliente es peor que perder el registro. Pero ANTES se
+        // deja rastro: sin esto el fallo es invisible y la tabla
+        // queda vacia sin que nadie se entere, que es exactamente
+        // lo que ya paso una vez.
+        console.error("[Suplacard] Fallo el guardado de la consulta:", e);
+
         const codigo = generateCodigo();
+
+        try {
+          // Copia local recuperable a mano si hace falta.
+          const pendientes = JSON.parse(localStorage.getItem("suplacard_no_guardadas") || "[]");
+          pendientes.push({ codigo, fecha: new Date().toISOString(), state, error: String(e) });
+          localStorage.setItem("suplacard_no_guardadas", JSON.stringify(pendientes.slice(-20)));
+        } catch { /* si ni esto anda, seguimos igual */ }
+
+        // Evento para poder alertar desde GTM.
+        if (window.dataLayer) {
+          window.dataLayer.push({
+            event: "error_guardado_consulta",
+            codigo,
+            detalle: String(e).slice(0, 300),
+          });
+        }
+
         const msg = buildMensaje(codigo);
         const url = `https://wa.me/5491151359303?text=${encodeURIComponent(msg)}`;
         if (popup) popup.location.href = url;
