@@ -128,6 +128,9 @@ export default function Home() {
   const [sent, setSent] = useState(false);
   const [sending, setSending] = useState(false);
   const cotizadorRef = useRef(null);
+  // Candado: garantiza que el evento Lead salga UNA sola vez por
+  // consulta, aunque el usuario toque dos veces o React reintente.
+  const leadEnviadoRef = useRef(false);
 
   const scrollToCotizador = useCallback(() => {
     cotizadorRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
@@ -222,13 +225,95 @@ export default function Home() {
     setErrors({});
 
     if (step === RESUMEN_STEP) {
+      if (sending) return;
       setSending(true);
-      const popup = window.open("", "_blank");
-      try {
-        const codigo = generateCodigo();
-        const productos = state.productos || [];
-        const configs = state.configs || {};
 
+      // El popup se pide ANTES de cualquier await: si se pide despues,
+      // el navegador ya no lo asocia al clic y lo bloquea siempre.
+      const popup = window.open("", "_blank");
+
+      // El codigo se genera una sola vez, fuera del try. Antes se
+      // volvia a generar en el catch y quedaba uno distinto del que
+      // se habia usado para subir los archivos.
+      const codigo = generateCodigo();
+      const productos = state.productos || [];
+      const configs = state.configs || {};
+      const atribucion = leerAtribucion();
+
+      // ---------------------------------------------------------------
+      // Conversion.
+      //
+      // Tiene que dispararse ANTES de mandar el navegador a WhatsApp.
+      // Si el popup viene bloqueado (lo normal en celular) se usa
+      // window.location.href y la pagina se va: todo lo que este
+      // despues de esa linea no llega a ejecutarse nunca. Ese era el
+      // motivo por el que el pixel registraba PageView y jamas un Lead.
+      //
+      // El codigo viaja como eventID. Si mas adelante el mismo Lead se
+      // manda tambien por la API de Conversiones con ese ID, Meta lo
+      // deduplica y el costo por lead no queda inflado.
+      // ---------------------------------------------------------------
+      const dispararLead = () => {
+        if (leadEnviadoRef.current) return;
+        leadEnviadoRef.current = true;
+
+        const props = {
+          content_name: productos.join(", "),
+          content_category: "cotizador",
+          source: atribucion.utm_source || "directo",
+          campaign: atribucion.utm_campaign || null,
+          adset: atribucion.utm_term || null,
+          ad: atribucion.utm_content || null,
+        };
+
+        try {
+          if (typeof fbq !== "undefined") {
+            fbq("track", "Lead", props, { eventID: codigo });
+          }
+        } catch (err) { console.warn("[Suplacard] fbq Lead:", err); }
+
+        try {
+          if (typeof gtag !== "undefined") {
+            gtag("event", "generate_lead", {
+              producto: productos.join(", "),
+              consulta_id: codigo,
+              origen: atribucion.utm_source || "directo",
+            });
+
+            // Conversion de Google Ads. Reemplazar ETIQUETA por el
+            // label real (Google Ads > Objetivos > Conversiones >
+            // la accion > Configurar etiqueta). Mientras diga
+            // ETIQUETA no se envia y no rompe nada.
+            const GOOGLE_ADS_SEND_TO = "AW-10949447359/ETIQUETA";
+            if (GOOGLE_ADS_SEND_TO.indexOf("ETIQUETA") === -1) {
+              gtag("event", "conversion", {
+                send_to: GOOGLE_ADS_SEND_TO,
+                transaction_id: codigo,
+              });
+            }
+          }
+        } catch (err) { console.warn("[Suplacard] gtag Lead:", err); }
+
+        try {
+          if (window.dataLayer) {
+            window.dataLayer.push({
+              event: "lead_cotizador",
+              producto: productos.join(", "),
+              id_consulta: codigo,
+              origen: atribucion.utm_source || "directo",
+            });
+          }
+        } catch (err) { console.warn("[Suplacard] dataLayer Lead:", err); }
+      };
+
+      const abrirWhatsApp = () => {
+        const msg = buildMensaje(codigo);
+        const url = `https://wa.me/5491151359303?text=${encodeURIComponent(msg)}`;
+        if (popup) popup.location.href = url;
+        else window.location.href = url;
+      };
+
+      try {
         // Subir archivos a Supabase Storage
         const fileUrls = [];
         for (const [, fileList] of Object.entries(files)) {
@@ -272,21 +357,13 @@ export default function Home() {
           comentarios: state.comentarios || "",
           extra_fields: { configs },
           status: "enviado",
-          ...leerAtribucion(),
+          ...atribucion,
         });
 
         if (errInsert) throw errInsert;
 
-        const msg = buildMensaje(codigo);
-        const url = `https://wa.me/5491151359303?text=${encodeURIComponent(msg)}`;
-        if (popup) popup.location.href = url;
-        else window.location.href = url;
-
-        // Tracking
-        if (typeof fbq !== "undefined") fbq("track", "Lead", { content_name: productos.join(", "), content_category: "cotizador" });
-        if (typeof gtag !== "undefined") gtag("event", "generate_lead", { producto: productos.join(", ") });
-        if (window.dataLayer) window.dataLayer.push({ event: "lead_cotizador", producto: productos.join(", "), id_consulta: codigo });
-
+        dispararLead();
+        abrirWhatsApp();
         setSent(true);
       } catch (e) {
         // El guardado fallo. Se abre WhatsApp igual, porque perder
@@ -296,12 +373,10 @@ export default function Home() {
         // lo que ya paso una vez.
         console.error("[Suplacard] Fallo el guardado de la consulta:", e);
 
-        const codigo = generateCodigo();
-
         try {
           // Copia local recuperable a mano si hace falta.
           const pendientes = JSON.parse(localStorage.getItem("suplacard_no_guardadas") || "[]");
-          pendientes.push({ codigo, fecha: new Date().toISOString(), state, error: String(e) });
+          pendientes.push({ codigo, fecha: new Date().toISOString(), state, atribucion, error: String(e) });
           localStorage.setItem("suplacard_no_guardadas", JSON.stringify(pendientes.slice(-20)));
         } catch { /* si ni esto anda, seguimos igual */ }
 
@@ -314,10 +389,11 @@ export default function Home() {
           });
         }
 
-        const msg = buildMensaje(codigo);
-        const url = `https://wa.me/5491151359303?text=${encodeURIComponent(msg)}`;
-        if (popup) popup.location.href = url;
-        else window.location.href = url;
+        // El lead existe igual: el cliente entra por WhatsApp aunque
+        // la fila no se haya guardado. Si no se contara aca, Meta
+        // veria menos conversiones de las reales.
+        dispararLead();
+        abrirWhatsApp();
         setSent(true);
       } finally {
         setSending(false);
@@ -336,6 +412,7 @@ export default function Home() {
     setErrors({});
     setSent(false);
     setStep(1);
+    leadEnviadoRef.current = false;
     setTimeout(() => cotizadorRef.current?.scrollIntoView({ behavior: "smooth", block: "start" }), 50);
   };
 
