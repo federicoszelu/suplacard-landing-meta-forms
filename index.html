@@ -7,7 +7,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@200;300;400;500;600;700&display=swap" rel="stylesheet">
-    
+
     <!-- Esta pagina es destino de anuncios, no contenido para buscar.
          Sin noindex compite en Google contra suplacard.com por las
          mismas busquedas, y con contenido casi identico. -->
@@ -16,7 +16,7 @@
 
     <title>Cotizador Online | Suplacard — Placards, Vestidores y Cocinas a Medida</title>
     <meta name="description" content="Cotizá tu placard, vestidor o cocina a medida en Buenos Aires. Formulario guiado paso a paso. Recibí un presupuesto real de Suplacard.">
-    
+
     <meta property="og:type" content="website">
     <meta property="og:title" content="Cotizador Online Suplacard | Presupuesto de Muebles a Medida">
     <meta property="og:description" content="Placard, vestidor o cocina a medida en Buenos Aires. Completá el formulario guiado y recibí tu presupuesto.">
@@ -29,66 +29,35 @@
     <meta property="og:image:alt" content="Suplacard, muebles a medida en Buenos Aires">
     <meta name="twitter:card" content="summary_large_image">
 
-    <!-- Consentimiento. Igual que en suplacard.com: arranca todo en
-         "denied". El pixel y GA4 se cargan pero no guardan cookies de
-         publicidad hasta que la persona acepte. Si este bloque fuera
-         despues, las cookies ya estarian puestas. -->
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('consent', 'default', {
-        ad_storage: 'denied',
-        ad_user_data: 'denied',
-        ad_personalization: 'denied',
-        analytics_storage: 'denied',
-        functionality_storage: 'granted',
-        security_storage: 'granted',
-        wait_for_update: 500
-      });
-    </script>
-
-    <script>
-      !function(f,b,e,v,n,t,s)
-      {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-      n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-      if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-      n.queue=[];t=b.createElement(e);t.async=!0;
-      t.src=v;s=b.getElementsByTagName(e)[0];
-      s.parentNode.insertBefore(t,s)}(window, document,'script',
-      'https://connect.facebook.net/en_US/fbevents.js');
-      // Sin consentimiento el pixel no usa cookies propias ni de
-      // terceros. Cuando la persona acepta, cookies.js llama a
-      // window.suplacardConsentimientoAceptado() y se revierte.
-      fbq('consent', 'revoke');
-      fbq('init', '25867828236244012');
-      fbq('track', 'PageView');
-
-      window.suplacardConsentimientoAceptado = function () {
-        if (typeof fbq === 'function') fbq('consent', 'grant');
-        gtag('consent', 'update', {
-          ad_storage: 'granted',
-          ad_user_data: 'granted',
-          ad_personalization: 'granted',
-          analytics_storage: 'granted'
-        });
-      };
-
-      // Función global para disparar la conversión del Formulario (Lead)
-      window.trackMetaFormLead = function() {
-        if (typeof fbq === 'function') {
-          fbq('track', 'Lead');
-          console.log('¡Evento Lead de Meta trackeado con éxito!');
-        }
-      };
-    </script>
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-DC778D6EQN"></script>
-    <script>
-      gtag('js',new Date());
-      gtag('config','G-DC778D6EQN');
-    </script>
+    <!-- Medicion centralizada en Google Tag Manager (GTM-PWKQQHVP), el
+         mismo contenedor de suplacard.com y lp.suplacard.com. Esta pagina
+         NO inicializa el pixel ni GA4 por su cuenta: el pixel de Meta
+         (25867828236244012), GA4 y la conversion de Google Ads los
+         dispara el contenedor. El Lead se dispara desde el evento
+         `whatsapp_click` del dataLayer (ver /tracking.js y Home.jsx).
+         Sin banner de consentimiento: es una landing de ads y el
+         consentimiento se resuelve en las reglas del envio del dato. -->
+    <!-- Google Tag Manager -->
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-PWKQQHVP');</script>
+    <!-- End Google Tag Manager -->
   </head>
   <body>
+    <!-- Google Tag Manager (noscript) -->
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-PWKQQHVP"
+      height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    <!-- End Google Tag Manager (noscript) -->
+
     <div id="root"></div>
+
+    <!-- Captura de atribucion (fbclid/gclid/utm) + wa_click_id, alineado
+         con lp.suplacard.com. Expone window.SuplacardTracking. Tiene que
+         cargar antes que la app para capturar los parametros del anuncio. -->
+    <script src="/tracking.js"></script>
+
     <script type="module" src="/src/main.jsx"></script>
   </body>
 </html>
