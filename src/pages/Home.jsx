@@ -337,7 +337,11 @@ export default function Home() {
           return desc ? `${p}: ${desc}` : null;
         }).filter(Boolean);
 
-        // Guardar en Supabase
+        // Guardar en Supabase. La tabla quotes tiene fbclid + utm_*, pero
+        // NO la columna gclid. gclid igual viaja al dataLayer (Google Ads)
+        // y al pie del mensaje de WhatsApp, no hace falta persistirlo aca.
+        // Si algun dia se agrega la columna, volver a incluirlo.
+        const { gclid: _gclidNoGuardado, ...atribucionParaGuardar } = atribucion;
         const { error: errInsert } = await supabase.from("quotes").insert({
           codigo,
           producto: productos.join(", "),
@@ -354,7 +358,7 @@ export default function Home() {
           comentarios: state.comentarios || "",
           extra_fields: { configs },
           status: "enviado",
-          ...atribucion,
+          ...atribucionParaGuardar,
         });
 
         if (errInsert) throw errInsert;
@@ -373,7 +377,7 @@ export default function Home() {
         try {
           // Copia local recuperable a mano si hace falta.
           const pendientes = JSON.parse(localStorage.getItem("suplacard_no_guardadas") || "[]");
-          pendientes.push({ codigo, fecha: new Date().toISOString(), state, atribucion, error: String(e) });
+          pendientes.push({ codigo, fecha: new Date().toISOString(), state, atribucion, error: e?.message || JSON.stringify(e) });
           localStorage.setItem("suplacard_no_guardadas", JSON.stringify(pendientes.slice(-20)));
         } catch { /* si ni esto anda, seguimos igual */ }
 
@@ -382,7 +386,7 @@ export default function Home() {
           window.dataLayer.push({
             event: "error_guardado_consulta",
             codigo,
-            detalle: String(e).slice(0, 300),
+            detalle: (e?.message || JSON.stringify(e) || "").slice(0, 300),
           });
         }
 
