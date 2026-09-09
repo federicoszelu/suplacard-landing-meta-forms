@@ -86,9 +86,131 @@
       gtag('js',new Date());
       gtag('config','G-DC778D6EQN');
     </script>
+
+    <!-- Aviso de cookies. Mismo criterio que suplacard.com: mientras no
+         haya respuesta, el consentimiento queda en "denied" y el pixel de
+         Meta retiene los eventos. Al Aceptar se otorga el consentimiento y
+         recien ahi fluyen PageView y Lead. Estilo autocontenido para no
+         depender del CSS de la app. -->
+    <style>
+      .ck {
+        position: fixed; left: 0; right: 0; bottom: 0; z-index: 4000;
+        background: #ffffff; border-top: 1px solid rgba(21,21,21,0.12);
+        padding: 1.6rem 3.5rem; font-family: 'Montserrat', system-ui, sans-serif;
+        display: none; box-shadow: 0 -8px 40px rgba(0,0,0,0.07);
+      }
+      .ck.open { display: block; animation: ckUp 0.45s cubic-bezier(0.22,1,0.36,1); }
+      @keyframes ckUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
+      .ck-inner { max-width: 1300px; margin: 0 auto; display: flex; align-items: center; gap: 2.5rem; flex-wrap: wrap; }
+      .ck-texto { flex: 1 1 420px; }
+      .ck-texto p { font-size: 0.84rem; color: rgba(21,21,21,0.55); line-height: 1.7; margin: 0; }
+      .ck-texto a { color: #151515; border-bottom: 1px solid rgba(21,21,21,0.12); text-decoration: none; }
+      .ck-texto a:hover { border-color: #151515; }
+      .ck-btns { display: flex; gap: 0.8rem; flex: 0 0 auto; }
+      .ck-btn {
+        font-family: inherit; cursor: pointer; white-space: nowrap;
+        padding: 0.85rem 1.9rem; font-size: 0.7rem;
+        letter-spacing: 0.16em; text-transform: uppercase; border-radius: 1px;
+        transition: all 0.3s ease;
+      }
+      .ck-si { background: #151515; color: #ffffff; border: 1px solid #151515; }
+      .ck-si:hover { background: #333; border-color: #333; }
+      .ck-no { background: transparent; color: #151515; border: 1px solid rgba(21,21,21,0.12); }
+      .ck-no:hover { border-color: #151515; }
+      .ck-btn:focus-visible { outline: 2px solid #151515; outline-offset: 3px; }
+      @media (max-width: 900px) {
+        .ck { padding: 1.3rem 1.5rem; }
+        .ck-inner { gap: 1.2rem; }
+        .ck-btns { width: 100%; }
+        .ck-btn { flex: 1; padding: 0.9rem 1rem; }
+      }
+    </style>
   </head>
   <body>
     <div id="root"></div>
+
+    <!-- Aviso de cookies (estatico, fuera de React para que muestre en
+         cualquier ruta y antes de que monte la app). -->
+    <div class="ck" id="ckBanner" role="region" aria-label="Aviso de cookies">
+      <div class="ck-inner">
+        <div class="ck-texto">
+          <p>Usamos cookies propias y de terceros para entender cómo se navega el sitio
+             y para medir nuestras campañas. Podés aceptarlas o rechazarlas; si las
+             rechazás, el sitio funciona igual.
+             <a href="https://www.suplacard.com/privacidad/" target="_blank" rel="noopener">Ver la política de privacidad</a>.</p>
+        </div>
+        <div class="ck-btns">
+          <button class="ck-btn ck-no" id="ckNo">Rechazar</button>
+          <button class="ck-btn ck-si" id="ckSi">Aceptar</button>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      /* Aviso de cookies. Adaptado del cookies.js de suplacard.com. La
+         diferencia: esta landing no usa GTM, asi que en vez de condicionar
+         el pixel desde el contenedor, al Aceptar llamamos a
+         window.suplacardConsentimientoAceptado() (definida en el <head>),
+         que hace fbq('consent','grant') + gtag consent update granted.
+         La decision se guarda un año. */
+      (function () {
+        var CLAVE = 'suplacard_cookies';
+
+        function leer() { try { return localStorage.getItem(CLAVE); } catch (e) { return null; } }
+        function guardar(v) {
+          try {
+            localStorage.setItem(CLAVE, v);
+            localStorage.setItem(CLAVE + '_fecha', new Date().toISOString());
+          } catch (e) {}
+        }
+
+        function aceptar() {
+          if (typeof window.suplacardConsentimientoAceptado === 'function') {
+            window.suplacardConsentimientoAceptado();
+          }
+          window.dataLayer = window.dataLayer || [];
+          window.dataLayer.push({ event: 'cookies_aceptadas' });
+        }
+        function rechazar() {
+          /* El pixel queda en revoke (nunca se otorga). Google en denied. */
+          if (typeof gtag === 'function') {
+            gtag('consent', 'update', {
+              ad_storage: 'denied', ad_user_data: 'denied',
+              ad_personalization: 'denied', analytics_storage: 'denied'
+            });
+          }
+          window.dataLayer = window.dataLayer || [];
+          window.dataLayer.push({ event: 'cookies_rechazadas' });
+        }
+
+        function iniciar() {
+          var ck = document.getElementById('ckBanner');
+          if (!ck) return;
+          var previa = leer();
+
+          if (previa === 'si') aceptar();
+          else if (previa === 'no') rechazar();
+          else ck.classList.add('open');
+
+          document.getElementById('ckSi').addEventListener('click', function () {
+            guardar('si'); aceptar(); ck.classList.remove('open');
+          });
+          document.getElementById('ckNo').addEventListener('click', function () {
+            guardar('no'); rechazar(); ck.classList.remove('open');
+          });
+
+          /* Reabrir desde cualquier enlace con data-cookies (ej. pie). */
+          document.querySelectorAll('[data-cookies]').forEach(function (a) {
+            a.addEventListener('click', function (e) { e.preventDefault(); ck.classList.add('open'); });
+          });
+        }
+
+        if (document.readyState === 'loading') {
+          document.addEventListener('DOMContentLoaded', iniciar);
+        } else { iniciar(); }
+      })();
+    </script>
+
     <script type="module" src="/src/main.jsx"></script>
   </body>
 </html>
