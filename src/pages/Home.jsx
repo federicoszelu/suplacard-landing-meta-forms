@@ -29,16 +29,16 @@ const supabase = createClient(
 // navegar o recargar antes de enviar y ahi la URL ya perdio los
 // parametros.
 //
-// Nada de esto va al mensaje de WhatsApp: ese texto lo ve y lo envia
-// el cliente, y un ID de anuncio ahi parece spam. Queda en la tabla,
-// que es donde se necesita.
+// Queda en la tabla (donde se necesita) y ademas gclid/fbclid van al
+// pie del mensaje de WhatsApp, para poder seguir el creativo que trajo
+// al lead. El resto del tracking va por el dataLayer (ver /tracking.js).
 // ---------------------------------------------------------------
 const CLAVE_ATRIB = "suplacard_atribucion";
 
 const capturarAtribucion = () => {
   try {
     const p = new URLSearchParams(window.location.search);
-    const campos = ["fbclid", "utm_source", "utm_medium", "utm_campaign", "utm_content", "utm_term"];
+    const campos = ["fbclid", "gclid", "utm_source", "utm_medium", "utm_campaign", "utm_content", "utm_term"];
     const nuevo = {};
     campos.forEach((c) => { const v = p.get(c); if (v) nuevo[c] = v; });
 
@@ -60,6 +60,7 @@ const leerAtribucion = () => {
   const a = capturarAtribucion();
   return {
     fbclid: a.fbclid || null,
+    gclid: a.gclid || null,
     utm_source: a.utm_source || null,
     utm_medium: a.utm_medium || null,
     utm_campaign: a.utm_campaign || null,
@@ -167,9 +168,10 @@ export default function Home() {
     return errs;
   };
 
-  const buildMensaje = (codigo) => {
+  const buildMensaje = (codigo, clickId, atribucion) => {
     const productos = state.productos || [];
     const configs = state.configs || {};
+    const attr = atribucion || {};
     const lines = [];
 
     lines.push("🛋️ *Nueva consulta — SUPLACARD*");
@@ -216,6 +218,16 @@ export default function Home() {
     lines.push(`https://forms.suplacard.com/consulta/${codigo}`);
     lines.push(`✅ Los archivos pueden descargarse desde el enlace`);
 
+    // Pie de seguimiento (estilo lp.suplacard.com): click_id + gclid/fbclid
+    // solo si vinieron de un anuncio. Sirve para atribuir el creativo que
+    // trajo al lead. Si no vino de ads, queda solo el ref con el click_id.
+    const refParts = [codigo];
+    if (clickId && clickId !== codigo) refParts.push(clickId);
+    if (attr.gclid) refParts.push(`gclid:${attr.gclid}`);
+    if (attr.fbclid) refParts.push(`fbclid:${attr.fbclid}`);
+    lines.push("");
+    lines.push(`(ref: ${refParts.join(" · ")})`);
+
     return lines.join("\n");
   };
 
@@ -240,74 +252,59 @@ export default function Home() {
       const configs = state.configs || {};
       const atribucion = leerAtribucion();
 
+      // click_id de sesion (compartido por todos los envios de la visita).
+      // Va en el evento del dataLayer y en el pie del mensaje de WhatsApp,
+      // para que Google Ads (orderId) y Kapso puedan matchear el lead.
+      const clickId =
+        (window.SuplacardTracking && window.SuplacardTracking.getClickId()) || codigo;
+
       // ---------------------------------------------------------------
-      // Conversion.
+      // Conversion. Centralizada en GTM (GTM-PWKQQHVP).
       //
       // Tiene que dispararse ANTES de mandar el navegador a WhatsApp.
       // Si el popup viene bloqueado (lo normal en celular) se usa
       // window.location.href y la pagina se va: todo lo que este
-      // despues de esa linea no llega a ejecutarse nunca. Ese era el
-      // motivo por el que el pixel registraba PageView y jamas un Lead.
+      // despues de esa linea no llega a ejecutarse nunca.
       //
-      // El codigo viaja como eventID. Si mas adelante el mismo Lead se
-      // manda tambien por la API de Conversiones con ese ID, Meta lo
-      // deduplica y el costo por lead no queda inflado.
+      // Empujamos UN solo evento `whatsapp_click` al dataLayer (mismo
+      // esquema que lp.suplacard.com). GTM se encarga de disparar el
+      // Lead de Meta (25867), la conversion de Google Ads y GA4. No se
+      // llama a fbq/gtag directo desde aca: asi no hay pixel duplicado
+      // ni logica de medicion repartida entre el codigo y el contenedor.
       // ---------------------------------------------------------------
       const dispararLead = () => {
         if (leadEnviadoRef.current) return;
         leadEnviadoRef.current = true;
 
-        const props = {
-          content_name: productos.join(", "),
-          content_category: "cotizador",
-          source: atribucion.utm_source || "directo",
-          campaign: atribucion.utm_campaign || null,
-          adset: atribucion.utm_term || null,
-          ad: atribucion.utm_content || null,
-        };
-
         try {
-          if (typeof fbq !== "undefined") {
-            fbq("track", "Lead", props, { eventID: codigo });
-          }
-        } catch (err) { console.warn("[Suplacard] fbq Lead:", err); }
-
-        try {
-          if (typeof gtag !== "undefined") {
-            gtag("event", "generate_lead", {
-              producto: productos.join(", "),
-              consulta_id: codigo,
-              origen: atribucion.utm_source || "directo",
+          if (window.SuplacardTracking &&
+              typeof window.SuplacardTracking.trackWhatsAppClick === "function") {
+            window.SuplacardTracking.trackWhatsAppClick({
+              entryPoint: "cotizador",
+              kwCode: codigo,
+              context: productos.join(", "),
+              phone: state.whatsapp,
             });
-
-            // Conversion de Google Ads. Reemplazar ETIQUETA por el
-            // label real (Google Ads > Objetivos > Conversiones >
-            // la accion > Configurar etiqueta). Mientras diga
-            // ETIQUETA no se envia y no rompe nada.
-            const GOOGLE_ADS_SEND_TO = "AW-10949447359/ETIQUETA";
-            if (GOOGLE_ADS_SEND_TO.indexOf("ETIQUETA") === -1) {
-              gtag("event", "conversion", {
-                send_to: GOOGLE_ADS_SEND_TO,
-                transaction_id: codigo,
-              });
-            }
-          }
-        } catch (err) { console.warn("[Suplacard] gtag Lead:", err); }
-
-        try {
-          if (window.dataLayer) {
+          } else if (window.dataLayer) {
+            // Fallback si tracking.js no cargo: mismo evento, esquema minimo.
             window.dataLayer.push({
-              event: "lead_cotizador",
-              producto: productos.join(", "),
-              id_consulta: codigo,
-              origen: atribucion.utm_source || "directo",
+              event: "whatsapp_click",
+              wa_click_id: clickId,
+              wa_entry_point: "cotizador",
+              wa_kw_code: codigo,
+              fbclid: atribucion.fbclid,
+              gclid: atribucion.gclid,
+              utm_source: atribucion.utm_source,
+              utm_campaign: atribucion.utm_campaign,
+              utm_content: atribucion.utm_content,
+              utm_term: atribucion.utm_term,
             });
           }
-        } catch (err) { console.warn("[Suplacard] dataLayer Lead:", err); }
+        } catch (err) { console.warn("[Suplacard] whatsapp_click:", err); }
       };
 
       const abrirWhatsApp = () => {
-        const msg = buildMensaje(codigo);
+        const msg = buildMensaje(codigo, clickId, atribucion);
         const url = `https://wa.me/5491151359303?text=${encodeURIComponent(msg)}`;
         if (popup) popup.location.href = url;
         else window.location.href = url;

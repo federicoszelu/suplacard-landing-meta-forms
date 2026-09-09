@@ -1,27 +1,11 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { motion } from "framer-motion";
 
-export default function SuccessScreen({ producto, onReset }) {
-  useEffect(() => {
-    if (typeof window !== "undefined" && typeof window.fbq === "function") {
-      window.fbq("track", "Lead", {
-        content_name: producto || "",
-        content_category: "cotizador",
-      });
-    }
-    if (typeof window !== "undefined" && typeof window.gtag === "function") {
-      window.gtag("event", "generate_lead", {
-        producto: producto || "",
-      });
-    }
-    if (typeof window !== "undefined" && Array.isArray(window.dataLayer)) {
-      window.dataLayer.push({
-        event: "lead_cotizador",
-        producto: producto || "",
-      });
-    }
-  }, [producto]);
-
+// La conversion ya la dispara Home.jsx en dispararLead(), una sola vez,
+// empujando el evento `whatsapp_click` al dataLayer (GTM dispara Lead de
+// Meta + Google Ads + GA4). Antes esta pantalla volvia a disparar el Lead
+// en un useEffect, lo que lo duplicaba. Esta pantalla es solo visual.
+export default function SuccessScreen({ onReset }) {
   return (
     <motion.div
       initial={{ opacity: 0, scale: 0.95 }}
