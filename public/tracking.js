@@ -131,6 +131,14 @@
       first_ts: attr.first_ts,
     };
 
+    // Si el caller va a sacar al usuario de la pagina (wa.me), pasa
+    // opts.onDone: GTM lo llama cuando termino de disparar los tags de
+    // este evento, asi el Lead de Meta sale antes de navegar.
+    if (typeof opts.onDone === "function") {
+      payload.eventCallback = opts.onDone;
+      payload.eventTimeout = 2000;
+    }
+
     window.dataLayer.push(payload);
     return clickId;
   }

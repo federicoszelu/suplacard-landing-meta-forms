@@ -272,9 +272,22 @@ export default function Home() {
       // llama a fbq/gtag directo desde aca: asi no hay pixel duplicado
       // ni logica de medicion repartida entre el codigo y el contenedor.
       // ---------------------------------------------------------------
-      const dispararLead = () => {
-        if (leadEnviadoRef.current) return;
+      // Devuelve una promesa que se resuelve cuando GTM termino de
+      // disparar los tags (eventCallback) o a los 1,5 s como maximo.
+      // Hay que esperarla ANTES de abrirWhatsApp(): en celular (sobre
+      // todo en el navegador de Instagram/Facebook) el popup viene
+      // bloqueado, la pagina navega a wa.me en el acto y el Lead de
+      // Meta se cortaba antes de salir. Siempre resuelve: nunca deja
+      // al cliente sin WhatsApp.
+      const dispararLead = () => new Promise((resolve) => {
+        if (leadEnviadoRef.current) { resolve(); return; }
         leadEnviadoRef.current = true;
+
+        let listo = false;
+        const terminar = () => { if (!listo) { listo = true; resolve(); } };
+        // Margen corto despues del callback para que salga el request del pixel.
+        const onDone = () => setTimeout(terminar, 300);
+        setTimeout(terminar, 1500);
 
         try {
           if (window.SuplacardTracking &&
@@ -284,6 +297,7 @@ export default function Home() {
               kwCode: codigo,
               context: productos.join(", "),
               phone: state.whatsapp,
+              onDone,
             });
           } else if (window.dataLayer) {
             // Fallback si tracking.js no cargo: mismo evento, esquema minimo.
@@ -298,10 +312,17 @@ export default function Home() {
               utm_campaign: atribucion.utm_campaign,
               utm_content: atribucion.utm_content,
               utm_term: atribucion.utm_term,
+              eventCallback: onDone,
+              eventTimeout: 2000,
             });
+          } else {
+            terminar();
           }
-        } catch (err) { console.warn("[Suplacard] whatsapp_click:", err); }
-      };
+        } catch (err) {
+          console.warn("[Suplacard] whatsapp_click:", err);
+          terminar();
+        }
+      });
 
       const abrirWhatsApp = () => {
         const msg = buildMensaje(codigo, clickId, atribucion);
@@ -363,7 +384,7 @@ export default function Home() {
 
         if (errInsert) throw errInsert;
 
-        dispararLead();
+        await dispararLead();
         abrirWhatsApp();
         setSent(true);
       } catch (e) {
@@ -393,7 +414,7 @@ export default function Home() {
         // El lead existe igual: el cliente entra por WhatsApp aunque
         // la fila no se haya guardado. Si no se contara aca, Meta
         // veria menos conversiones de las reales.
-        dispararLead();
+        await dispararLead();
         abrirWhatsApp();
         setSent(true);
       } finally {
