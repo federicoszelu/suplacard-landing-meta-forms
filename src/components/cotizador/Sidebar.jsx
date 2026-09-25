@@ -1,5 +1,8 @@
 import React from "react";
 import { MessageCircle, Phone } from "lucide-react";
+import { urlWhatsAppConRef } from "@/lib/waClick";
+
+const TEXTO_WHATSAPP = "Hola Suplacard, quiero consultar sobre un mueble a medida.";
 
 const PRECISION = {
   "Tengo planos": { base: 70, final: 100, text: "El plano permite validar todo: medidas, materiales y detalles." },
@@ -93,7 +96,12 @@ export default function Sidebar({ state, currentStep, totalSteps }) {
           Un asesor responde por WhatsApp con precio real.
         </p>
         <a
-          href="https://wa.me/5491151359303?text=Hola%20Suplacard%2C%20quiero%20consultar%20sobre%20un%20mueble%20a%20medida."
+          href={`https://wa.me/5491151359303?text=${encodeURIComponent(TEXTO_WHATSAPP)}`}
+          onClick={(e) => {
+            // Se arma en el clic (no en el render) para que cada clic tenga
+            // su propio ref. Ver src/lib/waClick.js.
+            e.currentTarget.href = urlWhatsAppConRef(TEXTO_WHATSAPP, "forms_sidebar");
+          }}
           target="_blank"
           rel="noopener noreferrer"
           className="flex items-center justify-center gap-2 w-full h-11 rounded-full bg-[#151515] text-white text-[13px] font-medium hover:bg-[#333333] transition-colors mb-2"
