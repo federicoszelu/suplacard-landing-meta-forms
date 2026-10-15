@@ -68,6 +68,10 @@ Este landing **no usa Google Tag Manager**. El pixel de Meta y la Google tag est
 | Google tag (GA4) | `G-DC778D6EQN` |
 | Google Ads | `AW-10949447359`, vinculado desde el panel de la Google tag |
 
+**Carga de GTM.** Por velocidad, GTM no carga de entrada: carga con el primer toque, scroll o tecla, o a los 3 s de cargada la pagina (ver `index.html`). El `gtm.start` guarda la hora real de llegada. Si alguna vez hace falta medir rebotes de menos de 3 s, volver al snippet estandar.
+
+**Inicio prerenderizado.** El hero y la barra estan copiados en `index.html` dentro de `#root` para que el celu los muestre antes de que arranque React. Si se cambia el texto o la foto en `HeroSection.jsx` o `Navbar.jsx`, cambiarlo ahi tambien.
+
 **Eventos**
 
 - `PageView` — en `index.html`, al cargar.

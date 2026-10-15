@@ -29,10 +29,10 @@
     --chart-4: 43 74% 66%;
     --chart-5: 27 87% 67%;
     --radius: 1px;
-    --font-heading: 'Montserrat', system-ui, sans-serif;
-    --font-body: 'Montserrat', system-ui, sans-serif;
-    --font-display: 'Montserrat', system-ui, sans-serif;
-    --font-mono: 'Montserrat', system-ui, sans-serif;
+    --font-heading: 'Montserrat', 'Montserrat Fallback', system-ui, sans-serif;
+    --font-body: 'Montserrat', 'Montserrat Fallback', system-ui, sans-serif;
+    --font-display: 'Montserrat', 'Montserrat Fallback', system-ui, sans-serif;
+    --font-mono: 'Montserrat', 'Montserrat Fallback', system-ui, sans-serif;
     --sidebar-background: 0 0% 98%;
     --sidebar-foreground: 240 5.3% 26.1%;
     --sidebar-primary: 240 5.9% 10%;
@@ -96,7 +96,7 @@
    Los titulos van en peso 200, no en serif.
    ─────────────────────────────────────────────────────────── */
 body {
-  font-family: 'Montserrat', system-ui, sans-serif;
+  font-family: 'Montserrat', 'Montserrat Fallback', system-ui, sans-serif;
   font-weight: 300;
   line-height: 1.7;
   letter-spacing: 0.005em;
@@ -156,7 +156,7 @@ body {
 
 /* El isologo nunca lleva tracking ni negrita. */
 .wordmark {
-  font-family: 'Montserrat', system-ui, sans-serif;
+  font-family: 'Montserrat', 'Montserrat Fallback', system-ui, sans-serif;
   font-weight: 400;
   letter-spacing: 0;
 }

@@ -6,7 +6,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@200;300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- La tipografia carga sin bloquear: el celu dibuja con la letra del
+         sistema y cambia a Montserrat apenas llega (antes esperaba ~0,8 s). -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@200;300;400;500;600;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+    <!-- Arial ajustada a las medidas de Montserrat: cuando llega la fuente real
+         el texto no salta de lugar. -->
+    <style>@font-face{font-family:"Montserrat Fallback";src:local("Arial");size-adjust:113.4%;ascent-override:85.4%;descent-override:22.2%;line-gap-override:0%}</style>
+    <noscript><link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@200;300;400;500;600;700&display=swap" rel="stylesheet"></noscript>
     <!-- La primera foto del hero se pide ya, sin esperar a que arranque React. -->
     <link rel="preconnect" href="https://www.suplacard.com">
     <link rel="preload" as="image" href="https://www.suplacard.com/img/hero-placards-m.webp" media="(max-width: 800px)" fetchpriority="high">
@@ -42,11 +48,14 @@
          Sin banner de consentimiento: es una landing de ads y el
          consentimiento se resuelve en las reglas del envio del dato. -->
     <!-- Google Tag Manager -->
-    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-    })(window,document,'script','dataLayer','GTM-PWKQQHVP');</script>
+    <!-- GTM se carga apenas la persona toca, desliza o escribe, o a los 3 s si
+         no hace nada. Antes cargaba de entrada y frenaba ~0,6 s el celu justo
+         mientras se dibujaba la pagina. El dataLayer existe desde el principio:
+         todo lo que se empuje antes (atribucion, eventos) GTM lo procesa al llegar.
+         gtm.start conserva la hora real de llegada a la pagina. -->
+    <script>window.dataLayer=window.dataLayer||[];window.dataLayer.push({'gtm.start':new Date().getTime(),event:'gtm.js'});
+    (function(w,d,l,i){var ok=false,ev=['pointerdown','touchstart','keydown','scroll'];function go(){if(ok)return;ok=true;ev.forEach(function(e){w.removeEventListener(e,go,true)});var f=d.getElementsByTagName('script')[0],j=d.createElement('script');j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i;f.parentNode.insertBefore(j,f)}
+    ev.forEach(function(e){w.addEventListener(e,go,{capture:true,passive:true,once:true})});w.addEventListener('load',function(){setTimeout(go,3000)});w.suplacardCargarGTM=go})(window,document,'dataLayer','GTM-PWKQQHVP');</script>
     <!-- End Google Tag Manager -->
   </head>
   <body>
@@ -55,7 +64,11 @@
       height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <!-- End Google Tag Manager (noscript) -->
 
-    <div id="root"></div>
+    <!-- El inicio ya viene dibujado en el HTML: el celu lo muestra al instante,
+         sin esperar a que se descargue y ejecute React (y GTM). React lo reemplaza
+         por el mismo contenido apenas arranca. Si se cambia el texto o la foto
+         del hero en HeroSection.jsx / Navbar.jsx, cambiarlo aca tambien. -->
+    <div id="root"><div class="min-h-screen bg-[#F9F8F6]"><nav class="fixed top-0 left-0 right-0 z-50 transition-all duration-300 bg-transparent"><div class="max-w-[1440px] mx-auto px-5 sm:px-8 lg:px-14"><div class="flex items-center justify-between h-16 lg:h-[72px]"><a href="https://www.suplacard.com" class="flex items-center gap-2.5"><img src="https://media.base44.com/images/public/6a3a783a8f060b08a350b7f4/caf07a380_SP-iso-negro.png" alt="Suplacard" class="h-8 w-auto"><span class="font-['Montserrat'] text-[17px] uppercase text-[#111111]" style="font-weight: 400; letter-spacing: 0px;">SUPLACARD</span></a><span class="inline-flex items-center justify-center px-7 py-3 bg-[#111111] text-white" style="border-radius: 1px; font-size: 0.68rem; letter-spacing: 0.2em; text-transform: uppercase; font-weight: 500;">Cotizar ahora</span></div></div></nav><section class="relative min-h-[100svh] flex items-end overflow-hidden bg-[#111111]"><picture><source media="(max-width: 800px)" srcset="https://www.suplacard.com/img/hero-placards-m.webp"><img src="https://www.suplacard.com/img/hero-placards.webp" alt="Placard a medida fabricado por Suplacard" fetchpriority="high" decoding="async" class="absolute inset-0 w-full h-full object-cover"></picture><div class="absolute inset-0" style="background: linear-gradient(to top, rgba(12, 12, 12, 0.78), rgba(12, 12, 12, 0.28) 60%, rgba(12, 12, 12, 0.12));"></div><div class="relative z-10 w-full max-w-[1440px] mx-auto px-6 sm:px-10 lg:px-14 pb-16 lg:pb-24"><div><p class="eyebrow mb-6" style="color: rgba(255, 255, 255, 0.8);">Cotizador guiado</p><h1 class="h-display text-white mb-7" style="max-width: 15ch;">Cotizá tu mueble <b>a medida.</b></h1><p class="mb-9" style="font-size: 1.02rem; font-weight: 300; max-width: 44ch; line-height: 1.75; color: rgba(255, 255, 255, 0.85);">Placard, vestidor, cocina o mesada. El formulario se adapta a lo que tenés: plano, medidas, foto o nada. Un asesor real te responde con un precio concreto.</p><span class="btn-sup inline-flex items-center gap-3">Empezar cotización</span><div class="flex gap-2 mt-12"><span class="h-[2px]" style="width: 34px; background: rgb(255, 255, 255);"></span><span class="h-[2px]" style="width: 16px; background: rgba(255, 255, 255, 0.4);"></span><span class="h-[2px]" style="width: 16px; background: rgba(255, 255, 255, 0.4);"></span></div></div></div></section></div></div>
 
     <!-- Captura de atribucion (fbclid/gclid/utm) + wa_click_id, alineado
          con lp.suplacard.com. Expone window.SuplacardTracking. Tiene que
