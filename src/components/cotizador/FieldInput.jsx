@@ -1,7 +1,7 @@
 import React from "react";
 
 export default function FieldInput({ label, type = "text", placeholder, value, onChange, error, children }) {
-  const base = "w-full border border-black/10 bg-[#FAFAF8] px-3.5 py-2.5 text-[14px] rounded-sm outline-none transition-all focus:border-[#151515] focus:bg-white";
+  const base = "w-full border border-black/10 bg-[#FAFAF8] px-3.5 py-2.5 text-[16px] sm:text-[14px] rounded-sm outline-none transition-all focus:border-[#151515] focus:bg-white";
 
   return (
     <div>

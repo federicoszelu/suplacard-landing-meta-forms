@@ -15,6 +15,7 @@ import StepProducto from "@/components/cotizador/steps/StepProducto";
 import StepEntrada from "@/components/cotizador/steps/StepEntrada";
 import StepContacto from "@/components/cotizador/steps/StepContacto";
 import StepResumen from "@/components/cotizador/steps/StepResumen";
+import { avisoMedida } from "@/components/cotizador/MeasureInput";
 
 const supabase = createClient(
   "https://jeeqyynfurdeitnisupi.supabase.co",
@@ -157,6 +158,7 @@ export default function Home() {
           if (!files[p] || files[p].length === 0) { errs[p] = errs[p] || {}; errs[p].archivos = "Adjuntá al menos un archivo"; }
         } else if (config.entrada === "Tengo medidas/fotos") {
           if (!config.ancho || !config.alto || !config.profundidad) { errs[p] = errs[p] || {}; errs[p].medidas = "Completá todas las medidas"; }
+          else if (["ancho", "alto", "profundidad"].some((k) => avisoMedida(config[k], config[k + "Unidad"]))) { errs[p] = errs[p] || {}; errs[p].medidas = "Revisá las medidas"; }
         } else if (config.entrada === "No tengo nada") {
           if (!config.medidaAprox || !config.ambiente) { errs[p] = errs[p] || {}; errs[p].nada = "Completá los campos obligatorios"; }
         }

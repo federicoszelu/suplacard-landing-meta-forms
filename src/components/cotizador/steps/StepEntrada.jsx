@@ -106,7 +106,7 @@ export default function StepEntrada({ state, setState, files, setFiles, errors }
 
               {config.entrada === "Tengo medidas/fotos" && (
                 <div>
-                  <div className="grid grid-cols-3 gap-3 mb-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-4">
                     <MeasureInput
                       label="Ancho *"
                       placeholder="200"
