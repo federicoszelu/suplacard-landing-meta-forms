@@ -8,11 +8,14 @@ import { ArrowDown } from "lucide-react";
 
    Las tres fotos son las de las paginas de producto del sitio, asi
    no se duplican archivos y siempre coinciden con la web. */
+// Van en webp: la version -m (20-40 KB) en el celu y la grande en compu.
+// Antes eran los jpg de 280-480 KB y el celu tardaba segundos en mostrar algo.
+const IMG = "https://www.suplacard.com/img";
 const SLIDES = [
-  { src: "https://www.suplacard.com/img/hero-placards.jpg",   alt: "Placard a medida fabricado por Suplacard" },
-  { src: "https://www.suplacard.com/img/hero-cocinas.jpg",    alt: "Cocina a medida fabricada por Suplacard" },
-  { src: "https://www.suplacard.com/img/hero-vestidores.jpg", alt: "Vestidor a medida fabricado por Suplacard" },
-];
+  { n: "hero-placards",   alt: "Placard a medida fabricado por Suplacard" },
+  { n: "hero-cocinas",    alt: "Cocina a medida fabricada por Suplacard" },
+  { n: "hero-vestidores", alt: "Vestidor a medida fabricado por Suplacard" },
+].map((s) => ({ ...s, src: `${IMG}/${s.n}.webp`, srcM: `${IMG}/${s.n}-m.webp` }));
 
 const DURACION = 5000;
 
@@ -26,26 +29,38 @@ const DATOS = [
 export default function HeroSection({ heroImage, onStart }) {
   const [i, setI] = useState(0);
   const [pausado, setPausado] = useState(false);
+  // Las fotos 2 y 3 se piden recien despues de que cargo la pagina:
+  // asi no compiten con la primera ni con el formulario.
+  const [resto, setResto] = useState(false);
 
   useEffect(() => {
-    if (pausado) return;
+    const t = setTimeout(() => setResto(true), 3000);
+    return () => clearTimeout(t);
+  }, []);
+
+  useEffect(() => {
+    if (pausado || !resto) return;
     const t = setInterval(() => setI((v) => (v + 1) % SLIDES.length), DURACION);
     return () => clearInterval(t);
-  }, [pausado]);
+  }, [pausado, resto]);
 
   return (
     <>
       <section className="relative min-h-[100svh] flex items-end overflow-hidden bg-[#111111]">
         {/* Fotos de fondo, con fundido entre una y otra */}
-        {SLIDES.map((s, idx) => (
-          <img
-            key={s.src}
-            src={s.src}
-            alt={s.alt}
-            loading={idx === 0 ? "eager" : "lazy"}
-            className="absolute inset-0 w-full h-full object-cover transition-opacity duration-[1400ms] ease-in-out"
-            style={{ opacity: idx === i ? 1 : 0 }}
-          />
+        {SLIDES.map((s, idx) => (idx === 0 || resto) && (
+          <picture key={s.n}>
+            <source media="(max-width: 800px)" srcSet={s.srcM} />
+            <img
+              src={s.src}
+              alt={s.alt}
+              // eslint-disable-next-line react/no-unknown-property -- React 18 lo pasa tal cual al HTML
+              fetchpriority={idx === 0 ? "high" : "low"}
+              decoding="async"
+              className="absolute inset-0 w-full h-full object-cover transition-opacity duration-[1400ms] ease-in-out"
+              style={{ opacity: idx === i ? 1 : 0 }}
+            />
+          </picture>
         ))}
 
         {/* Mismo degradado que .page-hero-bg::after del sitio */}
@@ -58,8 +73,10 @@ export default function HeroSection({ heroImage, onStart }) {
         />
 
         <div className="relative z-10 w-full max-w-[1440px] mx-auto px-6 sm:px-10 lg:px-14 pb-16 lg:pb-24">
+          {/* Arranca visible (opacity 1): si arranca en 0, Google cuenta el texto
+              recien cuando termina la animacion y la pagina "tarda" segundos. */}
           <motion.div
-            initial={{ opacity: 0, y: 24 }}
+            initial={{ opacity: 1, y: 16 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
           >
@@ -81,7 +98,7 @@ export default function HeroSection({ heroImage, onStart }) {
                 color: "rgba(255,255,255,0.85)",
               }}
             >
-              Placard, vestidor o cocina. El formulario se adapta a lo que tenés:
+              Placard, vestidor, cocina o mesada. El formulario se adapta a lo que tenés:
               plano, medidas, foto o nada. Un asesor real te responde con un
               precio concreto.
             </p>
@@ -95,7 +112,7 @@ export default function HeroSection({ heroImage, onStart }) {
             <div className="flex gap-2 mt-12">
               {SLIDES.map((s, idx) => (
                 <button
-                  key={s.src}
+                  key={s.n}
                   aria-label={`Ver foto ${idx + 1} de ${SLIDES.length}`}
                   onClick={() => { setI(idx); setPausado(true); }}
                   className="h-[2px] transition-all duration-500"

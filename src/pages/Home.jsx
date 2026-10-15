@@ -16,6 +16,7 @@ import StepEntrada from "@/components/cotizador/steps/StepEntrada";
 import StepContacto from "@/components/cotizador/steps/StepContacto";
 import StepResumen from "@/components/cotizador/steps/StepResumen";
 import { avisoMedida } from "@/components/cotizador/MeasureInput";
+import { resumenMesada } from "@/components/cotizador/MesadaFields";
 
 const supabase = createClient(
   "https://jeeqyynfurdeitnisupi.supabase.co",
@@ -82,9 +83,11 @@ if (typeof window !== "undefined") capturarAtribucion();
 const IMG = "https://www.suplacard.com/img";
 const HERO_IMG = `${IMG}/hero.jpg`;
 const PRODUCT_IMAGES = {
-  Placard:  Array.from({ length: 7 }, (_, i) => `${IMG}/placard-0${i + 1}.jpg`),
-  Vestidor: Array.from({ length: 8 }, (_, i) => `${IMG}/vestidor-0${i + 1}.jpg`),
-  Cocina:   Array.from({ length: 8 }, (_, i) => `${IMG}/cocina-0${i + 1}.jpg`),
+  // webp de 800 px: 7-40 KB cada una contra 60-140 KB de los jpg.
+  Placard:  Array.from({ length: 7 }, (_, i) => `${IMG}/placard-0${i + 1}-800.webp`),
+  Vestidor: Array.from({ length: 8 }, (_, i) => `${IMG}/vestidor-0${i + 1}-800.webp`),
+  Cocina:   Array.from({ length: 8 }, (_, i) => `${IMG}/cocina-0${i + 1}-800.webp`),
+  Mesada:   [`${IMG}/hero-mesadas-m.webp`],
 };
 
 const generateCodigo = () => {
@@ -157,10 +160,12 @@ export default function Home() {
         else if (config.entrada === "Tengo planos") {
           if (!files[p] || files[p].length === 0) { errs[p] = errs[p] || {}; errs[p].archivos = "Adjuntá al menos un archivo"; }
         } else if (config.entrada === "Tengo medidas/fotos") {
-          if (!config.ancho || !config.alto || !config.profundidad) { errs[p] = errs[p] || {}; errs[p].medidas = "Completá todas las medidas"; }
-          else if (["ancho", "alto", "profundidad"].some((k) => avisoMedida(config[k], config[k + "Unidad"]))) { errs[p] = errs[p] || {}; errs[p].medidas = "Revisá las medidas"; }
+          // La mesada no tiene alto: largo (ancho) y profundidad.
+          const dims = p === "Mesada" ? ["ancho", "profundidad"] : ["ancho", "alto", "profundidad"];
+          if (dims.some((k) => !config[k])) { errs[p] = errs[p] || {}; errs[p].medidas = "Completá todas las medidas"; }
+          else if (dims.some((k) => avisoMedida(config[k], config[k + "Unidad"]))) { errs[p] = errs[p] || {}; errs[p].medidas = "Revisá las medidas"; }
         } else if (config.entrada === "No tengo nada") {
-          if (!config.medidaAprox || !config.ambiente) { errs[p] = errs[p] || {}; errs[p].nada = "Completá los campos obligatorios"; }
+          if (!config.medidaAprox || (p !== "Mesada" && !config.ambiente)) { errs[p] = errs[p] || {}; errs[p].nada = "Completá los campos obligatorios"; }
         }
       });
     } else if (step === CONTACTO_STEP) {
@@ -191,8 +196,14 @@ export default function Home() {
       const cfg = configs[p] || {};
       lines.push("");
       lines.push(`📦 *PRODUCTO ${idx + 1}: ${p}*`);
+      if (p === "Mesada") resumenMesada(cfg).forEach((l) => lines.push(`🪨 ${l}`));
       if (cfg.entrada) lines.push(`🔹 ${cfg.entrada}`);
-      if (cfg.entrada === "Tengo medidas/fotos") {
+      if (cfg.entrada === "Tengo medidas/fotos" && p === "Mesada") {
+        const parts = [];
+        if (cfg.ancho) parts.push(`Largo: ${cfg.ancho}${cfg.anchoUnidad || "cm"}`);
+        if (cfg.profundidad) parts.push(`Prof: ${cfg.profundidad}${cfg.profundidadUnidad || "cm"}`);
+        if (parts.length) lines.push(`📐 ${parts.join(" · ")}`);
+      } else if (cfg.entrada === "Tengo medidas/fotos") {
         const parts = [];
         if (cfg.alto) parts.push(`Alto: ${cfg.alto}${cfg.altoUnidad || "cm"}`);
         if (cfg.ancho) parts.push(`Ancho: ${cfg.ancho}${cfg.anchoUnidad || "cm"}`);
@@ -347,16 +358,18 @@ export default function Home() {
 
         const medidasParts = productos.map((p) => {
           const cfg = configs[p] || {};
+          if (cfg.entrada === "Tengo medidas/fotos" && p === "Mesada")
+            return `${p}: largo ${cfg.ancho || "-"}${cfg.anchoUnidad || "cm"} x prof. ${cfg.profundidad || "-"}${cfg.profundidadUnidad || "cm"}`;
           if (cfg.entrada === "Tengo medidas/fotos")
             return `${p}: ${cfg.alto || "-"}${cfg.altoUnidad || "cm"} x ${cfg.ancho || "-"}${cfg.anchoUnidad || "cm"} x ${cfg.profundidad || "-"}${cfg.profundidadUnidad || "cm"}`;
           if (cfg.entrada === "No tengo nada")
-            return `${p}: aprox. ${cfg.medidaAprox || "-"} (${cfg.ambiente || "-"})`;
+            return `${p}: aprox. ${cfg.medidaAprox || "-"} (${cfg.ambiente || cfg.uso || "-"})`;
           return null;
         }).filter(Boolean);
 
         const descripcionParts = productos.map((p) => {
           const cfg = configs[p] || {};
-          const desc = cfg.descripcion || cfg.descripcionNada;
+          const desc = [...(p === "Mesada" ? resumenMesada(cfg) : []), cfg.descripcion || cfg.descripcionNada].filter(Boolean).join(". ");
           return desc ? `${p}: ${desc}` : null;
         }).filter(Boolean);
 

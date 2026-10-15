@@ -258,16 +258,28 @@ export default function Consulta() {
                           <span className="text-[11px] text-[#151515]/40 mb-0.5">Punto de partida</span>
                           <span className="text-[14px] text-[#151515] font-medium">{cfg.entrada || quote.entrada || "-"}</span>
                         </div>
+                        {p === "Mesada" && [
+                          ["Uso", cfg.uso],
+                          ["Material", cfg.material],
+                          ["Color", cfg.color],
+                          ["Forma", cfg.forma],
+                          ["Lleva", (cfg.calados || []).join(", ")],
+                        ].filter(([, v]) => v).map(([k, v]) => (
+                          <div key={k} className="flex flex-col">
+                            <span className="text-[11px] text-[#151515]/40 mb-0.5">{k}</span>
+                            <span className="text-[14px] text-[#151515] font-medium">{v}</span>
+                          </div>
+                        ))}
                         {cfg.entrada === "Tengo medidas/fotos" && (
                           <>
                             <div className="flex flex-col">
-                              <span className="text-[11px] text-[#151515]/40 mb-0.5">Ancho</span>
+                              <span className="text-[11px] text-[#151515]/40 mb-0.5">{p === "Mesada" ? "Largo" : "Ancho"}</span>
                               <span className="text-[14px] text-[#151515] font-medium">{cfg.ancho ? `${cfg.ancho} ${cfg.anchoUnidad || "cm"}` : "-"}</span>
                             </div>
-                            <div className="flex flex-col">
+                            {p !== "Mesada" && <div className="flex flex-col">
                               <span className="text-[11px] text-[#151515]/40 mb-0.5">Alto</span>
                               <span className="text-[14px] text-[#151515] font-medium">{cfg.alto ? `${cfg.alto} ${cfg.altoUnidad || "cm"}` : "-"}</span>
-                            </div>
+                            </div>}
                             <div className="flex flex-col">
                               <span className="text-[11px] text-[#151515]/40 mb-0.5">Profundidad</span>
                               <span className="text-[14px] text-[#151515] font-medium">{cfg.profundidad ? `${cfg.profundidad} ${cfg.profundidadUnidad || "cm"}` : "-"}</span>

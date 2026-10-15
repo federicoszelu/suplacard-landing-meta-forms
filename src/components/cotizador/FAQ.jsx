@@ -16,7 +16,7 @@ const FAQS = [
   },
   {
     q: "¿Qué muebles a medida fabrica Suplacard?",
-    a: "Placards, vestidores, cocinas, frentes, interiores y vanitorios a medida en Buenos Aires.",
+    a: "Placards, vestidores, cocinas, frentes, interiores y vanitorios a medida en Buenos Aires. También mesadas de granito, cuarzo, Neolith, Purastone y mármol, solas o junto con la cocina.",
   },
 ];
 

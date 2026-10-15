@@ -8,9 +8,10 @@ const PRODUCTOS = [
   { id: "Placard", eyebrow: "Dormitorio", description: "Placard a medida con distribución personalizada." },
   { id: "Vestidor", eyebrow: "Walk-in", description: "Vestidor abierto o cerrado, a tu medida." },
   { id: "Cocina", eyebrow: "Cocina", description: "Cocina a medida con isla, bajo mesada y alacena." },
+  { id: "Mesada", eyebrow: "Marmolería", description: "Granito, cuarzo, Neolith o mármol. Para cocina, baño o lavadero." },
 ];
 
-const ALL_PRODUCTOS = ["Placard", "Vestidor", "Cocina", "Vanitorio"];
+const ALL_PRODUCTOS = ["Placard", "Vestidor", "Cocina", "Mesada", "Vanitorio"];
 
 export default function StepProducto({ state, setState, images, errors }) {
   const productos = state.productos || [];
@@ -43,7 +44,7 @@ export default function StepProducto({ state, setState, images, errors }) {
         hint="Elegí un producto o marcá 'Más de un producto' para cotizar varias cosas en una sola consulta."
       />
 
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-3 mb-4">
         {PRODUCTOS.map((p, idx) => (
           <OptionCard
             key={p.id}
@@ -80,7 +81,7 @@ export default function StepProducto({ state, setState, images, errors }) {
           </div>
           <div>
             <span className="font-display text-[16px] text-[#151515]">Más de un producto</span>
-            <p className="text-[12px] text-[#151515]/45 mt-0.5">Cotizá varios muebles en una sola consulta. El formulario se repite para cada uno.</p>
+            <p className="text-[12px] text-[#151515]/45 mt-0.5">Ej: cocina + mesada. Cotizá varias cosas en una sola consulta; el formulario se repite para cada una.</p>
           </div>
         </div>
       </button>

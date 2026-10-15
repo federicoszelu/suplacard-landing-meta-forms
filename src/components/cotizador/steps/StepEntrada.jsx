@@ -4,6 +4,7 @@ import OptionCard from "../OptionCard";
 import FieldInput from "../FieldInput";
 import MeasureInput from "../MeasureInput";
 import FileUpload from "../FileUpload";
+import MesadaFields from "../MesadaFields";
 import { Plus } from "lucide-react";
 
 const ENTRADAS = [
@@ -68,6 +69,7 @@ export default function StepEntrada({ state, setState, files, setFiles, errors }
           const config = configs[product] || {};
           const productFiles = files[product] || [];
           const productErrors = errors?.[product] || {};
+          const esMesada = product === "Mesada";
 
           return (
             <div key={product}>
@@ -80,6 +82,13 @@ export default function StepEntrada({ state, setState, files, setFiles, errors }
                 </span>
               </div>
 
+              {esMesada && (
+                <MesadaFields config={config} update={(field, value) => updateConfig(product, field, value)} />
+              )}
+
+              {esMesada && (
+                <p className="font-mono text-[10px] tracking-[0.12em] uppercase text-[#151515]/40 mb-2">¿Tenés medidas?</p>
+              )}
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-5">
                 {ENTRADAS.map((e) => (
                   <OptionCard
@@ -106,9 +115,9 @@ export default function StepEntrada({ state, setState, files, setFiles, errors }
 
               {config.entrada === "Tengo medidas/fotos" && (
                 <div>
-                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-4">
+                  <div className={`grid grid-cols-1 ${esMesada ? "sm:grid-cols-2" : "sm:grid-cols-3"} gap-3 mb-4`}>
                     <MeasureInput
-                      label="Ancho *"
+                      label={esMesada ? "Largo *" : "Ancho *"}
                       placeholder="200"
                       value={config.ancho}
                       unit={config.anchoUnidad}
@@ -116,7 +125,7 @@ export default function StepEntrada({ state, setState, files, setFiles, errors }
                       onUnitChange={(v) => updateConfig(product, "anchoUnidad", v)}
                       error={productErrors.medidas && !config.ancho ? "Requerido" : ""}
                     />
-                    <MeasureInput
+                    {!esMesada && <MeasureInput
                       label="Alto *"
                       placeholder="240"
                       value={config.alto}
@@ -124,10 +133,10 @@ export default function StepEntrada({ state, setState, files, setFiles, errors }
                       onChange={(v) => updateConfig(product, "alto", v)}
                       onUnitChange={(v) => updateConfig(product, "altoUnidad", v)}
                       error={productErrors.medidas && !config.alto ? "Requerido" : ""}
-                    />
+                    />}
                     <MeasureInput
                       label="Profundidad *"
-                      placeholder="60"
+                      placeholder={esMesada ? "62" : "60"}
                       value={config.profundidad}
                       unit={config.profundidadUnidad}
                       onChange={(v) => updateConfig(product, "profundidad", v)}
@@ -146,9 +155,9 @@ export default function StepEntrada({ state, setState, files, setFiles, errors }
                   />
 
                   <FieldInput
-                    label="Materiales, herrajes y distribución interna"
+                    label={esMesada ? "Contanos más (opcional)" : "Materiales, herrajes y distribución interna"}
                     type="textarea"
-                    placeholder="Describí qué materiales te interesan, qué herrajes buscás, cómo querés distribuir el interior..."
+                    placeholder={esMesada ? "Tipo de bacha, espesor, si es obra nueva o reforma, si son varios tramos..." : "Describí qué materiales te interesan, qué herrajes buscás, cómo querés distribuir el interior..."}
                     value={config.descripcion}
                     onChange={(v) => updateConfig(product, "descripcion", v)}
                   />
@@ -157,21 +166,21 @@ export default function StepEntrada({ state, setState, files, setFiles, errors }
 
               {config.entrada === "No tengo nada" && (
                 <div>
-                  <div className="grid grid-cols-2 gap-3 mb-4">
+                  <div className={`grid ${esMesada ? "grid-cols-1" : "grid-cols-1 sm:grid-cols-2"} gap-3 mb-4`}>
                     <FieldInput
                       label="Medida aproximada *"
-                      placeholder="Ej: 2 metros de ancho"
+                      placeholder={esMesada ? "Ej: 2,40 m de largo" : "Ej: 2 metros de ancho"}
                       value={config.medidaAprox}
                       onChange={(v) => updateConfig(product, "medidaAprox", v)}
                       error={productErrors.nada && !config.medidaAprox ? "Requerido" : ""}
                     />
-                    <FieldInput
+                    {!esMesada && <FieldInput
                       label="Ambiente *"
                       placeholder="Ej: Dormitorio, cocina..."
                       value={config.ambiente}
                       onChange={(v) => updateConfig(product, "ambiente", v)}
                       error={productErrors.nada && !config.ambiente ? "Requerido" : ""}
-                    />
+                    />}
                   </div>
 
                   <FieldInput

@@ -1,5 +1,6 @@
 import React from "react";
 import StepKicker from "../StepKicker";
+import { resumenMesada } from "../MesadaFields";
 
 const formatWhatsApp = (num) => {
   if (!num) return "";
@@ -44,10 +45,19 @@ export default function StepResumen({ state, files }) {
                 </span>
               </div>
               <div className="space-y-2 text-[13px]">
+                {p === "Mesada" && resumenMesada(cfg).map((l) => {
+                  const [k, ...v] = l.split(": ");
+                  return <Row key={k} label={k}>{v.join(": ")}</Row>;
+                })}
                 {cfg.entrada && (
                   <Row label="Punto de partida">{cfg.entrada}</Row>
                 )}
-                {cfg.entrada === "Tengo medidas/fotos" && (cfg.alto || cfg.ancho || cfg.profundidad) && (
+                {p === "Mesada" && cfg.entrada === "Tengo medidas/fotos" && (cfg.ancho || cfg.profundidad) && (
+                  <Row label="Medidas">
+                    Largo {cfg.ancho || "-"}{cfg.anchoUnidad || "cm"} · Prof. {cfg.profundidad || "-"}{cfg.profundidadUnidad || "cm"}
+                  </Row>
+                )}
+                {p !== "Mesada" && cfg.entrada === "Tengo medidas/fotos" && (cfg.alto || cfg.ancho || cfg.profundidad) && (
                   <Row label="Medidas">
                     Alto {cfg.alto || "-"}{cfg.altoUnidad || "cm"} · Ancho {cfg.ancho || "-"}{cfg.anchoUnidad || "cm"} · Prof. {cfg.profundidad || "-"}{cfg.profundidadUnidad || "cm"}
                   </Row>
