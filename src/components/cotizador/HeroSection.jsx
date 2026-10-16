@@ -24,9 +24,9 @@ const SLIDES = [
 const DURACION = 5000;
 
 const DATOS = [
-  { n: "30+",      l: "Años de trayectoria" },
+  { n: "+30",      l: "Años de trayectoria" },
   { n: "5",        l: "Showrooms en CABA y GBA" },
-  { n: "10.000+",  l: "Proyectos entregados" },
+  { n: "+10.000",  l: "Proyectos entregados" },
   { n: "Propia",   l: "Fábrica en Buenos Aires" },
 ];
 
