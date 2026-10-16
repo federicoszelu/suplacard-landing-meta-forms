@@ -70,7 +70,9 @@ Este landing **no usa Google Tag Manager**. El pixel de Meta y la Google tag est
 
 **Carga de GTM.** Por velocidad, GTM no carga de entrada: carga con el primer toque, scroll o tecla, o a los 5 s de cargada la pagina (ver `index.html`). El `gtm.start` guarda la hora real de llegada. Si alguna vez hace falta medir rebotes de menos de 5 s, volver al snippet estandar.
 
-**Inicio prerenderizado.** El hero y la barra estan copiados en `index.html` dentro de `#root` para que el celu los muestre antes de que arranque React. Si se cambia el texto o la foto en `HeroSection.jsx` o `Navbar.jsx`, cambiarlo ahi tambien.
+**Inicio fijo en el HTML.** La barra y el hero (`#inicio`) estan en `index.html`, FUERA de `#root`: React no los reemplaza, solo les da comportamiento (`Navbar.jsx` y `HeroSection.jsx` no dibujan nada). En `/consulta` y `/terminos` un script los saca antes de dibujar. Si se cambia el texto o la foto del inicio, se cambia en `index.html`.
+
+**Arranque diferido.** `main.jsx` pesa 1 KB y carga la app (`arranque.jsx`) despues del primer dibujo. Fotos propias en `public/img` (hero celu 640/800/1000, compu 1280/1920/2560, tarjetas 600/800/1200). Montserrat propia en `public/fonts`, precargada, con `font-display: optional` para que el titulo no se redibuje. Lighthouse en vivo: 97-99 en celu, tablet y compu.
 
 **Eventos**
 
