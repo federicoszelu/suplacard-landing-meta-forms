@@ -473,7 +473,7 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-[#F9F8F6]">
       <Navbar onCotizar={scrollToCotizador} />
-      <HeroSection heroImage={HERO_IMG} onStart={scrollToCotizador} />
+      <HeroSection onStart={scrollToCotizador} />
       <section ref={cotizadorRef} className="scroll-mt-20 max-w-[1440px] mx-auto px-5 sm:px-8 lg:px-14 py-10 lg:py-16">
         <div className="grid grid-cols-1 lg:grid-cols-[1fr_360px] gap-6 items-start">
           <div className="border border-black/8 bg-white rounded-sm overflow-hidden">
