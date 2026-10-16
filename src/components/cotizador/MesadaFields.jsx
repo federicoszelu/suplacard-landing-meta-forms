@@ -4,7 +4,7 @@ import CheckOption from "./CheckOption";
 
 // Mismo catalogo que suplacard.com/contacto (MESADA_CATALOGO) y /mesadas/.
 // Si se agrega un color alla, agregarlo aca tambien.
-// Las muestras son SVG livianos de suplacard.com y se piden recien cuando
+// Las muestras son fotos reales (webp de 200 px, ~6 KB) de suplacard.com y se piden recien cuando
 // la persona elige Mesada: no pesan al abrir el cotizador.
 const IMG = "https://www.suplacard.com/img/mesadas";
 
@@ -28,7 +28,7 @@ const CALADOS = ["Bacha", "Anafe", "Grifería", "Zócalo", "Retirar la mesada vi
 const slug = (s) => (s || "item").toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "")
   .replace(/[^a-z0-9]/g, "-").replace(/-+/g, "-").replace(/^-|-$/g, "");
 
-const muestra = (material, color) => `${IMG}/${MESADA_CATALOGO[material].s}/${slug(color)}.svg`;
+const muestra = (material, color) => `${IMG}/${MESADA_CATALOGO[material].s}/${slug(color)}-200.webp`;
 
 const Label = ({ children }) => (
   <p className="font-mono text-[10px] tracking-[0.12em] uppercase text-[#151515]/40 mb-2">{children}</p>
