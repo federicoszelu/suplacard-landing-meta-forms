@@ -20,7 +20,7 @@ const SLIDES = [
   ...s,
   src: `/img/${s.n}-1920.webp`,
   srcSet: `/img/${s.n}-1280.webp 1280w, /img/${s.n}-1920.webp 1920w, /img/${s.n}-2560.webp 2560w`,
-  srcSetM: `/img/${s.n}-m-640.webp 640w, /img/${s.n}-m-1000.webp 1000w`,
+  srcSetM: `/img/${s.n}-m-640.webp 640w, /img/${s.n}-m-800.webp 800w, /img/${s.n}-m-1000.webp 1000w`,
 }));
 
 const DURACION = 5000;
@@ -62,8 +62,6 @@ export default function HeroSection({ heroImage, onStart }) {
               srcSet={s.srcSet}
               sizes="100vw"
               alt={s.alt}
-              // eslint-disable-next-line react/no-unknown-property -- React 18 lo pasa tal cual al HTML
-              fetchpriority={idx === 0 ? "high" : "low"}
               decoding="async"
               className="absolute inset-0 w-full h-full object-cover transition-opacity duration-[1400ms] ease-in-out"
               style={{ opacity: idx === i ? 1 : 0 }}
