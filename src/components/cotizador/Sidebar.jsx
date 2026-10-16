@@ -36,7 +36,7 @@ export default function Sidebar({ state, currentStep, totalSteps }) {
     <aside className="space-y-4">
       {/* Precision card */}
       <div className="bg-[#151515] text-white rounded-sm p-6">
-        <p className="font-mono text-[10px] tracking-[0.14em] uppercase text-white/35 mb-1.5">
+        <p className="font-mono text-[10px] tracking-[0.14em] uppercase text-white/60 mb-1.5">
           Precisión de cotización
         </p>
         <h4 className="font-display text-[24px] font-light mb-4">
@@ -55,7 +55,7 @@ export default function Sidebar({ state, currentStep, totalSteps }) {
               key={r.label}
               className="flex justify-between items-center border-t border-white/8 py-2.5"
             >
-              <span className="text-[13px] text-white/40">{r.label}</span>
+              <span className="text-[13px] text-white/60">{r.label}</span>
               <span className="text-[12px] font-medium text-white text-right max-w-[55%] truncate">
                 {r.value || "—"}
               </span>

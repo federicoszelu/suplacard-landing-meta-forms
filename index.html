@@ -42,14 +42,14 @@
          Sin banner de consentimiento: es una landing de ads y el
          consentimiento se resuelve en las reglas del envio del dato. -->
     <!-- Google Tag Manager -->
-    <!-- GTM se carga apenas la persona toca, desliza o escribe, o a los 3 s si
+    <!-- GTM se carga apenas la persona toca, desliza o escribe, o a los 5 s si
          no hace nada. Antes cargaba de entrada y frenaba ~0,6 s el celu justo
          mientras se dibujaba la pagina. El dataLayer existe desde el principio:
          todo lo que se empuje antes (atribucion, eventos) GTM lo procesa al llegar.
          gtm.start conserva la hora real de llegada a la pagina. -->
     <script>window.dataLayer=window.dataLayer||[];window.dataLayer.push({'gtm.start':new Date().getTime(),event:'gtm.js'});
     (function(w,d,l,i){var ok=false,ev=['pointerdown','touchstart','keydown','scroll'];function go(){if(ok)return;ok=true;ev.forEach(function(e){w.removeEventListener(e,go,true)});var f=d.getElementsByTagName('script')[0],j=d.createElement('script');j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i;f.parentNode.insertBefore(j,f)}
-    ev.forEach(function(e){w.addEventListener(e,go,{capture:true,passive:true,once:true})});w.addEventListener('load',function(){setTimeout(go,3000)});w.suplacardCargarGTM=go})(window,document,'dataLayer','GTM-PWKQQHVP');</script>
+    ev.forEach(function(e){w.addEventListener(e,go,{capture:true,passive:true,once:true})});w.addEventListener('load',function(){setTimeout(go,5000)});w.suplacardCargarGTM=go})(window,document,'dataLayer','GTM-PWKQQHVP');</script>
     <!-- End Google Tag Manager -->
   </head>
   <body>
