@@ -31,7 +31,7 @@ const slug = (s) => (s || "item").toLowerCase().normalize("NFD").replace(/[̀-ͯ
 const muestra = (material, color) => `${IMG}/${MESADA_CATALOGO[material].s}/${slug(color)}-200.webp`;
 
 const Label = ({ children }) => (
-  <p className="font-mono text-[10px] tracking-[0.12em] uppercase text-[#151515]/40 mb-2">{children}</p>
+  <p className="font-mono text-[10px] tracking-[0.12em] uppercase text-[#151515]/[0.66] mb-2">{children}</p>
 );
 
 const Chip = ({ label, on, onClick }) => (
@@ -95,7 +95,7 @@ export default function MesadaFields({ config, update }) {
                 {c ? (
                   <img src={muestra(m, c.c[0])} alt="" width="44" height="44" loading="lazy" decoding="async" className="w-11 h-11 rounded-full object-cover" />
                 ) : (
-                  <span className="w-11 h-11 rounded-full border border-dashed border-black/25 flex items-center justify-center text-[18px] text-[#151515]/50">?</span>
+                  <span className="w-11 h-11 rounded-full border border-dashed border-black/25 flex items-center justify-center text-[18px] text-[#151515]/[0.66]">?</span>
                 )}
                 <span className="text-[11px] leading-tight text-[#151515] break-words">{c ? m : "No sé, asesorame"}</span>
                 {on && (
@@ -125,6 +125,8 @@ export default function MesadaFields({ config, update }) {
                 >
                   <img
                     src={muestra(config.material, col)}
+                    srcSet={`${muestra(config.material, col)} 200w, ${muestra(config.material, col).replace("-200.webp", "-400.webp")} 400w`}
+                    sizes="76px"
                     alt=""
                     width="76"
                     height="76"
@@ -137,7 +139,7 @@ export default function MesadaFields({ config, update }) {
               );
             })}
           </div>
-          <p className="text-[11px] text-[#151515]/40 mt-1">Muestras orientativas. El asesor te muestra la placa real.</p>
+          <p className="text-[11px] text-[#151515]/[0.66] mt-1">Muestras orientativas. El asesor te muestra la placa real.</p>
         </div>
       )}
 

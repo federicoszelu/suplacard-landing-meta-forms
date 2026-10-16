@@ -8,14 +8,20 @@ import { ArrowDown } from "lucide-react";
 
    Las tres fotos son las de las paginas de producto del sitio, asi
    no se duplican archivos y siempre coinciden con la web. */
-// Van en webp: la version -m (20-40 KB) en el celu y la grande en compu.
-// Antes eran los jpg de 280-480 KB y el celu tardaba segundos en mostrar algo.
-const IMG = "https://www.suplacard.com/img";
+// Fotos propias de este dominio (public/img, generadas desde los originales de
+// suplacard.com en alta resolucion). El navegador elige el tamano justo para la
+// pantalla: en el celu un recorte vertical de 640 o 1000 px, en compu 1280/1920/2560.
+// Antes el celu estiraba un 900x1200 muy comprimido y se veia pixelado.
 const SLIDES = [
   { n: "hero-placards",   alt: "Placard a medida fabricado por Suplacard" },
   { n: "hero-cocinas",    alt: "Cocina a medida fabricada por Suplacard" },
   { n: "hero-vestidores", alt: "Vestidor a medida fabricado por Suplacard" },
-].map((s) => ({ ...s, src: `${IMG}/${s.n}.webp`, srcM: `${IMG}/${s.n}-m.webp` }));
+].map((s) => ({
+  ...s,
+  src: `/img/${s.n}-1920.webp`,
+  srcSet: `/img/${s.n}-1280.webp 1280w, /img/${s.n}-1920.webp 1920w, /img/${s.n}-2560.webp 2560w`,
+  srcSetM: `/img/${s.n}-m-640.webp 640w, /img/${s.n}-m-1000.webp 1000w`,
+}));
 
 const DURACION = 5000;
 
@@ -50,9 +56,11 @@ export default function HeroSection({ heroImage, onStart }) {
         {/* Fotos de fondo, con fundido entre una y otra */}
         {SLIDES.map((s, idx) => (idx === 0 || resto) && (
           <picture key={s.n}>
-            <source media="(max-width: 800px)" srcSet={s.srcM} />
+            <source media="(max-width: 800px)" srcSet={s.srcSetM} sizes="100vw" />
             <img
               src={s.src}
+              srcSet={s.srcSet}
+              sizes="100vw"
               alt={s.alt}
               // eslint-disable-next-line react/no-unknown-property -- React 18 lo pasa tal cual al HTML
               fetchpriority={idx === 0 ? "high" : "low"}
@@ -149,7 +157,7 @@ export default function HeroSection({ heroImage, onStart }) {
                     fontSize: "0.64rem",
                     letterSpacing: "0.24em",
                     textTransform: "uppercase",
-                    color: "#A8A8A8",
+                    color: "#767676",
                     marginTop: "1rem",
                   }}
                 >

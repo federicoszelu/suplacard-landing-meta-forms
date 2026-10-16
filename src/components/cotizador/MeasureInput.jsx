@@ -18,7 +18,7 @@ export default function MeasureInput({ label, placeholder, value, unit, onChange
   return (
     <div>
       {label && (
-        <label className="block font-mono text-[10px] tracking-[0.12em] uppercase text-[#151515]/40 mb-1.5">
+        <label className="block font-mono text-[10px] tracking-[0.12em] uppercase text-[#151515]/[0.66] mb-1.5">
           {label}
         </label>
       )}
@@ -46,7 +46,7 @@ export default function MeasureInput({ label, placeholder, value, unit, onChange
               <option key={u} value={u}>{u}</option>
             ))}
           </select>
-          <ChevronDown size={12} className="absolute right-2 top-1/2 -translate-y-1/2 pointer-events-none text-[#151515]/40" />
+          <ChevronDown size={12} className="absolute right-2 top-1/2 -translate-y-1/2 pointer-events-none text-[#151515]/[0.66]" />
         </div>
       </div>
       {error && <p className="text-[11px] text-[#9b4d3d] mt-1">{error}</p>}

@@ -78,17 +78,17 @@ export default function Terminos() {
   return (
     <div className="min-h-screen bg-white">
       <div className="max-w-[800px] mx-auto px-6 sm:px-10 py-16 sm:py-24">
-        <p className="font-mono text-[11px] tracking-[0.16em] uppercase text-[#7A7A7A] mb-4">
+        <p className="font-mono text-[11px] tracking-[0.16em] uppercase text-[#666666] mb-4">
           Documento legal
         </p>
 
         <h1 className="font-display text-[clamp(2rem,5vw,3rem)] font-light leading-[1.05] tracking-[-0.03em] text-[#151515] mb-2">
           Términos y Condiciones
         </h1>
-        <p className="text-[15px] text-[#151515]/50 mb-1">
+        <p className="text-[15px] text-[#151515]/[0.66] mb-1">
           Formulario de Cotización Online — Suplacard
         </p>
-        <p className="text-[13px] text-[#151515]/40 mb-12">
+        <p className="text-[13px] text-[#151515]/[0.66] mb-12">
           BRIELVA S.A. · presupuestos@suplacard.com · Última actualización: Junio 2025
         </p>
 
@@ -113,10 +113,10 @@ export default function Terminos() {
           <p className="font-display text-[18px] font-medium text-[#151515] mb-1">
             BRIELVA S.A. — SUPLACARD
           </p>
-          <p className="text-[13px] text-[#151515]/50">
+          <p className="text-[13px] text-[#151515]/[0.66]">
             presupuestos@suplacard.com · +54 9 11 5135-9303 · www.suplacard.com
           </p>
-          <p className="text-[12px] text-[#151515]/35 mt-3">Versión Junio 2025</p>
+          <p className="text-[12px] text-[#151515]/[0.66] mt-3">Versión Junio 2025</p>
         </div>
       </div>
     </div>

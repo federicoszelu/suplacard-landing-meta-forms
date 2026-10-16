@@ -81,14 +81,14 @@ export default function StepProducto({ state, setState, images, errors }) {
           </div>
           <div>
             <span className="font-display text-[16px] text-[#151515]">Más de un producto</span>
-            <p className="text-[12px] text-[#151515]/45 mt-0.5">Ej: cocina + mesada. Cotizá varias cosas en una sola consulta; el formulario se repite para cada una.</p>
+            <p className="text-[12px] text-[#151515]/[0.66] mt-0.5">Ej: cocina + mesada. Cotizá varias cosas en una sola consulta; el formulario se repite para cada una.</p>
           </div>
         </div>
       </button>
 
       {multiMode && (
         <div className="mt-4 p-4 bg-[#FAFAF8] border border-black/8 rounded-sm">
-          <p className="font-mono text-[10px] tracking-[0.12em] uppercase text-[#7A7A7A] mb-3">
+          <p className="font-mono text-[10px] tracking-[0.12em] uppercase text-[#666666] mb-3">
             Seleccioná los productos
           </p>
           <div className="grid grid-cols-2 gap-2">

@@ -66,7 +66,7 @@ export default function Sidebar({ state, currentStep, totalSteps }) {
 
       {/* How it works */}
       <div className="border border-black/8 rounded-sm p-6 bg-white">
-        <p className="font-mono text-[10px] tracking-[0.12em] uppercase text-[#7A7A7A] mb-1.5">
+        <p className="font-mono text-[10px] tracking-[0.12em] uppercase text-[#666666] mb-1.5">
           Cómo funciona
         </p>
         <h4 className="font-display text-[22px] font-light mb-4">3 caminos de entrada</h4>
@@ -77,7 +77,7 @@ export default function Sidebar({ state, currentStep, totalSteps }) {
             { n: "03", text: "Sin nada: un asesor guía desde cero." },
           ].map((item) => (
             <div key={item.n} className="flex items-start gap-3 text-[13px]">
-              <span className="w-6 h-6 shrink-0 rounded-full bg-[#F0EFEB] flex items-center justify-center font-mono text-[10px] text-[#151515]/40">
+              <span className="w-6 h-6 shrink-0 rounded-full bg-[#F0EFEB] flex items-center justify-center font-mono text-[10px] text-[#151515]/[0.66]">
                 {item.n}
               </span>
               <span className="text-[#151515]/70 leading-relaxed">{item.text}</span>
@@ -88,11 +88,11 @@ export default function Sidebar({ state, currentStep, totalSteps }) {
 
       {/* Direct contact */}
       <div className="bg-[#FAFAF8] border border-black/6 rounded-sm p-6">
-        <p className="font-mono text-[10px] tracking-[0.12em] uppercase text-[#7A7A7A] mb-1.5">
+        <p className="font-mono text-[10px] tracking-[0.12em] uppercase text-[#666666] mb-1.5">
           ¿Preferís hablar directo?
         </p>
         <h4 className="font-display text-[20px] font-light mb-2">Contacto directo</h4>
-        <p className="text-[13px] text-[#151515]/50 mb-4">
+        <p className="text-[13px] text-[#151515]/[0.66] mb-4">
           Un asesor responde por WhatsApp con precio real.
         </p>
         <a

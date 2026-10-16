@@ -28,7 +28,7 @@ export default function FAQ() {
       <div className="max-w-[1440px] mx-auto px-5 sm:px-8 lg:px-14 py-16 lg:py-24">
         <div className="grid grid-cols-1 lg:grid-cols-[1fr_2fr] gap-10 lg:gap-16">
           <div>
-            <p className="font-mono text-[11px] tracking-[0.16em] uppercase text-[#7A7A7A] mb-4">
+            <p className="font-mono text-[11px] tracking-[0.16em] uppercase text-[#666666] mb-4">
               Preguntas frecuentes
             </p>
             <h2 className="font-display text-[clamp(2.2rem,4vw,3.5rem)] font-light leading-[0.95] tracking-[-0.03em] text-[#151515]">

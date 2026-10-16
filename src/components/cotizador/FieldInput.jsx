@@ -6,7 +6,7 @@ export default function FieldInput({ label, type = "text", placeholder, value, o
   return (
     <div>
       {label && (
-        <label className="block font-mono text-[10px] tracking-[0.12em] uppercase text-[#151515]/40 mb-1.5">
+        <label className="block font-mono text-[10px] tracking-[0.12em] uppercase text-[#151515]/[0.66] mb-1.5">
           {label}
         </label>
       )}

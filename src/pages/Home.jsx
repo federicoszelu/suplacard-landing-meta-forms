@@ -82,12 +82,18 @@ if (typeof window !== "undefined") capturarAtribucion();
 // no existe hasta su linea, y usarlo antes tumba la app entera.
 const IMG = "https://www.suplacard.com/img";
 const HERO_IMG = `${IMG}/hero.jpg`;
+const foto = (p, n) => Array.from({ length: n }, (_, i) => ({
+  src: `/img/${p}-0${i + 1}-600.webp`,
+  srcSet: `/img/${p}-0${i + 1}-600.webp 600w, /img/${p}-0${i + 1}-800.webp 800w, /img/${p}-0${i + 1}-1200.webp 1200w`,
+}));
 const PRODUCT_IMAGES = {
-  // webp de 800 px: 7-40 KB cada una contra 60-140 KB de los jpg.
-  Placard:  Array.from({ length: 7 }, (_, i) => `${IMG}/placard-0${i + 1}-800.webp`),
-  Vestidor: Array.from({ length: 8 }, (_, i) => `${IMG}/vestidor-0${i + 1}-800.webp`),
-  Cocina:   Array.from({ length: 8 }, (_, i) => `${IMG}/cocina-0${i + 1}-800.webp`),
-  Mesada:   [`${IMG}/hero-mesadas-m.webp`],
+  // Fotos propias (public/img) en 600 y 1200 px con buena calidad: el navegador
+  // elige segun la pantalla. Antes eran webp de 800 px tan comprimidos (7 KB) que
+  // en celus con pantalla de alta definicion se veian pixelados.
+  Placard:  foto("placard", 7),
+  Vestidor: foto("vestidor", 8),
+  Cocina:   foto("cocina", 8),
+  Mesada:   foto("mesada", 1),
 };
 
 const generateCodigo = () => {

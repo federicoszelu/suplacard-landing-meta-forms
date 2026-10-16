@@ -16,8 +16,15 @@ export default function OptionCard({
   // pasando con fundido. Cada tarjeta recibe un intervalo distinto
   // desde StepProducto, asi las tres no cambian todas juntas, que
   // queda inquieto.
-  const fotos = Array.isArray(image) ? image : image ? [image] : [];
+  // Cada foto puede ser un texto (src) o { src, srcSet }.
+  const fotos = (Array.isArray(image) ? image : image ? [image] : []).map((f) => (typeof f === "string" ? { src: f } : f));
   const [i, setI] = useState(0);
+  // Solo se montan la foto que se ve y la siguiente: antes bajaban las 7-8 de cada
+  // tarjeta de entrada (unas 25 fotos) y competian con lo que importa.
+  const [vistas, setVistas] = useState(() => new Set([0]));
+  useEffect(() => {
+    setVistas((v) => (v.has(i) && v.has((i + 1) % fotos.length) ? v : new Set([...v, i, (i + 1) % fotos.length])));
+  }, [i, fotos.length]);
 
   useEffect(() => {
     if (fotos.length < 2) return;
@@ -39,12 +46,15 @@ export default function OptionCard({
     >
       {fotos.length > 0 && (
         <div className="relative h-32 sm:h-40 overflow-hidden bg-[#EAE6E1]">
-          {fotos.map((src, idx) => (
+          {fotos.map((f, idx) => vistas.has(idx) && (
             <img
-              key={src}
-              src={src}
+              key={f.src}
+              src={f.src}
+              srcSet={f.srcSet}
+              sizes="(max-width: 640px) 100vw, (max-width: 1280px) 50vw, 25vw"
               alt={`${label} a medida fabricado por Suplacard`}
               loading={idx === 0 ? "eager" : "lazy"}
+              decoding="async"
               className="absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-in-out"
               style={{ opacity: idx === i ? 1 : 0 }}
             />
@@ -60,7 +70,7 @@ export default function OptionCard({
               fontSize: "0.6rem",
               letterSpacing: "0.24em",
               textTransform: "uppercase",
-              color: "#A8A8A8",
+              color: "#767676",
               fontWeight: 500,
             }}
           >
@@ -74,7 +84,7 @@ export default function OptionCard({
           {label}
         </span>
         {description && (
-          <span className="mt-2" style={{ fontSize: "0.82rem", color: "#7A7A7A", lineHeight: 1.6 }}>
+          <span className="mt-2" style={{ fontSize: "0.82rem", color: "#666666", lineHeight: 1.6 }}>
             {description}
           </span>
         )}

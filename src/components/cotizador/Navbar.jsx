@@ -25,7 +25,7 @@ export default function Navbar({ onCotizar }) {
             href="https://www.suplacard.com"
             className="flex items-center gap-2.5"
           >
-            <img src={LOGO_ISO} alt="Suplacard" className="h-8 w-auto" />
+            <img src={LOGO_ISO} alt="" className="h-8 w-auto" />
             <span className="font-['Montserrat'] text-[17px] uppercase text-[#111111]" style={{ fontWeight: 400, letterSpacing: 0 }}>
               SUPLACARD
             </span>

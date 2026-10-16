@@ -15,7 +15,7 @@ const formatWhatsApp = (num) => {
 
 const Row = ({ label, children }) => (
   <div className="flex gap-2 min-w-0">
-    <span className="text-[#151515]/40 w-28 shrink-0">{label}</span>
+    <span className="text-[#151515]/[0.66] w-28 shrink-0">{label}</span>
     <span className="text-[#151515] break-all min-w-0">{children}</span>
   </div>
 );
@@ -40,7 +40,7 @@ export default function StepResumen({ state, files }) {
             <div key={p} className="bg-[#FAFAF8] border border-black/8 rounded-sm p-5">
               <div className="flex items-center gap-2 mb-3">
                 <h4 className="font-display text-[18px] text-[#151515]">{p}</h4>
-                <span className="font-mono text-[9px] tracking-[0.12em] uppercase text-[#7A7A7A] border border-[#E4E0DB] rounded-full px-2 py-0.5">
+                <span className="font-mono text-[9px] tracking-[0.12em] uppercase text-[#666666] border border-[#E4E0DB] rounded-full px-2 py-0.5">
                   {idx + 1} de {productos.length}
                 </span>
               </div>
@@ -107,7 +107,7 @@ export default function StepResumen({ state, files }) {
         </div>
 
         {totalFiles > 0 && (
-          <p className="text-[12px] text-[#151515]/40 text-center break-all">
+          <p className="text-[12px] text-[#151515]/[0.66] text-center break-all">
             📎 {totalFiles} archivo/s — se suben automáticamente al enviar
           </p>
         )}

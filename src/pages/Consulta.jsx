@@ -50,7 +50,7 @@ export default function Consulta() {
   if (loading) {
     return (
       <div className="min-h-screen bg-[#F9F8F6] flex items-center justify-center">
-        <Loader2 className="w-8 h-8 animate-spin text-[#7A7A7A]" />
+        <Loader2 className="w-8 h-8 animate-spin text-[#666666]" />
       </div>
     );
   }
@@ -61,7 +61,7 @@ export default function Consulta() {
         <p className="font-display text-[clamp(2rem,4vw,3rem)] font-light text-[#151515] mb-3">
           Consulta no encontrada
         </p>
-        <p className="text-[14px] text-[#151515]/50 mb-6 max-w-[40ch]">
+        <p className="text-[14px] text-[#151515]/[0.66] mb-6 max-w-[40ch]">
           {error || "El link no es válido o la consulta fue eliminada."}
         </p>
         <a href="/" className="h-12 px-6 inline-flex items-center rounded-full bg-[#151515] text-white text-[14px] font-medium hover:bg-[#333333] transition-colors">
@@ -200,7 +200,7 @@ export default function Consulta() {
               <ChevronLeft size={16} className="text-[#151515]" />
             </a>
             <div className="min-w-0">
-              <p className="font-mono text-[10px] tracking-[0.12em] uppercase text-[#7A7A7A]">
+              <p className="font-mono text-[10px] tracking-[0.12em] uppercase text-[#666666]">
                 ID: {quote.codigo || String(id).slice(-8).toUpperCase()}
               </p>
               <p className="text-[13px] font-medium text-[#151515] truncate">
@@ -232,9 +232,9 @@ export default function Consulta() {
       <div className="max-w-[1200px] mx-auto px-5 sm:px-8 lg:px-14 pt-8 pb-16">
         <div className="mb-8">
           <h1 className="font-display text-[clamp(1.8rem,3.5vw,2.6rem)] font-light leading-[1.05] tracking-[-0.03em] text-[#151515] mb-2">
-            Detalle de la <em className="italic text-[#7A7A7A]">cotización.</em>
+            Detalle de la <em className="italic text-[#666666]">cotización.</em>
           </h1>
-          <p className="text-[13px] text-[#151515]/50">
+          <p className="text-[13px] text-[#151515]/[0.66]">
             {quote.created_at
               ? new Date(quote.created_at).toLocaleString("es-AR", { day: "numeric", month: "long", year: "numeric", hour: "2-digit", minute: "2-digit" })
               : ""}
@@ -246,7 +246,7 @@ export default function Consulta() {
           <div className="flex flex-col gap-6">
             {/* Productos */}
             <div className="bg-white border border-black/8 rounded-sm p-6 sm:p-8">
-              <h2 className="font-mono text-[11px] tracking-[0.16em] uppercase text-[#151515]/40 mb-5">Productos y configuración</h2>
+              <h2 className="font-mono text-[11px] tracking-[0.16em] uppercase text-[#151515]/[0.66] mb-5">Productos y configuración</h2>
               <div className="space-y-5">
                 {productos.map((p) => {
                   const cfg = configs[p] || {};
@@ -255,7 +255,7 @@ export default function Consulta() {
                       <h3 className="font-display text-[20px] text-[#151515] mb-3">{p}</h3>
                       <div className="grid grid-cols-2 sm:grid-cols-3 gap-x-6 gap-y-4">
                         <div className="flex flex-col">
-                          <span className="text-[11px] text-[#151515]/40 mb-0.5">Punto de partida</span>
+                          <span className="text-[11px] text-[#151515]/[0.66] mb-0.5">Punto de partida</span>
                           <span className="text-[14px] text-[#151515] font-medium">{cfg.entrada || quote.entrada || "-"}</span>
                         </div>
                         {p === "Mesada" && [
@@ -266,22 +266,22 @@ export default function Consulta() {
                           ["Lleva", (cfg.calados || []).join(", ")],
                         ].filter(([, v]) => v).map(([k, v]) => (
                           <div key={k} className="flex flex-col">
-                            <span className="text-[11px] text-[#151515]/40 mb-0.5">{k}</span>
+                            <span className="text-[11px] text-[#151515]/[0.66] mb-0.5">{k}</span>
                             <span className="text-[14px] text-[#151515] font-medium">{v}</span>
                           </div>
                         ))}
                         {cfg.entrada === "Tengo medidas/fotos" && (
                           <>
                             <div className="flex flex-col">
-                              <span className="text-[11px] text-[#151515]/40 mb-0.5">{p === "Mesada" ? "Largo" : "Ancho"}</span>
+                              <span className="text-[11px] text-[#151515]/[0.66] mb-0.5">{p === "Mesada" ? "Largo" : "Ancho"}</span>
                               <span className="text-[14px] text-[#151515] font-medium">{cfg.ancho ? `${cfg.ancho} ${cfg.anchoUnidad || "cm"}` : "-"}</span>
                             </div>
                             {p !== "Mesada" && <div className="flex flex-col">
-                              <span className="text-[11px] text-[#151515]/40 mb-0.5">Alto</span>
+                              <span className="text-[11px] text-[#151515]/[0.66] mb-0.5">Alto</span>
                               <span className="text-[14px] text-[#151515] font-medium">{cfg.alto ? `${cfg.alto} ${cfg.altoUnidad || "cm"}` : "-"}</span>
                             </div>}
                             <div className="flex flex-col">
-                              <span className="text-[11px] text-[#151515]/40 mb-0.5">Profundidad</span>
+                              <span className="text-[11px] text-[#151515]/[0.66] mb-0.5">Profundidad</span>
                               <span className="text-[14px] text-[#151515] font-medium">{cfg.profundidad ? `${cfg.profundidad} ${cfg.profundidadUnidad || "cm"}` : "-"}</span>
                             </div>
                           </>
@@ -289,11 +289,11 @@ export default function Consulta() {
                         {cfg.entrada === "No tengo nada" && (
                           <>
                             <div className="flex flex-col">
-                              <span className="text-[11px] text-[#151515]/40 mb-0.5">Medida aprox.</span>
+                              <span className="text-[11px] text-[#151515]/[0.66] mb-0.5">Medida aprox.</span>
                               <span className="text-[14px] text-[#151515] font-medium">{cfg.medidaAprox || "-"}</span>
                             </div>
                             <div className="flex flex-col">
-                              <span className="text-[11px] text-[#151515]/40 mb-0.5">Ambiente</span>
+                              <span className="text-[11px] text-[#151515]/[0.66] mb-0.5">Ambiente</span>
                               <span className="text-[14px] text-[#151515] font-medium">{cfg.ambiente || "-"}</span>
                             </div>
                           </>
@@ -301,7 +301,7 @@ export default function Consulta() {
                       </div>
                       {(cfg.descripcion || cfg.descripcionNada) && (
                         <div className="mt-4">
-                          <span className="text-[11px] text-[#151515]/40 block mb-1">Descripción</span>
+                          <span className="text-[11px] text-[#151515]/[0.66] block mb-1">Descripción</span>
                           <p className="text-[14px] text-[#151515]/70 leading-relaxed bg-[#F9F8F6] rounded-sm p-3">{cfg.descripcion || cfg.descripcionNada}</p>
                         </div>
                       )}
@@ -311,7 +311,7 @@ export default function Consulta() {
               </div>
               {quote.comentarios && (
                 <div className="mt-5 pt-5 border-t border-black/5">
-                  <span className="text-[11px] text-[#151515]/40 block mb-2">Comentarios</span>
+                  <span className="text-[11px] text-[#151515]/[0.66] block mb-2">Comentarios</span>
                   <p className="text-[14px] text-[#151515]/70 leading-relaxed bg-[#F9F8F6] rounded-sm p-4">{quote.comentarios}</p>
                 </div>
               )}
@@ -321,8 +321,8 @@ export default function Consulta() {
             {images.length > 0 && (
               <div className="bg-white border border-black/8 rounded-sm p-6 sm:p-8">
                 <div className="flex items-center justify-between mb-5">
-                  <h2 className="font-mono text-[11px] tracking-[0.16em] uppercase text-[#151515]/40">Imágenes ({images.length})</h2>
-                  <ImageIcon size={14} className="text-[#151515]/30" />
+                  <h2 className="font-mono text-[11px] tracking-[0.16em] uppercase text-[#151515]/[0.66]">Imágenes ({images.length})</h2>
+                  <ImageIcon size={14} className="text-[#151515]/[0.66]" />
                 </div>
                 <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
                   {images.map((url, i) => (
@@ -341,14 +341,14 @@ export default function Consulta() {
             {pdfs.length > 0 && (
               <div className="bg-white border border-black/8 rounded-sm p-6 sm:p-8">
                 <div className="flex items-center justify-between mb-5">
-                  <h2 className="font-mono text-[11px] tracking-[0.16em] uppercase text-[#151515]/40">Planos / PDFs ({pdfs.length})</h2>
-                  <FileText size={14} className="text-[#151515]/30" />
+                  <h2 className="font-mono text-[11px] tracking-[0.16em] uppercase text-[#151515]/[0.66]">Planos / PDFs ({pdfs.length})</h2>
+                  <FileText size={14} className="text-[#151515]/[0.66]" />
                 </div>
                 <div className="space-y-2">
                   {pdfs.map((url, i) => (
                     <div key={i} className="flex items-center justify-between gap-3 p-3 rounded-sm border border-black/5 bg-[#F9F8F6]">
                       <div className="flex items-center gap-3 min-w-0">
-                        <FileText size={20} className="text-[#7A7A7A] shrink-0" />
+                        <FileText size={20} className="text-[#666666] shrink-0" />
                         <span className="text-[13px] text-[#151515] truncate">{fileName(url)}</span>
                       </div>
                       <div className="flex items-center gap-2 shrink-0">
@@ -368,11 +368,11 @@ export default function Consulta() {
             {/* Otros archivos */}
             {otherFiles.length > 0 && (
               <div className="bg-white border border-black/8 rounded-sm p-6 sm:p-8">
-                <h2 className="font-mono text-[11px] tracking-[0.16em] uppercase text-[#151515]/40 mb-5">Otros archivos ({otherFiles.length})</h2>
+                <h2 className="font-mono text-[11px] tracking-[0.16em] uppercase text-[#151515]/[0.66] mb-5">Otros archivos ({otherFiles.length})</h2>
                 <div className="space-y-2">
                   {otherFiles.map((url, i) => (
                     <a key={i} href={url} target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 p-3 rounded-sm border border-black/5 bg-[#F9F8F6] hover:border-[#111111] transition-colors">
-                      <FileText size={20} className="text-[#7A7A7A] shrink-0" />
+                      <FileText size={20} className="text-[#666666] shrink-0" />
                       <span className="text-[13px] text-[#151515] truncate">{fileName(url)}</span>
                     </a>
                   ))}
@@ -384,11 +384,11 @@ export default function Consulta() {
           {/* Sidebar contacto */}
           <div className="lg:sticky lg:top-20">
             <div className="bg-white border border-black/8 rounded-sm p-6 sm:p-7">
-              <h2 className="font-mono text-[11px] tracking-[0.16em] uppercase text-[#151515]/40 mb-5">Datos de contacto</h2>
+              <h2 className="font-mono text-[11px] tracking-[0.16em] uppercase text-[#151515]/[0.66] mb-5">Datos de contacto</h2>
               <div className="flex flex-col gap-4 mb-6">
                 {contact.map((d) => (
                   <div key={d.label} className="flex flex-col">
-                    <span className="text-[11px] text-[#151515]/40 mb-0.5">{d.label}</span>
+                    <span className="text-[11px] text-[#151515]/[0.66] mb-0.5">{d.label}</span>
                     <span className="text-[14px] text-[#151515] font-medium break-words">{d.value}</span>
                   </div>
                 ))}
@@ -411,7 +411,7 @@ export default function Consulta() {
               )}
             </div>
             {archivos.length > 0 && (
-              <div className="mt-4 text-center text-[12px] text-[#151515]/40">
+              <div className="mt-4 text-center text-[12px] text-[#151515]/[0.66]">
                 {archivos.length} archivo{archivos.length !== 1 ? "s" : ""}
                 {images.length > 0 && ` · ${images.length} imagen${images.length !== 1 ? "es" : ""}`}
                 {pdfs.length > 0 && ` · ${pdfs.length} PDF`}

@@ -16,7 +16,7 @@ export default function SuccessScreen({ onReset }) {
       <h3 className="font-display text-[clamp(1.6rem,3vw,2.4rem)] font-light tracking-[-0.025em] text-[#151515] mb-4">
         ¡Tu consulta fue enviada con éxito!
       </h3>
-      <p className="text-[15px] text-[#151515]/50 max-w-[44ch] mx-auto mb-8 leading-relaxed">
+      <p className="text-[15px] text-[#151515]/[0.66] max-w-[44ch] mx-auto mb-8 leading-relaxed">
         Un asesor de Suplacard con más de 30 años de experiencia va a revisar tu proyecto y te responde a la brevedad con un presupuesto real.
       </p>
       <button

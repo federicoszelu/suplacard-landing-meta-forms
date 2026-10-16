@@ -21,7 +21,7 @@ export default function ConsultaGate({ onSubmit }) {
         <h1 className="font-display text-[clamp(1.6rem,3vw,2.2rem)] font-light tracking-[-0.025em] text-[#151515] mb-3">
           Acceso <b style={{ fontWeight: 700 }}>restringido.</b>
         </h1>
-        <p className="text-[14px] text-[#151515]/50 leading-relaxed mb-8 max-w-[36ch] mx-auto">
+        <p className="text-[14px] text-[#151515]/[0.66] leading-relaxed mb-8 max-w-[36ch] mx-auto">
           Esta consulta está protegida. Ingresá el código de acceso que aparece en el mensaje de WhatsApp para ver el detalle y descargar los archivos.
         </p>
         <form onSubmit={handleSubmit} className="flex flex-col gap-3">
@@ -41,7 +41,7 @@ export default function ConsultaGate({ onSubmit }) {
             {loading ? <Loader2 size={16} className="animate-spin" /> : "Acceder"}
           </button>
         </form>
-        <a href="/" className="inline-block mt-6 text-[12px] text-[#151515]/40 hover:text-[#151515] transition-colors">
+        <a href="/" className="inline-block mt-6 text-[12px] text-[#151515]/[0.66] hover:text-[#151515] transition-colors">
           Volver al inicio
         </a>
       </div>

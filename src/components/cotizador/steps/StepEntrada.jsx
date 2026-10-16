@@ -77,7 +77,7 @@ export default function StepEntrada({ state, setState, files, setFiles, errors }
 
               <div className="flex items-center gap-3 mb-4">
                 <h3 className="font-display text-[22px] font-light text-[#151515]">{product}</h3>
-                <span className="font-mono text-[10px] tracking-[0.12em] uppercase text-[#7A7A7A] border border-[#E4E0DB] rounded-full px-2.5 py-1">
+                <span className="font-mono text-[10px] tracking-[0.12em] uppercase text-[#666666] border border-[#E4E0DB] rounded-full px-2.5 py-1">
                   Producto {idx + 1} de {productos.length}
                 </span>
               </div>
@@ -87,7 +87,7 @@ export default function StepEntrada({ state, setState, files, setFiles, errors }
               )}
 
               {esMesada && (
-                <p className="font-mono text-[10px] tracking-[0.12em] uppercase text-[#151515]/40 mb-2">¿Tenés medidas?</p>
+                <p className="font-mono text-[10px] tracking-[0.12em] uppercase text-[#151515]/[0.66] mb-2">¿Tenés medidas?</p>
               )}
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 mb-5">
                 {ENTRADAS.map((e) => (

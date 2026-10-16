@@ -7,18 +7,18 @@ export default function Footer() {
     <footer className="border-t border-black/5 mt-16">
       <div className="max-w-[1440px] mx-auto px-5 sm:px-8 lg:px-14 py-10 flex flex-col items-center text-center gap-4">
         <div className="flex items-center gap-2.5">
-          <img src={LOGO_ISO} alt="Suplacard" className="h-8 w-auto" />
+          <img src={LOGO_ISO} alt="" className="h-8 w-auto" />
           <span className="font-['Montserrat'] text-[17px] uppercase text-[#111111]" style={{ fontWeight: 400, letterSpacing: 0 }}>
             SUPLACARD
           </span>
         </div>
-        <p className="text-[13px] text-[#151515]/40 leading-relaxed max-w-[50ch]">
+        <p className="text-[13px] text-[#151515]/[0.66] leading-relaxed max-w-[50ch]">
           Placards, vestidores y cocinas a medida en Buenos Aires. Fábrica propia desde 1993.
         </p>
-        <p className="text-[12px] text-[#151515]/30">
+        <p className="text-[12px] text-[#151515]/[0.66]">
           © 2026 Suplacard
         </p>
-        <p className="text-[12px] text-[#151515]/30">
+        <p className="text-[12px] text-[#151515]/[0.66]">
           Al enviar tu consulta aceptás nuestros{" "}
           <a
             href="/terminos"

@@ -32,10 +32,10 @@ export default function FileUpload({ label, hint, accept, files, onChange, onRem
           className="hidden"
         />
         <div className="flex items-start gap-3">
-          <Upload size={18} className="text-[#7A7A7A] mt-0.5 shrink-0" />
+          <Upload size={18} className="text-[#666666] mt-0.5 shrink-0" />
           <div>
             <p className="text-[14px] font-medium text-[#151515]">{label}</p>
-            <p className="text-[12px] text-[#151515]/45 mt-1">{hint}</p>
+            <p className="text-[12px] text-[#151515]/[0.66] mt-1">{hint}</p>
           </div>
         </div>
       </button>
@@ -51,7 +51,7 @@ export default function FileUpload({ label, hint, accept, files, onChange, onRem
               {f.name.length > 20 ? f.name.slice(0, 18) + "…" : f.name}
               <button
                 onClick={() => onRemove(i)}
-                className="text-[#151515]/40 hover:text-[#9b4d3d] transition-colors ml-0.5"
+                className="text-[#151515]/[0.66] hover:text-[#9b4d3d] transition-colors ml-0.5"
               >
                 <X size={12} />
               </button>
