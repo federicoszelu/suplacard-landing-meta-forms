@@ -1,13 +1,13 @@
 import React from "react";
 
-const LOGO_ISO = "https://media.base44.com/images/public/6a3a783a8f060b08a350b7f4/caf07a380_SP-iso-negro.png";
+const LOGO_ISO = "/img/isotipo.png"; // el mismo de suplacard.com (248x200, 3 KB)
 
 export default function Footer() {
   return (
     <footer className="border-t border-black/5 mt-16">
       <div className="max-w-[1440px] mx-auto px-5 sm:px-8 lg:px-14 py-10 flex flex-col items-center text-center gap-4">
         <div className="flex items-center gap-2.5">
-          <img src={LOGO_ISO} alt="" className="h-8 w-auto" />
+          <img src={LOGO_ISO} alt="" width="248" height="200" className="h-8 w-auto" loading="lazy" />
           <span className="font-['Montserrat'] text-[17px] uppercase text-[#111111]" style={{ fontWeight: 400, letterSpacing: 0 }}>
             SUPLACARD
           </span>
