@@ -1,0 +1,35 @@
+# Publicación del cotizador en Firebase Hosting (sitio suplacard-forms):
+# forms.suplacard.com apunta acá desde el 22/10/2026 (antes Railway).
+# Cada push a main compila y publica solo. Si se suben dos cambios
+# seguidos, queda en línea el último.
+name: Publicar en Firebase
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: firebase-forms
+  cancel-in-progress: true
+
+jobs:
+  publicar:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      # npm install (no npm ci): el package-lock no está al día con
+      # package.json; Railway también instalaba así
+      - run: npm install --no-audit --no-fund
+      - run: npm run build
+      - uses: FirebaseExtended/action-hosting-deploy@v0
+        with:
+          repoToken: ${{ secrets.GITHUB_TOKEN }}
+          firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_SUPLACARD_SISTEMA }}
+          channelId: live
+          projectId: suplacard-sistema
+          target: suplacard-forms
