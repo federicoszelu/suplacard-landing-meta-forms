@@ -1,0 +1,46 @@
+# Versión de prueba del cotizador (canal "prueba" de Firebase Hosting):
+# un push a la rama prueba compila y publica en un link temporal (7 días),
+# sin tocar forms.suplacard.com. Ahí se mide y se mira antes de pasar el
+# cambio a main. El link queda anotado en .prueba.md de la misma rama.
+name: Publicar prueba en Firebase
+
+on:
+  push:
+    branches: [prueba]
+  workflow_dispatch:
+
+concurrency:
+  group: firebase-forms-prueba
+  cancel-in-progress: true
+
+permissions:
+  contents: write
+
+jobs:
+  prueba:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm install --no-audit --no-fund
+      - run: npm run build
+      - id: deploy
+        uses: FirebaseExtended/action-hosting-deploy@v0
+        with:
+          repoToken: ${{ secrets.GITHUB_TOKEN }}
+          firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_SUPLACARD_SISTEMA }}
+          channelId: prueba
+          expires: 7d
+          projectId: suplacard-sistema
+          target: suplacard-forms
+      # Los push con GITHUB_TOKEN no vuelven a disparar workflows
+      - name: Anotar el link
+        run: |
+          printf 'url: %s\nvence: %s\ncommit: %s\n' "${{ steps.deploy.outputs.details_url }}" "${{ steps.deploy.outputs.expire_time }}" "$GITHUB_SHA" > .prueba.md
+          git config user.name "github-actions"
+          git config user.email "github-actions@users.noreply.github.com"
+          git add .prueba.md
+          git commit -m "Link de la prueba [skip ci]" && git push || true
