@@ -17,6 +17,7 @@ import StepContacto from "@/components/cotizador/steps/StepContacto";
 import StepResumen from "@/components/cotizador/steps/StepResumen";
 import { avisoMedida } from "@/components/cotizador/MeasureInput";
 import { resumenMesada } from "@/components/cotizador/MesadaFields";
+import { enviarHuella } from "@/lib/huella";
 
 const supabase = createClient(
   "https://jeeqyynfurdeitnisupi.supabase.co",
@@ -276,6 +277,16 @@ export default function Home() {
       // para que Google Ads (orderId) y Kapso puedan matchear el lead.
       const clickId =
         (window.SuplacardTracking && window.SuplacardTracking.getClickId()) || codigo;
+
+      // Huella en el sistema para marcar el origen cuando se venda (ver lib/huella.js)
+      enviarHuella({
+        ref: codigo,
+        nombre: state.nombre,
+        telefono: state.whatsapp,
+        email: state.email,
+        atribucion,
+        datos: { productos: productos.join(", ").slice(0, 200), click_id: clickId },
+      });
 
       // ---------------------------------------------------------------
       // Conversion. Centralizada en GTM (GTM-PWKQQHVP).

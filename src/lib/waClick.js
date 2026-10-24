@@ -13,6 +13,8 @@
 // cuenta solo los chats reales, una sola vez cada uno.
 // ---------------------------------------------------------------
 
+import { enviarHuella } from "@/lib/huella";
+
 const SUPABASE_URL = "https://jeeqyynfurdeitnisupi.supabase.co";
 const SUPABASE_KEY = "sb_publishable_F2CXviXhqqaN3zz63sp4mw_sqHnC-wE";
 const TELEFONO = "5491151359303";
@@ -68,6 +70,9 @@ export function urlWhatsAppConRef(texto, entryPoint) {
       }),
     }).catch(() => {});
   } catch { /* nunca bloquear el WhatsApp */ }
+
+  // Huella en el sistema para marcar el origen cuando se venda (ver lib/huella.js)
+  enviarHuella({ ref, atribucion: a, datos: { entrada: corto(entryPoint, 40) } });
 
   const mensaje = `${texto}\n\n(ref: ${ref})`;
   return `https://wa.me/${TELEFONO}?text=${encodeURIComponent(mensaje)}`;
