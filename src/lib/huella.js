@@ -34,6 +34,7 @@ const canalDe = (a) => {
   const src = String(a.utm_source || "").toLowerCase();
   const med = String(a.utm_medium || "").toLowerCase();
   const pago = /cpc|ppc|paid|ads|cpm/.test(med);
+  if (a.msclkid || (/bing|microsoft/.test(src) && pago)) return "Microsoft Ads (Bing)";
   if (a.gclid || (/google/.test(src) && pago)) return "Google Ads";
   if (/facebook|instagram|meta|^fb$|^ig$/.test(src) && pago) return "Meta Ads";
   if (a.fbclid) return "Meta Ads";
@@ -71,7 +72,7 @@ export function enviarHuella({ ref, nombre, telefono, email, atribucion = {}, da
         utm_term: corto(a.utm_term, 200),
         pagina: corto(a.landing_url || location.href, 500),
         referrer: corto(a.referrer, 500),
-        datos,
+        datos: a.msclkid ? { ...datos, msclkid: corto(a.msclkid, 300) } : datos,
       }),
     }).catch(() => {});
   } catch { /* nunca bloquear el envío */ }
