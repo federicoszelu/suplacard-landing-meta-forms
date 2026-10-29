@@ -135,7 +135,7 @@ export default function Consulta() {
   const handleContactClient = () => {
     const phone = cleanPhone(quote.whatsapp);
     const msg = `Hola ${quote.nombre || ""}, soy de Suplacard. Te contacto por tu consulta ${quote.codigo ? `(${quote.codigo})` : ""} sobre ${quote.producto || "mueble a medida"}.`;
-    window.open(`https://wa.me/${phone}?text=${encodeURIComponent(msg)}`, "_blank");
+    window.open(`https://api.whatsapp.com/send?phone=${phone}&text=${encodeURIComponent(msg)}`, "_blank");
   };
 
   const handleDownloadAll = async () => {

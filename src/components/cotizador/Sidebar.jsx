@@ -96,7 +96,7 @@ export default function Sidebar({ state, currentStep, totalSteps }) {
           Un asesor responde por WhatsApp con precio real.
         </p>
         <a
-          href={`https://wa.me/5491151359303?text=${encodeURIComponent(TEXTO_WHATSAPP)}`}
+          href={`https://api.whatsapp.com/send?phone=5491151359303&text=${encodeURIComponent(TEXTO_WHATSAPP)}`}
           onClick={(e) => {
             // Se arma en el clic (no en el render) para que cada clic tenga
             // su propio ref. Ver src/lib/waClick.js.

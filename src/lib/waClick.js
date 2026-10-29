@@ -40,7 +40,7 @@ const atribucion = () => {
 
 const corto = (v, n) => (v ? String(v).slice(0, n) : null);
 
-// Devuelve la URL de wa.me con el ref ya agregado. El grabado va con
+// Devuelve la URL de WhatsApp (api.whatsapp.com: wa.me rompe los emojis) con el ref ya agregado. El grabado va con
 // keepalive para que termine aunque la pagina se vaya a WhatsApp.
 export function urlWhatsAppConRef(texto, entryPoint) {
   const ref = nuevoRef();
@@ -75,5 +75,5 @@ export function urlWhatsAppConRef(texto, entryPoint) {
   enviarHuella({ ref, atribucion: a, datos: { entrada: corto(entryPoint, 40) } });
 
   const mensaje = `${texto}\n\n(ref: ${ref})`;
-  return `https://wa.me/${TELEFONO}?text=${encodeURIComponent(mensaje)}`;
+  return `https://api.whatsapp.com/send?phone=${TELEFONO}&text=${encodeURIComponent(mensaje)}`;
 }

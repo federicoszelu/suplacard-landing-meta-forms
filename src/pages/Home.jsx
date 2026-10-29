@@ -358,7 +358,9 @@ export default function Home() {
 
       const abrirWhatsApp = () => {
         const msg = buildMensaje(codigo, clickId, atribucion);
-        const url = `https://wa.me/5491151359303?text=${encodeURIComponent(msg)}`;
+        // api.whatsapp.com y no wa.me: la redireccion de wa.me cambia los emojis
+        // del mensaje por "�" (verificado el 29/10/2026). La ref no cambia.
+        const url = `https://api.whatsapp.com/send?phone=5491151359303&text=${encodeURIComponent(msg)}`;
         if (popup) popup.location.href = url;
         else window.location.href = url;
       };
