@@ -337,6 +337,7 @@ export default function Home() {
               wa_click_id: clickId,
               wa_entry_point: "cotizador",
               wa_kw_code: codigo,
+              event_id: codigo,
               fbclid: atribucion.fbclid,
               gclid: atribucion.gclid,
               utm_source: atribucion.utm_source,

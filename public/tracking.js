@@ -110,6 +110,9 @@
     var payload = {
       event: "whatsapp_click",
       wa_click_id: clickId,
+      // Misma ref que el mensaje de WhatsApp y la huella (en el cotizador es el
+      // codigo SUP-…): GTM la usa como eventID y Meta no duplica el Lead.
+      event_id: opts.kwCode || clickId,
       wa_entry_point: opts.entryPoint || "unknown",
       wa_kw_code: opts.kwCode || null,
       wa_cluster: opts.cluster || null,
