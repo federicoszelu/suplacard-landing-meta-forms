@@ -37,9 +37,18 @@ const canalDe = (a) => {
   if (a.msclkid || (/bing|microsoft/.test(src) && pago)) return "Microsoft Ads (Bing)";
   if (a.gclid || (/google/.test(src) && pago)) return "Google Ads";
   if (/facebook|instagram|meta|^fb$|^ig$/.test(src) && pago) return "Meta Ads";
+  // Instagram le agrega fbclid a cualquier link, tambien al de la bio: eso no es un anuncio.
+  if (a.fbclid && (/social|organic/.test(med) || a.utm_content === "link_in_bio")) return "Redes (Instagram/Facebook)";
   if (a.fbclid) return "Meta Ads";
   if (src) return pago ? `Anuncio (${src})` : `Campaña (${src})`;
   return "Directo";
+};
+
+// Para que Meta reconozca mejor cada evento de servidor. Esta pagina no tiene aviso
+// de cookies. fbp se guarda solo si la cookie ya existe.
+const datosMeta = () => {
+  const m = document.cookie.match(/(?:^|; )_fbp=([^;]+)/);
+  return { cookies: "sin_aviso", ua: corto(navigator.userAgent, 300), ...(m ? { fbp: corto(m[1], 200) } : {}) };
 };
 
 export function enviarHuella({ ref, nombre, telefono, email, atribucion = {}, datos = {} }) {
@@ -72,7 +81,7 @@ export function enviarHuella({ ref, nombre, telefono, email, atribucion = {}, da
         utm_term: corto(a.utm_term, 200),
         pagina: corto(a.landing_url || location.href, 500),
         referrer: corto(a.referrer, 500),
-        datos: a.msclkid ? { ...datos, msclkid: corto(a.msclkid, 300) } : datos,
+        datos: { ...datos, ...datosMeta(), ...(a.msclkid ? { msclkid: corto(a.msclkid, 300) } : {}) },
       }),
     }).catch(() => {});
   } catch { /* nunca bloquear el envío */ }
