@@ -18,8 +18,8 @@ const SECCIONES = [
     cuerpo: [
       "En cumplimiento de la Ley N.° 25.326 de Protección de los Datos Personales de la República Argentina y sus normas complementarias, se informa al usuario:",
       "a) Los datos personales recabados (nombre, teléfono, email, localidad y cualquier información suministrada en el formulario) serán incorporados a una base de datos de titularidad de BRIELVA S.A.",
-      "b) La finalidad de la recolección es exclusivamente comercial: elaborar presupuestos y realizar el seguimiento de la consulta.",
-      "c) Los datos no serán cedidos, vendidos ni transferidos a terceros sin el consentimiento expreso del titular.",
+      "b) La finalidad de la recolección es elaborar presupuestos, realizar el seguimiento de la consulta y medir y mejorar nuestra publicidad.",
+      "c) Los datos no se venden. Para medir y mejorar la publicidad, el correo y el teléfono se comparten en forma de hash con Meta y Google, que pueden tratarlos en Estados Unidos y en otros países, junto con el identificador de clic y, en las ventas, el valor de la operación. También se usan para armar públicos publicitarios. El titular puede oponerse escribiendo a presupuestos@suplacard.com.",
       "d) El titular de los datos tiene derecho a acceder, rectificar, actualizar y suprimir sus datos en cualquier momento, mediante solicitud dirigida a presupuestos@suplacard.com.",
       "e) La Agencia de Acceso a la Información Pública (AAIP) es el organismo de control en materia de protección de datos personales en Argentina. Para mayor información: www.argentina.gob.ar/aaip",
     ],
@@ -27,7 +27,7 @@ const SECCIONES = [
   {
     titulo: "4. Confidencialidad de la Información",
     cuerpo: [
-      "Toda la información suministrada por el usuario —incluyendo medidas, planos, fotografías, referencias visuales y descripciones del proyecto— es tratada con carácter estrictamente confidencial. Será accesible únicamente por el equipo comercial de Suplacard con el fin exclusivo de elaborar la cotización solicitada.",
+      "Toda la información suministrada por el usuario —incluyendo medidas, planos, fotografías, referencias visuales y descripciones del proyecto— es tratada con carácter confidencial y la utiliza el equipo comercial de Suplacard para elaborar la cotización solicitada. Estos datos no se incluyen en la información que enviamos a Meta o a Google para publicidad. La agencia de marketing que administra nuestras campañas puede recibir nombre, teléfono, correo, producto con su descripción breve, monto y sucursal para medir resultados; no recibe planos ni fotografías.",
     ],
   },
   {
@@ -89,7 +89,7 @@ export default function Terminos() {
           Formulario de Cotización Online — Suplacard
         </p>
         <p className="text-[13px] text-[#151515]/[0.66] mb-12">
-          BRIELVA S.A. · presupuestos@suplacard.com · Última actualización: Junio 2025
+          BRIELVA S.A. · presupuestos@suplacard.com · Última actualización: Noviembre 2026
         </p>
 
         <div className="space-y-10">
