@@ -35,7 +35,7 @@ const canalDe = (a) => {
   const med = String(a.utm_medium || "").toLowerCase();
   const pago = /cpc|ppc|paid|ads|cpm/.test(med);
   if (a.msclkid || (/bing|microsoft/.test(src) && pago)) return "Microsoft Ads (Bing)";
-  if (a.gclid || (/google/.test(src) && pago)) return "Google Ads";
+  if (a.gclid || a.gbraid || a.wbraid || (/google/.test(src) && pago)) return "Google Ads";
   if (/facebook|instagram|meta|^fb$|^ig$/.test(src) && pago) return "Meta Ads";
   // Instagram le agrega fbclid a cualquier link, tambien al de la bio: eso no es un anuncio.
   if (a.fbclid && (/social|organic/.test(med) || a.utm_content === "link_in_bio")) return "Redes (Instagram/Facebook)";
@@ -81,7 +81,8 @@ export function enviarHuella({ ref, nombre, telefono, email, atribucion = {}, da
         utm_term: corto(a.utm_term, 200),
         pagina: corto(a.landing_url || location.href, 500),
         referrer: corto(a.referrer, 500),
-        datos: { ...datos, ...datosMeta(), ...(a.msclkid ? { msclkid: corto(a.msclkid, 300) } : {}) },
+        datos: { ...datos, ...datosMeta(), ...(a.msclkid ? { msclkid: corto(a.msclkid, 300) } : {}),
+          ...(a.gbraid ? { gbraid: corto(a.gbraid, 300) } : {}), ...(a.wbraid ? { wbraid: corto(a.wbraid, 300) } : {}) },
       }),
     }).catch(() => {});
   } catch { /* nunca bloquear el envío */ }

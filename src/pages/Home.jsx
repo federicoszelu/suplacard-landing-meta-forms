@@ -41,7 +41,7 @@ const CLAVE_ATRIB = "suplacard_atribucion";
 const capturarAtribucion = () => {
   try {
     const p = new URLSearchParams(window.location.search);
-    const campos = ["fbclid", "gclid", "msclkid", "utm_source", "utm_medium", "utm_campaign", "utm_content", "utm_term"];
+    const campos = ["fbclid", "gclid", "gbraid", "wbraid", "msclkid", "utm_source", "utm_medium", "utm_campaign", "utm_content", "utm_term"];
     const nuevo = {};
     campos.forEach((c) => { const v = p.get(c); if (v) nuevo[c] = v; });
 
@@ -64,6 +64,8 @@ const leerAtribucion = () => {
   return {
     fbclid: a.fbclid || null,
     gclid: a.gclid || null,
+    gbraid: a.gbraid || null, // Google Ads en iPhone o apps, cuando no hay gclid
+    wbraid: a.wbraid || null,
     msclkid: a.msclkid || null, // Microsoft Ads (Bing), desde el 1/11/2026
     utm_source: a.utm_source || null,
     utm_medium: a.utm_medium || null,
@@ -328,6 +330,7 @@ export default function Home() {
               kwCode: codigo,
               context: productos.join(", "),
               phone: state.whatsapp,
+              email: state.email,
               onDone,
             });
           } else if (window.dataLayer) {
@@ -340,6 +343,7 @@ export default function Home() {
               event_id: codigo,
               fbclid: atribucion.fbclid,
               gclid: atribucion.gclid,
+              user_data: window.SuplacardTracking && window.SuplacardTracking.userData ? window.SuplacardTracking.userData(state.email, state.whatsapp) : undefined,
               utm_source: atribucion.utm_source,
               utm_campaign: atribucion.utm_campaign,
               utm_content: atribucion.utm_content,
@@ -399,7 +403,7 @@ export default function Home() {
         // y al pie del mensaje de WhatsApp, no hace falta persistirlo aca.
         // Si algun dia se agrega la columna, volver a incluirlo.
         // msclkid (Microsoft Ads) tampoco tiene columna: va solo a la huella del sistema.
-        const { gclid: _gclidNoGuardado, msclkid: _msclkidNoGuardado, ...atribucionParaGuardar } = atribucion;
+        const { gclid: _gclidNoGuardado, msclkid: _msclkidNoGuardado, gbraid: _gbraidNoGuardado, wbraid: _wbraidNoGuardado, ...atribucionParaGuardar } = atribucion;
         const { error: errInsert } = await supabase.from("quotes").insert({
           codigo,
           producto: productos.join(", "),

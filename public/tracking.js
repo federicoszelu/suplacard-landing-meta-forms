@@ -39,6 +39,8 @@
   // First-touch wins. gclid/fbclid 90d (alineado con Google Ads), UTMs 30d.
   var ATTR_FIELDS = {
     gclid: 90,
+    gbraid: 90, // clic de Google Ads en iPhone o apps (sin gclid)
+    wbraid: 90,
     fbclid: 90,
     utm_source: 30,
     utm_medium: 30,
@@ -68,6 +70,8 @@
   function getStoredAttribution() {
     return {
       gclid: getCookie("sup_gclid"),
+      gbraid: getCookie("sup_gbraid"),
+      wbraid: getCookie("sup_wbraid"),
       fbclid: getCookie("sup_fbclid"),
       utm_source: getCookie("sup_utm_source"),
       utm_medium: getCookie("sup_utm_medium"),
@@ -99,6 +103,22 @@
     }
   }
 
+  // Email y telefono del lead para las conversiones mejoradas de Google Ads
+  // (user_data). La etiqueta de Google los cifra (SHA-256) antes de mandarlos.
+  // Telefono como celular argentino: +54 9 + 10 numeros.
+  function userData(email, tel) {
+    var r = {}, e = String(email || "").trim().toLowerCase();
+    if (/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e)) r.email = e.slice(0, 200);
+    var t = String(tel || "").replace(/\D/g, "");
+    if (/^54/.test(t) && t.length > 10) t = t.slice(2);
+    if (/^9/.test(t) && t.length === 11) t = t.slice(1);
+    if (/^0/.test(t)) t = t.slice(1);
+    if (t.length > 10) t = t.slice(-10);
+    if (t.length === 10 && /^15/.test(t)) t = "11" + t.slice(2);
+    if (t.length === 10) r.phone_number = "+549" + t;
+    return (r.email || r.phone_number) ? r : undefined;
+  }
+
   // Push a dataLayer del evento de conversion. GTM (CE - whatsapp_click)
   // dispara GA4 + Google Ads + Meta Lead. Retorna el click_id para que el
   // caller lo inyecte en el mensaje de WhatsApp.
@@ -124,7 +144,10 @@
       wa_page_title: document.title,
       wa_timestamp: new Date().toISOString(),
       gclid: attr.gclid,
+      gbraid: attr.gbraid,
+      wbraid: attr.wbraid,
       fbclid: attr.fbclid,
+      user_data: userData(opts.email, opts.phone),
       utm_source: attr.utm_source,
       utm_medium: attr.utm_medium,
       utm_campaign: attr.utm_campaign,
@@ -153,6 +176,7 @@
     getClickId: getClickId,
     getStoredAttribution: getStoredAttribution,
     trackWhatsAppClick: trackWhatsAppClick,
+    userData: userData,
     _debug: function () {
       return {
         clickId: getClickId(),
