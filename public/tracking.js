@@ -50,6 +50,18 @@
     utm_content: 30,
   };
 
+  // De que anuncio viene ESTA visita (tiktok, meta, google o bing). Gana el ultimo anuncio:
+  // GTM lo usa para marcarle el lead solo a la plataforma que lo trajo.
+  function adsDe(p) {
+    var s = (p.get("utm_source") || "").toLowerCase(), m = (p.get("utm_medium") || "").toLowerCase();
+    var pago = /cpc|ppc|paid|ads|cpm/.test(m);
+    if (p.get("msclkid") || (/bing|microsoft/.test(s) && pago)) return "bing";
+    if (p.get("gclid") || p.get("gbraid") || p.get("wbraid") || (/google/.test(s) && pago)) return "google";
+    if (p.get("ttclid") || (/tiktok/.test(s) && pago)) return "tiktok";
+    if (/facebook|instagram|meta|^fb$|^ig$/.test(s) && (pago || p.get("fbclid"))) return "meta";
+    return "";
+  }
+
   function captureAttribution() {
     var params;
     try {
@@ -62,6 +74,8 @@
       var val = params.get(key);
       if (val) setCookie("sup_" + key, val, ATTR_FIELDS[key]);
     }
+    var ads = adsDe(params);
+    if (ads) setCookie("sup_ads", ads, 30);
     if (!getCookie("sup_first_landing")) {
       setCookie("sup_first_landing", location.pathname, 30);
       setCookie("sup_first_ts", new Date().toISOString(), 30);
