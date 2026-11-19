@@ -49,9 +49,11 @@ const canalDe = (a) => {
 // de cookies. fbp se guarda solo si la cookie ya existe.
 const datosMeta = () => {
   const m = document.cookie.match(/(?:^|; )_fbp=([^;]+)/);
+  const tt = document.cookie.match(/(?:^|; )_ttp=([^;]+)/); // cookie del pixel de TikTok
   const ads = document.cookie.match(/(?:^|; )sup_ads=([^;]+)/); // de que anuncio vino (tiktok, meta, google, bing)
   return { cookies: "sin_aviso", ua: corto(navigator.userAgent, 300), ...(m ? { fbp: corto(m[1], 200) } : {}),
-    ...(ads ? { ads_origen: corto(ads[1], 20) } : {}) };
+    ...(ads ? { ads_origen: corto(ads[1], 20) } : {}),
+    ...(tt ? { ttp: corto(tt[1], 200) } : {}) };
 };
 
 export function enviarHuella({ ref, nombre, telefono, email, atribucion = {}, datos = {} }) {
