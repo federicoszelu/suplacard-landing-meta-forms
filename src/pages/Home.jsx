@@ -41,7 +41,7 @@ const CLAVE_ATRIB = "suplacard_atribucion";
 const capturarAtribucion = () => {
   try {
     const p = new URLSearchParams(window.location.search);
-    const campos = ["fbclid", "gclid", "gbraid", "wbraid", "msclkid", "utm_source", "utm_medium", "utm_campaign", "utm_content", "utm_term"];
+    const campos = ["fbclid", "gclid", "gbraid", "wbraid", "msclkid", "ttclid", "utm_source", "utm_medium", "utm_campaign", "utm_content", "utm_term"];
     const nuevo = {};
     campos.forEach((c) => { const v = p.get(c); if (v) nuevo[c] = v; });
 
@@ -66,6 +66,7 @@ const leerAtribucion = () => {
     gclid: a.gclid || null,
     gbraid: a.gbraid || null, // Google Ads en iPhone o apps, cuando no hay gclid
     wbraid: a.wbraid || null,
+    ttclid: a.ttclid || null, // TikTok Ads
     msclkid: a.msclkid || null, // Microsoft Ads (Bing), desde el 1/11/2026
     utm_source: a.utm_source || null,
     utm_medium: a.utm_medium || null,
@@ -403,7 +404,7 @@ export default function Home() {
         // y al pie del mensaje de WhatsApp, no hace falta persistirlo aca.
         // Si algun dia se agrega la columna, volver a incluirlo.
         // msclkid (Microsoft Ads) tampoco tiene columna: va solo a la huella del sistema.
-        const { gclid: _gclidNoGuardado, msclkid: _msclkidNoGuardado, gbraid: _gbraidNoGuardado, wbraid: _wbraidNoGuardado, ...atribucionParaGuardar } = atribucion;
+        const { gclid: _gclidNoGuardado, msclkid: _msclkidNoGuardado, gbraid: _gbraidNoGuardado, wbraid: _wbraidNoGuardado, ttclid: _ttclidNoGuardado, ...atribucionParaGuardar } = atribucion;
         const { error: errInsert } = await supabase.from("quotes").insert({
           codigo,
           producto: productos.join(", "),

@@ -41,6 +41,7 @@
     gclid: 90,
     gbraid: 90, // clic de Google Ads en iPhone o apps (sin gclid)
     wbraid: 90,
+    ttclid: 90, // clic de TikTok Ads
     fbclid: 90,
     utm_source: 30,
     utm_medium: 30,
@@ -72,6 +73,7 @@
       gclid: getCookie("sup_gclid"),
       gbraid: getCookie("sup_gbraid"),
       wbraid: getCookie("sup_wbraid"),
+      ttclid: getCookie("sup_ttclid"),
       fbclid: getCookie("sup_fbclid"),
       utm_source: getCookie("sup_utm_source"),
       utm_medium: getCookie("sup_utm_medium"),
@@ -146,6 +148,7 @@
       gclid: attr.gclid,
       gbraid: attr.gbraid,
       wbraid: attr.wbraid,
+      ttclid: attr.ttclid,
       fbclid: attr.fbclid,
       user_data: userData(opts.email, opts.phone),
       utm_source: attr.utm_source,
