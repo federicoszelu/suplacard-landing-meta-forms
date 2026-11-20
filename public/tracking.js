@@ -58,7 +58,9 @@
     if (p.get("msclkid") || (/bing|microsoft/.test(s) && pago)) return "bing";
     if (p.get("gclid") || p.get("gbraid") || p.get("wbraid") || (/google/.test(s) && pago)) return "google";
     if (p.get("ttclid") || (/tiktok/.test(s) && pago)) return "tiktok";
-    if (/facebook|instagram|meta|^fb$|^ig$/.test(s) && (pago || p.get("fbclid"))) return "meta";
+    // El link de la bio de Instagram trae fbclid pero no es anuncio.
+    var organico = /social|organic/.test(m) || p.get("utm_content") === "link_in_bio";
+    if (/facebook|instagram|meta|^fb$|^ig$/.test(s) && (pago || (p.get("fbclid") && !organico))) return "meta";
     return "";
   }
 

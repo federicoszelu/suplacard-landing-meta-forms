@@ -38,6 +38,22 @@ const supabase = createClient(
 // ---------------------------------------------------------------
 const CLAVE_ATRIB = "suplacard_atribucion";
 
+// Respaldo de tracking.js: anota de qué anuncio vino la visita (cookie sup_ads, gana el último).
+// GTM y la huella la leen para marcarle el lead solo a la plataforma que lo trajo.
+const anotarAds = (p) => {
+  try {
+    const s = (p.get("utm_source") || "").toLowerCase(), m = (p.get("utm_medium") || "").toLowerCase();
+    const pago = /cpc|ppc|paid|ads|cpm/.test(m);
+    const organico = /social|organic/.test(m) || p.get("utm_content") === "link_in_bio";
+    let ads = "";
+    if (p.get("msclkid") || (/bing|microsoft/.test(s) && pago)) ads = "bing";
+    else if (p.get("gclid") || p.get("gbraid") || p.get("wbraid") || (/google/.test(s) && pago)) ads = "google";
+    else if (p.get("ttclid") || (/tiktok/.test(s) && pago)) ads = "tiktok";
+    else if (/facebook|instagram|meta|^fb$|^ig$/.test(s) && (pago || (p.get("fbclid") && !organico))) ads = "meta";
+    if (ads) document.cookie = "sup_ads=" + ads + "; max-age=" + 30 * 86400 + "; path=/; SameSite=Lax; Secure";
+  } catch { /* nunca bloquear */ }
+};
+
 const capturarAtribucion = () => {
   try {
     const p = new URLSearchParams(window.location.search);
@@ -47,6 +63,7 @@ const capturarAtribucion = () => {
 
     // Solo pisa lo guardado si esta visita trae parametros nuevos.
     if (Object.keys(nuevo).length > 0) {
+      anotarAds(p);
       nuevo.landing_url = window.location.href.slice(0, 2000);
       nuevo.referrer = document.referrer ? document.referrer.slice(0, 500) : null;
       sessionStorage.setItem(CLAVE_ATRIB, JSON.stringify(nuevo));
@@ -249,6 +266,8 @@ export default function Home() {
     if (clickId && clickId !== codigo) refParts.push(clickId);
     if (attr.gclid) refParts.push(`gclid:${attr.gclid}`);
     if (attr.fbclid) refParts.push(`fbclid:${attr.fbclid}`);
+    if (attr.ttclid) refParts.push(`ttclid:${attr.ttclid}`);
+    if (attr.msclkid) refParts.push(`msclkid:${attr.msclkid}`);
     lines.push("");
     lines.push(`(ref: ${refParts.join(" · ")})`);
 
