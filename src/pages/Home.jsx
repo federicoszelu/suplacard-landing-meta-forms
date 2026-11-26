@@ -4,6 +4,7 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 import { createClient } from "@supabase/supabase-js";
 
 import Navbar from "@/components/cotizador/Navbar";
+import BlackFriday from "@/components/BlackFriday";
 import HeroSection from "@/components/cotizador/HeroSection";
 import StepHeader from "@/components/cotizador/StepHeader";
 import Sidebar from "@/components/cotizador/Sidebar";
@@ -514,6 +515,7 @@ export default function Home() {
     <div className="min-h-screen bg-[#F9F8F6]">
       <Navbar onCotizar={scrollToCotizador} />
       <HeroSection onStart={scrollToCotizador} />
+      <BlackFriday onCotizar={scrollToCotizador} />
       <section ref={cotizadorRef} className="scroll-mt-20 max-w-[1440px] mx-auto px-5 sm:px-8 lg:px-14 py-10 lg:py-16">
         <div className="grid grid-cols-1 lg:grid-cols-[1fr_360px] gap-6 items-start">
           <div className="border border-black/8 bg-white rounded-sm overflow-hidden">
