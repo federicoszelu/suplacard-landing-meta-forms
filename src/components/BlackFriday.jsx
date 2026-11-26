@@ -36,12 +36,11 @@ export default function BlackFriday({ onCotizar }) {
             <h2 className="mt-3 text-[2.6rem] sm:text-[3.6rem] lg:text-[4.4rem] leading-none tracking-[-0.02em]" style={{ fontWeight: 600 }}>
               BLACK FRIDAY
             </h2>
-            <p className="mt-6 text-[0.95rem] text-white/80" style={{ fontWeight: 300 }}>Pagando en efectivo:</p>
-            <p className="mt-1 text-[0.95rem] text-white/80" style={{ fontWeight: 300 }}>
-              30% de lista + 30% Black + 10,5% condición especial
-            </p>
-            <p className="mt-3 text-[2.2rem] sm:text-[2.8rem] leading-tight" style={{ fontWeight: 300 }}>
+            <p className="mt-6 text-[2.2rem] sm:text-[2.8rem] leading-tight" style={{ fontWeight: 300 }}>
               hasta <b className="font-semibold text-white">56% OFF</b>
+            </p>
+            <p className="mt-2 text-[0.95rem] text-white/80" style={{ fontWeight: 300 }}>
+              En tienda física · todos nuestros showrooms
             </p>
             <button
               type="button"
@@ -63,7 +62,7 @@ export default function BlackFriday({ onCotizar }) {
           </div>
         </div>
         <p className="mt-10 pt-5 border-t border-white/15 text-[0.7rem] leading-relaxed text-white/50">
-          Promoción válida para presupuestos generados del 26/11 al 30/11/2026, pago en efectivo. Débito, transferencia y tarjeta mantienen sus condiciones.
+          Promoción válida para presupuestos generados del 26/11 al 30/11/2026 en todos nuestros showrooms. Consultá las condiciones con tu asesor.
         </p>
       </div>
     </section>
