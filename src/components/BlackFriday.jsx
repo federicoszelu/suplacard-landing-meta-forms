@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 // BLACK FRIDAY: se muestra solo del jueves 26/11 00:00 al lunes 30/11 23:59 (hora Argentina)
 // y se apaga solo el martes 1/12 a las 00:00, sin volver a publicar.
 // Sin eventos de medición: el botón solo baja al formulario (contrato de medición).
-const INICIO = Date.parse("2026-11-26T00:00:00-03:00");
+const INICIO = Date.parse("2026-11-25T00:00:00-03:00");
 const FIN = Date.parse("2026-12-01T00:00:00-03:00");
 
 function restante(ahora) {
